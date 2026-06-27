@@ -1,0 +1,7 @@
+{
+  "targets": {
+    "docker-build": {
+      "command": "docker buildx build -f ./apps/backend/Dockerfile ."
+    }
+  }
+}
