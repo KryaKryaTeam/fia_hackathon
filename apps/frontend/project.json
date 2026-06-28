@@ -1,0 +1,21 @@
+{
+  "targets": {
+    "build-container": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker buildx build -t ghcr.io/kryakryateam/fia_hackathon/frontend:latest -f ./apps/frontend/Dockerfile.nx ."
+        ]
+      }
+    },
+    "container-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker push ghcr.io/kryakryateam/fia_hackathon/frontend:latest"
+        ]
+      }
+    }
+  }
+}

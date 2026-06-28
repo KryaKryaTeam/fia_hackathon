@@ -1,8 +1,8 @@
 {
-  "name": "./apps/MlService",
+  "name": "mlService",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "./apps/MlService/./apps/MlService",
+  "sourceRoot": "apps/mlService/mlService",
   "targets": {
     "lock": {
       "executor": "@nxlv/python:lock",
@@ -37,11 +37,28 @@
       },
       "cache": true
     },
+    "build-container": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker buildx build -t ghcr.io/kryakryateam/fia_hackathon/ml_service:latest -f ./apps/mlService/Dockerfile.nx ."
+        ]
+      }
+    },
+    "container-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker push ghcr.io/kryakryateam/fia_hackathon/ml_service:latest"
+        ]
+      }
+    },
     "lint": {
       "executor": "@nxlv/python:ruff-check",
       "outputs": [],
       "options": {
-        "lintFilePatterns": ["./apps/MlService", "tests"]
+        "lintFilePatterns": ["mlService", "tests"]
       },
       "cache": true
     },
@@ -49,7 +66,7 @@
       "executor": "@nxlv/python:ruff-format",
       "outputs": [],
       "options": {
-        "filePatterns": ["./apps/MlService", "tests"]
+        "filePatterns": ["mlService", "tests"]
       },
       "cache": true
     },
@@ -72,6 +89,27 @@
         "args": "",
         "verbose": false,
         "debug": false
+      }
+    },
+    "serve": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run uvicorn mlService.main:app --reload",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "worker": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run python mlService/worker.py",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": true,
+        "commands": ["nx run mlService:serve", "nx run mlService:worker"]
       }
     }
   },

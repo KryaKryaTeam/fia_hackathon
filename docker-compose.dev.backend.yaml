@@ -1,0 +1,26 @@
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - fia_hackathon_network
+  postgres:
+    image: postgres:${DB_VERSION}
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/${DB_VERSION}/docker
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - '5432:5432'
+    networks:
+      - fia_hackathon_network
+
+networks:
+  fia_hackathon_network:
+volumes:
+  postgres_data:
