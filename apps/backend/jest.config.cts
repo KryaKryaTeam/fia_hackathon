@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /* eslint-disable */
 const { readFileSync } = require('fs');
 
