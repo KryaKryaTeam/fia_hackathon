@@ -9,6 +9,7 @@
         ]
       }
     },
+    
     "container-push": {
       "executor": "nx:run-commands",
       "options": {

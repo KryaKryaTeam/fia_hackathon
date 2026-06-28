@@ -4,7 +4,8 @@
     "outDir": "out-tsc/@org/backend-e2e",
     "esModuleInterop": true,
     "noUnusedLocals": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "types": ["node", "jest"]
   },
   "include": ["jest.config.ts", "src/**/*.ts"],
   "references": []
