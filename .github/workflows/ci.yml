@@ -13,7 +13,7 @@ permissions:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  
+
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
-      - run: npx nx mlService:install
+      - run: npx nx run mlService:install
 
       - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
       - run: npx nx run-many -t lint test build-container typecheck e2e
