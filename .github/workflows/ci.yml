@@ -34,9 +34,6 @@ jobs:
         with:
           enable-cache: true
 
-      - run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e"
-
-      - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
       - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
 
       - run: npx nx run-many -t lint test typecheck e2e --exclude=mlService
@@ -54,7 +51,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push Docker Images
         if: github.ref == 'refs/heads/main'
-        run: npx nx run-many -t container-push
+
+        run: npx nx run-many -t container-push --no-cloud
 
       - run: npx nx fix-ci
         if: always()
