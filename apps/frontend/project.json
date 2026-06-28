@@ -5,7 +5,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "docker buildx build -t ghcr.io/kryakryateam/fia_hackathon/backend:latest -f ./apps/backend/Dockerfile.nx ."
+          "docker buildx build -t ghcr.io/kryakryateam/fia_hackathon/frontend:latest -f ./apps/frontend/Dockerfile.nx ."
         ]
       }
     },
@@ -13,7 +13,7 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "docker push ghcr.io/kryakryateam/fia_hackathon/backend:latest"
+          "docker push ghcr.io/kryakryateam/fia_hackathon/frontend:latest"
         ]
       }
     }

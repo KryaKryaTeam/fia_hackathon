@@ -37,6 +37,23 @@
       },
       "cache": true
     },
+    "build-container": {
+      "dependsOn": ["build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker buildx build -t ghcr.io/kryakryateam/fia_hackathon/ml_service:latest -f ./apps/mlService/Dockerfile.nx ."
+        ]
+      }
+    },
+    "container-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker push ghcr.io/kryakryateam/fia_hackathon/ml_service:latest"
+        ]
+      }
+    },
     "lint": {
       "executor": "@nxlv/python:ruff-check",
       "outputs": [],

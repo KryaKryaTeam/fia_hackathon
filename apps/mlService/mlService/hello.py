@@ -1,6 +1,3 @@
-"""Sample Hello World application."""
 
 
-def hello():
-    """Return a friendly greeting."""
-    return "Hello mlService"
+celery_app = Celery('mlService', broker='redis://localhost:6379/0')
