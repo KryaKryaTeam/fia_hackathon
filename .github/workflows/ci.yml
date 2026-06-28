@@ -24,18 +24,18 @@ jobs:
           filter: tree:0
           fetch-depth: 0
 
-      - run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e"
-
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: 'npm'
 
       - run: npm ci
-      - run: npx nx run mlService:install
+
+      - run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e"
 
       - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
       - run: npx nx run-many -t lint test build-container typecheck e2e
+
       - name: Log in to GHCR
         if: github.ref == 'refs/heads/main'
         uses: docker/login-action@v3
