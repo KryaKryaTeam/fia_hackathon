@@ -73,6 +73,27 @@
         "verbose": false,
         "debug": false
       }
+    },
+    "serve": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run uvicorn mlService.main:app --reload",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "worker": {
+      "executor": "@nxlv/python:run-commands",
+      "options": {
+        "command": "uv run python mlService/worker.py",
+        "cwd": "{projectRoot}"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": true,
+        "commands": ["nx run mlService:serve", "nx run mlService:worker"]
+      }
     }
   },
   "tags": [],
