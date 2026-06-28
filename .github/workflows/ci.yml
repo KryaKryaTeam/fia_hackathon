@@ -17,7 +17,6 @@ env:
 jobs:
   main:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,11 +29,21 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e"
 
       - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
-      - run: npx nx run-many -t lint test build-container typecheck e2e
+      - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
+
+      - run: npx nx run-many -t lint test typecheck e2e --exclude=mlService
+
+      - run: npx nx run-many -t lint test -p mlService --no-cloud
+
+      - run: npx nx run-many -t build-container --no-cloud
 
       - name: Log in to GHCR
         if: github.ref == 'refs/heads/main'
