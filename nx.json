@@ -73,6 +73,7 @@
   ],
   "nxCloudId": "6a3d79685bf74acd0c58e7df",
   "analytics": false,
+
   "targetDefaults": {
     "test": {
       "dependsOn": ["^build"]
