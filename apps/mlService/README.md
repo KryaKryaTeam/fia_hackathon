@@ -1,3 +1,3 @@
-# ./apps/MlService
+# mlService
 
 Project description here.

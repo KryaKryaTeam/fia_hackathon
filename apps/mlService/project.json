@@ -1,8 +1,8 @@
 {
-  "name": "./apps/MlService",
+  "name": "mlService",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "./apps/MlService/./apps/MlService",
+  "sourceRoot": "apps/mlService/mlService",
   "targets": {
     "lock": {
       "executor": "@nxlv/python:lock",
@@ -41,7 +41,7 @@
       "executor": "@nxlv/python:ruff-check",
       "outputs": [],
       "options": {
-        "lintFilePatterns": ["./apps/MlService", "tests"]
+        "lintFilePatterns": ["mlService", "tests"]
       },
       "cache": true
     },
@@ -49,7 +49,7 @@
       "executor": "@nxlv/python:ruff-format",
       "outputs": [],
       "options": {
-        "filePatterns": ["./apps/MlService", "tests"]
+        "filePatterns": ["mlService", "tests"]
       },
       "cache": true
     },
