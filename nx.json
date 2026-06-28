@@ -15,18 +15,11 @@
     "sharedGlobals": []
   },
   "plugins": [
-    {
-      "plugin": "@nxlv/python",
-      "options": {
-        "packageManager": "uv"
-      }
-    },
+    { "plugin": "@nxlv/python", "options": { "packageManager": "uv" } },
     {
       "plugin": "@nx/js/typescript",
       "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
+        "typecheck": { "targetName": "typecheck" },
         "build": {
           "targetName": "build",
           "configName": "tsconfig.lib.json",
@@ -46,17 +39,10 @@
         "watchDepsTargetName": "watch-deps"
       }
     },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
     {
       "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
+      "options": { "targetName": "test" },
       "exclude": ["apps/backend-e2e/**/*"]
     },
     {
@@ -71,19 +57,10 @@
       }
     }
   ],
-  "nxCloudId": "6a3d79685bf74acd0c58e7df",
+  "nxCloudId": "6a416fa23caad17c00e8aa0b",
   "analytics": false,
-  "targetDefaults": {
-    "test": {
-      "dependsOn": ["^build"]
-    }
-  },
+  "targetDefaults": { "test": { "dependsOn": ["^build"] } },
   "generators": {
-    "@nx/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
+    "@nx/next": { "application": { "style": "css", "linter": "eslint" } }
   }
 }
