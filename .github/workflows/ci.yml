@@ -56,7 +56,7 @@ jobs:
       - run: npx nx fix-ci
         if: always()
   deploy:
-    runs-on: deploy
+    runs-on: self-hosted
     needs: main
     steps:
       - run: sh -c /home/debian/scripts/deploy.sh

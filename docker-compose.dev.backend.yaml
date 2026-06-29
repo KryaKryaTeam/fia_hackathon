@@ -19,7 +19,6 @@ services:
       - '5432:5432'
     networks:
       - fia_hackathon_network
-
 networks:
   fia_hackathon_network:
 volumes:
