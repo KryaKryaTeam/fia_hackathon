@@ -32,7 +32,7 @@
     "src/**/*.js",
     "src/**/*.jsx",
     ".next/types/**/*.ts",
-    "./next-env.d.ts"
+    "next-env.d.ts"
   ],
   "exclude": [
     "out-tsc",

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 permissions:
   actions: read
@@ -56,3 +55,8 @@ jobs:
 
       - run: npx nx fix-ci
         if: always()
+  deploy:
+    runs-on: deploy
+    needs: main
+    steps:
+      - run: sh -c /home/debian/scripts/deploy.sh
