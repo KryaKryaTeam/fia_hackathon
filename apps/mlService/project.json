@@ -10,6 +10,17 @@
         "update": false
       }
     },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "docker compose -f docker-compose.dev.backend.yaml down ",
+          "UID=$(id -u) GID=$(id -g) docker compose -f docker-compose.dev.backend.yaml up -d --build",
+          "docker compose -f docker-compose.dev.backend.yaml logs -f mlService"
+        ]
+      }
+    },
     "sync": {
       "executor": "@nxlv/python:sync",
       "options": {}
@@ -103,13 +114,6 @@
       "options": {
         "command": "uv run python mlService/worker.py",
         "cwd": "{projectRoot}"
-      }
-    },
-    "dev": {
-      "executor": "nx:run-commands",
-      "options": {
-        "parallel": true,
-        "commands": ["nx run mlService:serve", "nx run mlService:worker"]
       }
     }
   },

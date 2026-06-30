@@ -19,6 +19,35 @@ services:
       - '5432:5432'
     networks:
       - fia_hackathon_network
+  mlService:
+    user: '${UID}:${GID}'
+    image: fia-hackathon-mlservice:dev
+    build:
+      context: .
+      dockerfile: ./apps/mlService/Dockerfile.dev
+    env_file: .mlService.env
+    volumes:
+      - ./apps/mlService:/app:rw
+      - /app/apps/mlService/.egg-info
+    networks:
+      - fia_hackathon_network
+    depends_on:
+      - redis
+  backend:
+    user: '${UID}:${GID}'
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile.dev
+    env_file: .backend.env
+    ports:
+      - 3000:3000
+      - 3001:3001
+    volumes:
+      - ./apps/backend:/app/apps/backend:rw
+      - /app/apps/backend/node_modules
+    networks:
+      - fia_hackathon_network
+
 networks:
   fia_hackathon_network:
 volumes:

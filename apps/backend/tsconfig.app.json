@@ -9,6 +9,10 @@
     "emitDecoratorMetadata": true,
     "target": "es2021"
   },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval",
+    "watchDirectory": "fixedPollingInterval"
+  },
   "include": ["src/**/*.ts"],
   "exclude": [
     "out-tsc",

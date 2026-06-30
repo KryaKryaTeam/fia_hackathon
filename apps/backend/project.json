@@ -9,12 +9,24 @@
         ]
       }
     },
-    
+
     "container-push": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
           "docker push ghcr.io/kryakryateam/fia_hackathon/backend:latest"
+        ]
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": ".",
+        "commands": [
+          "docker compose -f docker-compose.dev.backend.yaml down ",
+          "UID=$(id -u) GID=$(id -g) docker compose -f docker-compose.dev.backend.yaml up -d --build",
+          "docker compose -f docker-compose.dev.backend.yaml logs -f backend"
         ]
       }
     }

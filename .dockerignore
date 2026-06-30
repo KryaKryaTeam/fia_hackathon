@@ -1,0 +1,17 @@
+# Ігноруємо важкі папки залежностей та кешу
+node_modules/
+.nx/
+.git/
+.venv/
+venv/
+dist/
+build/
+
+# Ігноруємо артефакти Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache/
+**/.mypy_cache/
+**/*.egg-info/
