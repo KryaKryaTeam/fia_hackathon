@@ -44,11 +44,12 @@ services:
       - 3001:3001
     volumes:
       - ./apps/backend:/app/apps/backend:rw
-      - /app/apps/backend/node_modules
+      - deps_backend:/app/apps/backend/node_modules
     networks:
       - fia_hackathon_network
 
 networks:
   fia_hackathon_network:
 volumes:
+  deps_backend:
   postgres_data:

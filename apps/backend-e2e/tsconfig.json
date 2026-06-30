@@ -7,6 +7,6 @@
     "noImplicitAny": false,
     "types": ["node", "jest"]
   },
-  "include": ["jest.config.ts", "src/**/*.ts"],
+  "include": ["jest.config.ts", "@/**/*.ts"],
   "references": []
 }

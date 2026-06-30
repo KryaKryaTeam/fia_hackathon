@@ -12,4 +12,7 @@ WORKDIR /app/apps/backend
 ENV CHOKIDAR_USEPOLLING=true
 ENV WATCHPACK_POLLING=true
 
-CMD ["npx", "nodemon", "--legacy-watch", "--watch", "src", "-e", "ts", "--exec", "npx nest start --builder swc"]
+# Фіксуємо змінні оточення окремо
+ENV NODE_OPTIONS="-r tsconfig-paths/register"
+
+CMD ["npx", "nodemon", "--legacy-watch", "--watch", "src", "-e", "ts", "--exec", "npx nest start"]
