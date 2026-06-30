@@ -1,6 +1,5 @@
 import './global.css';
 import { DM_Sans, Noto_Sans, Oswald } from 'next/font/google';
-import localFont from 'next/font/local';
 import { cn } from '@/lib/utils';
 import MainHeader from '@/components/blocks/MainHeader';
 
@@ -9,11 +8,7 @@ const notoSansHeading = Noto_Sans({
   variable: '--font-heading',
 });
 
-const font1 = localFont({
-  src: '../../public/1.ttf',
-  variable: '--font-1',
-});
-
+//@ts-expect-error ddd
 const oswald = Oswald({ variable: '--font-logo' });
 
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' });

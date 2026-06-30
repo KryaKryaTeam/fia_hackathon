@@ -1,6 +1,5 @@
 import DotField from '@/components/DotField';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 
 function Page() {
   return (
