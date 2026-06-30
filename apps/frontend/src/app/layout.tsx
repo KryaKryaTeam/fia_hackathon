@@ -1,10 +1,22 @@
 import './global.css';
-import { DM_Sans, Noto_Sans } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { DM_Sans, Noto_Sans, Oswald } from 'next/font/google';
+import localFont from 'next/font/local';
+import { cn } from '@/lib/utils';
+import MainHeader from '@/components/blocks/MainHeader';
 
-const notoSansHeading = Noto_Sans({subsets:['latin'],variable:'--font-heading'});
+const notoSansHeading = Noto_Sans({
+  subsets: ['latin'],
+  variable: '--font-heading',
+});
 
-const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'});
+const font1 = localFont({
+  src: '../../public/1.ttf',
+  variable: '--font-1',
+});
+
+const oswald = Oswald({ variable: '--font-logo' });
+
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata = {
   title: 'Welcome to frontend',
@@ -17,8 +29,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("font-sans", dmSans.variable, notoSansHeading.variable)}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={cn(
+        'font-sans',
+        dmSans.variable,
+        notoSansHeading.variable,
+        'dark',
+      )}
+    >
+      <body>
+        <MainHeader />
+        {children}
+      </body>
     </html>
   );
 }

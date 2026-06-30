@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@plugin "tw-animate-css";
 @import 'shadcn/tailwind.css';
+/* @plugin "tw-animate-css"; */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,16 +118,22 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
   }
+
+  html {
+    /* Напряму зв'язуємо змінні Next.js зі стилями тексту */
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
+
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
-  }
-  html {
-    @apply font-sans;
   }
 }
