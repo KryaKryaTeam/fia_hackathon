@@ -25,7 +25,8 @@ function Page() {
           />
         </div>
         <div className="h-20"></div>
-        <section className="w-full flex-1 flex justify-center items-center flex-col space-y-20">
+        <section className="w-full flex-1 flex justify-center items-center flex-col space-y-20 relative">
+          <div className="absolute mx-auto my-auto w-250 h-150 bg-primary blur-3xl rounded-full opacity-20 z-[-2]"></div>
           <h1 className="text-[8rem] font-['Oswald'] font-black font-stretch-extra-condensed leading-32 text-center tracking-tight uppercase">
             Твоя ініціатива <br /> зміни зараз
           </h1>

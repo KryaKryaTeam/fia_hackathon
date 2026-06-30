@@ -1,17 +1,21 @@
 import './global.css';
-import { DM_Sans, Noto_Sans, Oswald } from 'next/font/google';
+import { Golos_Text, Noto_Sans, Oswald } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import MainHeader from '@/components/blocks/MainHeader';
+import MainFooter from '@/components/blocks/MainFooter';
 
 const notoSansHeading = Noto_Sans({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   variable: '--font-heading',
 });
 
 //@ts-expect-error ddd
 const oswald = Oswald({ variable: '--font-logo' });
 
-const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' });
+const dmSans = Golos_Text({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-sans',
+});
 
 export const metadata = {
   title: 'Welcome to frontend',
@@ -36,6 +40,7 @@ export default function RootLayout({
       <body>
         <MainHeader />
         {children}
+        <MainFooter />
       </body>
     </html>
   );
