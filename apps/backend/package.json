@@ -12,7 +12,7 @@
       "build": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "webpack-cli build",
+          "command": "nest build --builder swc",
           "env": {
             "NODE_ENV": "production"
           },
