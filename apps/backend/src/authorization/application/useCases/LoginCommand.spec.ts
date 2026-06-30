@@ -5,7 +5,6 @@ import { AuthorizationProviderTypes } from '@/types/AuthorizationProvidersTypes'
 import { RoleEnum } from '@/types/RoleEnum';
 import { createMockDBContext } from '@/common/application/IDcontext.spec';
 import { createMockEventDispatcher } from '@/common/application/events/EventDispatcher';
-import { ApiError } from '@/error/ApiError';
 
 describe('LoginCommand', () => {
   let command: LoginCommand;

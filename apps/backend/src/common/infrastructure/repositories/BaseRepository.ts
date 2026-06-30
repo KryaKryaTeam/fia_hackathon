@@ -1,11 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { IDBContext } from '@/common/application/IDBcontext';
 import { BaseTokens } from '@/common/Tokens';
-import {
-  EntitySchema,
-  EntityRepository,
-  PlainObject,
-} from '@mikro-orm/postgresql';
+import { EntityRepository, PlainObject } from '@mikro-orm/postgresql';
 
 @Injectable()
 export abstract class BaseRepository<Schema extends PlainObject> {

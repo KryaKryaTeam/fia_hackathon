@@ -24,8 +24,6 @@ describe('LinkerApplicationService', () => {
     url: 'someUrl',
   };
 
-  const competition = { id: 'c1' } as any;
-
   describe('linkAvatarToUser', () => {
     it('should unlink previous avatar and save new relation', async () => {
       const file = FileEntity.load({

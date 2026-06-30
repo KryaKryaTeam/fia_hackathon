@@ -15,6 +15,7 @@ export class ApiErrorExceptionsFilter implements ExceptionFilter {
 
   constructor(@Inject() private readonly configService: ConfigService) {}
 
+  //@ts-expect-error ddd
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response: ResponseExpress = ctx.getResponse();

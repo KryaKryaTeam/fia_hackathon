@@ -741,7 +741,7 @@ export class ApiError extends Error {
   readonly status: number;
   constructor(
     code: ApiErrorCode,
-    //@ts-ignore
+    //@ts-expect-error ddd
     public readonly cause?: string,
   ) {
     const error = ApiErrorsCodeVal[code];

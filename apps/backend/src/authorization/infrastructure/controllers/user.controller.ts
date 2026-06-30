@@ -12,13 +12,11 @@ import { AllowRoles } from '../guards/role/role.guard';
 import { RoleEnum } from '@/types/RoleEnum';
 import { SetRoleToAUserCommand } from '@/authorization/application/useCases/SetRoleToAUser.command';
 import { UpdateRoleBodyDto } from '../dtos/UpdateRoleBody.dto';
-import { GetUsersByEmailQuery } from '@/authorization/application/useCases/GetUsersByEmail.query';
 import { GetProfileQuery } from '@/authorization/application/useCases/GetProfile.query';
 
 @Controller('user')
 export class UserController {
   constructor(
-    private getUsersByEmailQuery: GetUsersByEmailQuery,
     private updateUserAdditionalDataCommand: UpdateAdditionalDataCommand,
     private getProfileQuery: GetProfileQuery,
     private updateAvatarCommand: UpdateAvatarCommand,

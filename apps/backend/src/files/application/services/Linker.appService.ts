@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ApiError, FileErrors } from '@/error/ApiError';
 import { UserEntity } from '@/authorization/domain/entities/User.entity';
 import { ReposTokens } from '@/common/Tokens';
 import { FileEntity } from '@/files/domain/entities/File.entity';

@@ -4,7 +4,6 @@ import { UserSchema } from '@/schemas/User.schema';
 import { AuthorizationProviderMapper } from './AuthorizationProviderMapper';
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { MapperTokens } from '@/common/Tokens';
-import { Username } from '@/authorization/domain/objects/Username.object';
 import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 import { RelationSlots } from '@/types/RelationSlots';
 

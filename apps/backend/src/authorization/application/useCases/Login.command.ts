@@ -5,7 +5,6 @@ import type { IAuthorizationProviderService } from '../bounds/IAuthorizationProv
 import type { IUserRepository } from '../bounds/IUserRepository';
 import { ReposTokens, ServiceTokens } from '@/common/Tokens';
 import type { IJWTTokenService } from '../bounds/IJWTTokenService';
-import { ApiError, UserErrors } from '@/error/ApiError';
 
 interface LoginCommandProps {
   type: AuthorizationProviderTypes;

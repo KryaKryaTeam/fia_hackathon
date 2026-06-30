@@ -4,6 +4,7 @@ import { FileEntity } from '../entities/File.entity';
 
 export class InternalFile<S extends AppSlotCode = AppSlotCode> {
   private readonly _value: string;
+  //@ts-expect-error ddd
   private readonly _slot: S;
 
   private constructor(value: string) {

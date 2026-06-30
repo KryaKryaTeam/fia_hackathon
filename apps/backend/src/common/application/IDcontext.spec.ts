@@ -1,4 +1,3 @@
-import { EntityManager } from 'typeorm';
 import { IDBContext } from './IDBcontext';
 
 export const createMockDBContext = (): jest.Mocked<IDBContext> => {
@@ -8,10 +7,11 @@ export const createMockDBContext = (): jest.Mocked<IDBContext> => {
     findOne: jest.fn(),
     delete: jest.fn(),
     update: jest.fn(),
-  } as unknown as jest.Mocked<EntityManager>;
+  } as unknown as jest.Mocked<any>;
 
   return {
     manager: mockManager,
+    isolate: jest.fn(),
     startTransaction: jest.fn().mockResolvedValue(undefined),
     rollbackTransaction: jest.fn().mockResolvedValue(undefined),
     commitTransaction: jest.fn().mockResolvedValue(undefined),
