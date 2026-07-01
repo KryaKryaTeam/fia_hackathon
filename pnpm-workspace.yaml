@@ -1,0 +1,8 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - less
+  - nx
+  - sharp
+  - unrs-resolver
