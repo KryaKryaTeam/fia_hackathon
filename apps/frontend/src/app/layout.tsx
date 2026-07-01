@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import MainHeader from '@/components/blocks/MainHeader';
 import MainFooter from '@/components/blocks/MainFooter';
 import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
-
+import InputStreetModal from '@/components/widget/InputStreetModal';
 
 const notoSansHeading = Noto_Sans({
   subsets: ['latin', 'cyrillic'],
@@ -29,7 +29,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html
       lang="en"
@@ -44,6 +43,7 @@ export default function RootLayout({
         <MainHeader />
         {children}
         <GeolocationAccessModal />
+        <InputStreetModal />
         <MainFooter />
       </body>
     </html>

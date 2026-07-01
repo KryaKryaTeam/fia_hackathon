@@ -27,7 +27,7 @@ function Page() {
 //   console.log('Geolocation не підтримується браузером');
 // }
   const modal = container.get<ModalState>(TYPES.ModalState)
-  modal.active("Geo")
+  modal.active("InputStreet")
   return (
     <div className="w-screen flex flex-col">
       <div className="w-full h-screen flex flex-col">

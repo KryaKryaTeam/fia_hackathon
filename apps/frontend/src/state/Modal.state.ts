@@ -1,30 +1,23 @@
-import { injectable, unmanaged } from "inversify";
-import { makeAutoObservable, observable } from "mobx";
-
-export type Modals = "Geo";
+import { injectable } from "inversify";
+import { makeAutoObservable } from "mobx";
 
 @injectable()
 export default class ModalState {
-  modals: Map<Modals, boolean>;
+  private activeModals: Record<string, boolean> = {};
 
-  constructor(@unmanaged() modals: Map<Modals, boolean> = new Map()) {
-    this.modals = observable.map(modals);
-    makeAutoObservable(this);
+  constructor() {
+    makeAutoObservable(this); 
   }
 
-  isActive(name: Modals): boolean {
-    return this.modals.get(name) ?? false;
+  isActive(modalName: string): boolean {
+    return !!this.activeModals[modalName];
   }
 
-  active(name: Modals) {
-    this.modals.set(name, true);
+  active(modalName: string) {
+    this.activeModals[modalName] = true;
   }
 
-  unactive(name: Modals) {
-    this.modals.set(name, false);
-  }
-
-  toggle(name: Modals) {
-    this.modals.set(name, !this.isActive(name));
+  unactive(modalName: string) {
+    this.activeModals[modalName] = false;
   }
 }
