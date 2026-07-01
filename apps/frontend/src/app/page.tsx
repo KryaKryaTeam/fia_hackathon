@@ -1,4 +1,5 @@
 import DotField from '@/components/DotField';
+import Silk from '@/components/Silk';
 import { Button } from '@/components/ui/button';
 
 function Page() {
@@ -37,6 +38,32 @@ function Page() {
           </div>
         </section>
       </div>
+      <section className="w-full h-screen grid grid-cols-2 grid-rows-1">
+        <div className="flex flex-col items-center justify-center gap-10">
+          <div className="font-bold font-['Oswald'] text-[4rem] w-full max-w-150">
+            Про проєкт
+          </div>
+          <p className="max-w-150 text-2xl">
+            ТіЗ - це сучасна SmartCity платформа, яка ліквідує бюрократичний
+            бар'єр між громадянами та органами управління (ОСББ, комунальними
+            службами, міською владою). Ми об'єднали штучний інтелект, геодані та
+            юридичну базу, щоб кожен міг створити офіційну заяву чи скаргу за
+            лічені хвилини — без довгих пошуків шаблонів та юридичних
+            консультацій.
+          </p>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="max-w-150 w-full h-200 rounded-md overflow-hidden relative">
+            <Silk
+              speed={5}
+              scale={1}
+              color="#7C3AED"
+              noiseIntensity={1.5}
+              rotation={0}
+            ></Silk>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
