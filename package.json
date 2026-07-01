@@ -90,6 +90,8 @@
     "busboy": "^1.6.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "cors": "^2.8.6",
     "glob": "^13.0.6",
     "google-auth-library": "^10.9.0",
@@ -101,6 +103,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.0",
+    "tailwind-merge": "^3.6.0"
   }
 }
