@@ -1,5 +1,4 @@
-import { Result, ValidationError } from "@/infrastructure/Result";
-import ValueObject from "./ValueObject";
+import ValueObject from './ValueObject';
 
 export default class AvatarURL extends ValueObject<string> {
   constructor(value: string) {
@@ -14,8 +13,8 @@ export default class AvatarURL extends ValueObject<string> {
     );
   }
   static create(raw: string): AvatarURL {
-    if (!raw.startsWith("http://") && !raw.startsWith("https://"))
-      throw new ValidationError("Invalid URL format");
+    if (!raw.startsWith('http://') && !raw.startsWith('https://'))
+      throw new Error('Invalid URL format');
 
     return new AvatarURL(raw);
   }

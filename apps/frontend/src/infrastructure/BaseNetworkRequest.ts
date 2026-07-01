@@ -107,6 +107,7 @@ export abstract class NetworkRequest<
   }
   mockOnError(): ErrorResponse | undefined {
     if (this.onError) return this.onError(new Error('Mock error'));
+    return;
   }
 
   private async makeRequest(
