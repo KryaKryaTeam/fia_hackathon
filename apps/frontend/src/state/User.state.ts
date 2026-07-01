@@ -4,8 +4,8 @@ import { action, makeObservable, observable } from 'mobx';
 
 @injectable()
 export class UserState {
-  @observable isAuthorized: boolean = false;
-  @observable authToken: string = '';
+  @observable isAuthorized = false;
+  @observable authToken = '';
   @observable User: User | null = null;
   @action
   setAuthToken(token: string) {

@@ -3,7 +3,6 @@ import nx from '@nx/eslint-plugin';
 import baseConfig from '../../eslint.config.mjs';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 
-
 export default [
   { plugins: { '@next/next': nextEslintPluginNext } },
   ...nx.configs['flat/react-typescript'],
@@ -21,7 +20,3 @@ export default [
     },
   },
 ];
-
-
-
-export default [...baseConfig, ...pl];
