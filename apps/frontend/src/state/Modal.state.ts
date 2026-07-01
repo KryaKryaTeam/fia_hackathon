@@ -1,13 +1,13 @@
-import { injectable } from "inversify";
+import { injectable, unmanaged } from "inversify";
 import { makeAutoObservable, observable } from "mobx";
 
-export type Modals = "Geo"; // in future another modals
+export type Modals = "Geo";
 
 @injectable()
 export default class ModalState {
   modals: Map<Modals, boolean>;
 
-  constructor(modals: Map<Modals, boolean> = new Map()) {
+  constructor(@unmanaged() modals: Map<Modals, boolean> = new Map()) {
     this.modals = observable.map(modals);
     makeAutoObservable(this);
   }

@@ -1,6 +1,9 @@
 'use client'
 import DotField from '@/components/DotField';
 import { Button } from '@/components/ui/button';
+import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
+import container, { TYPES } from '@/infrastructure/Container';
+import ModalState from '@/state/Modal.state';
 
 function Page() {
   
@@ -23,6 +26,8 @@ function Page() {
 // } else {
 //   console.log('Geolocation не підтримується браузером');
 // }
+  const modal = container.get<ModalState>(TYPES.ModalState)
+  modal.active("Geo")
   return (
     <div className="w-screen flex flex-col">
       <div className="w-full h-screen flex flex-col">

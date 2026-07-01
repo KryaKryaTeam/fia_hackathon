@@ -1,24 +1,33 @@
 'use client'
+import { observer } from "mobx-react-lite";
 import container, { TYPES } from "@/infrastructure/Container";
 import { Button } from "../ui/button";
 import GetGeoDataLocalRequest from "@/request/GetGeoDataLocal.request";
+import ModalState from "@/state/Modal.state";
 import { useRouter } from "next/navigation";
 import { MapPin } from "lucide-react";
 
-export default function GeolocationAccessModal() {
+const modalState = container.get<ModalState>(TYPES.ModalState);
+
+function GeolocationAccessModal() {
   const router = useRouter();
 
+  if (!modalState.isActive("Geo")) return null;
+
   async function handle() {
-    if ('permissions' in navigator) {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+    const request = container.get<GetGeoDataLocalRequest>(TYPES.GetGeoData);
 
-        result.onchange = () => {
-          if (result.state === "granted") {
-
-          }
-        };
-      });
+    try {
+      await request.execute();
+      modalState.unactive("Geo");
+    } catch (error) {
+      console.error(error);
+      modalState.unactive("Geo");
     }
+  }
+
+  function handleDecline() {
+    modalState.unactive("Geo");
   }
 
   return (
@@ -37,13 +46,15 @@ export default function GeolocationAccessModal() {
       </p>
 
       <div className="flex w-full gap-3 mt-2">
-        <Button variant="outline" className="flex-1">
+        <Button variant="outline" className="flex-1" onClick={handleDecline}>
           Відмовитися
         </Button>
-        <Button className="flex-1" onClick={async () => await handle()}>
+        <Button className="flex-1" onClick={handle}>
           Погодитися
         </Button>
       </div>
     </div>
   );
 }
+
+export default observer(GeolocationAccessModal);

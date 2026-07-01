@@ -7,7 +7,6 @@ export class UserState {
   @observable isAuthorized = false;
   @observable authToken = '';
   @observable User: User | null = null;
-  @observable geo:
   @action
   setAuthToken(token: string) {
     this.authToken = token;

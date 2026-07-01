@@ -3,6 +3,8 @@ import { Golos_Text, Noto_Sans, Oswald } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import MainHeader from '@/components/blocks/MainHeader';
 import MainFooter from '@/components/blocks/MainFooter';
+import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
+
 
 const notoSansHeading = Noto_Sans({
   subsets: ['latin', 'cyrillic'],
@@ -27,7 +29,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
+
   return (
     <html
       lang="en"
@@ -41,6 +43,7 @@ export default function RootLayout({
       <body>
         <MainHeader />
         {children}
+        <GeolocationAccessModal />
         <MainFooter />
       </body>
     </html>
