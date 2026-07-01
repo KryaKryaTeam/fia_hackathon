@@ -1,7 +1,7 @@
 FROM node:22-alpine AS builder
 WORKDIR /build
 
-COPY ./apps/backend/package.json .
+COPY package*.json ./
 
 RUN npm i
 
@@ -16,7 +16,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY ./apps/backend/package.json .
+COPY package*.json ./
 RUN npm i --omit=dev
 
 RUN addgroup --system --gid 1001 nodejs
