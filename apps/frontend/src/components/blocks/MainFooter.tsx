@@ -15,6 +15,20 @@ function MainFooter() {
               — Твоя ініціатива зміни зараз
             </p>
           </span>
+          <p className="text-xs text-muted-foreground mt-10 max-w-xs leading-relaxed">
+            Цей сайт використовує Google OAuth для автентифікації користувачів.
+            Ми запитуємо доступ до вашого профілю (імені та email) виключно з
+            метою автоматичного заповнення реквізитів у юридичних заявах. Ми не
+            зберігаємо та не передаємо ваші персональні дані третім особам.
+            Детальніше в{' '}
+            <a
+              href="https://tiz.swedka121.com/policy/privacy"
+              className="underline hover:text-white"
+            >
+              Privacy Policy
+            </a>
+            .
+          </p>
         </div>
         <div className="flex flex-col gap-4">
           <h2 className="text-xl text-foreground font-medium">Посилання</h2>
@@ -22,19 +36,22 @@ function MainFooter() {
             <Link className="text-foreground leading-4" href="/">
               Про проєкт
             </Link>
-            <Link className="text-foreground leading-4" href="/competitions">
+            <Link className="text-foreground leading-4" href="/tickets/create">
               Написати заяву
+            </Link>
+            <Link className="text-foreground leading-4" href="/map">
+              Карта скарг
             </Link>
             <Link
               className="text-foreground leading-4"
-              href="/app/profile/information"
+              href="https://tiz.swedka121.com/policy/privacy"
             >
-              Карта скарг
-            </Link>
-            <Link className="text-foreground leading-4" href="/policy/privacy">
               Політика конфіденційності
             </Link>
-            <Link className="text-foreground leading-4" href="/policy/terms">
+            <Link
+              className="text-foreground leading-4"
+              href="https://tiz.swedka121.com/policy/terms"
+            >
               Умови використання
             </Link>
             <Link
