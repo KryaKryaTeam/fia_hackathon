@@ -3,15 +3,15 @@ import Link from 'next/link';
 
 function MainFooter() {
   return (
-    <footer className=" h-150 w-screen  relative">
+    <footer className="h-150 w-screen relative">
       <div className="absolute w-full h-full z-[-1] opacity-20 bg-linear-180 from-55% from-background to-primary"></div>
       <div className="grid grid-cols-3 grid-rows-[1fr_100px] h-full w-full text-foreground pt-10 font-sans px-30">
-        <div className="">
+        <div>
           <span className="flex items-center space-x-2">
             <div className="font-bold font-['Oswald'] text-4xl leading-none">
               ТіЗ
             </div>
-            <p className="text-lg font-medium leading-none translate-y-[2px]">
+            <p className="text-lg font-medium leading-none translate-y-0.5">
               — Твоя ініціатива зміни зараз
             </p>
           </span>
@@ -22,15 +22,17 @@ function MainFooter() {
             <Link className="text-foreground leading-4" href="/">
               Про проєкт
             </Link>
-            <Link className="text-foreground leading-4" href="/competitions">
+
+            {/* Змінено шлях для створення заяви */}
+            <Link className="text-foreground leading-4" href="/tickets/create">
               Написати заяву
             </Link>
-            <Link
-              className="text-foreground leading-4"
-              href="/app/profile/information"
-            >
+
+            {/* Змінено шлях для карти скарг */}
+            <Link className="text-foreground leading-4" href="/map">
               Карта скарг
             </Link>
+
             <Link className="text-foreground leading-4" href="/policy/privacy">
               Політика конфіденційності
             </Link>
@@ -74,7 +76,7 @@ function MainFooter() {
             height={48}
             alt="krya krya team logo"
             className="row-span-2"
-          ></Image>
+          />
           <p className="font-heading">
             © {new Date().getFullYear()}{' '}
             <span className="text-foreground font-medium">ТіЗ</span> (Тут і
