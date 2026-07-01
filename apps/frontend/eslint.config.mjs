@@ -1,6 +1,8 @@
 import nextEslintPluginNext from '@next/eslint-plugin-next';
 import nx from '@nx/eslint-plugin';
 import baseConfig from '../../eslint.config.mjs';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+
 
 export default [
   { plugins: { '@next/next': nextEslintPluginNext } },
@@ -9,4 +11,17 @@ export default [
   {
     ignores: ['.next/**/*', '**/out-tsc'],
   },
+  {
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+    rules: {
+      'no-empty-function': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+    },
+  },
 ];
+
+
+
+export default [...baseConfig, ...pl];
