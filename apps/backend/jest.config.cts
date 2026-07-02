@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /* eslint-disable */
 const { readFileSync } = require('fs');
 
@@ -18,4 +19,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: 'test-output/jest/coverage',
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@mikro-orm)'],
 };

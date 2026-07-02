@@ -1,0 +1,10 @@
+FROM node:22-alpline AS runner
+
+WORKDIR /app
+
+COPY ./package.json .
+RUN npm i
+
+COPY ./apps/frontend/ .
+
+CMD ["npx", "nx", "serve", "frontend"]

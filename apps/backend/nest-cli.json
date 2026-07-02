@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemastore.org",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "builder": "swc",
+    "swcOptions": {
+      "swcrc": true,
+      "configFile": ".swcrc"
+    }
+  }
+}

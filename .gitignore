@@ -59,3 +59,7 @@ test-output
 **/*/.env.test.local
 **/*/.env.production.local
 **/*/.env
+
+.mlService.env
+.backend.env
+.frontend.env
