@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-/* @import 'shadcn/tailwind.css';
-/* @plugin "tw-animate-css"; */
+@import 'shadcn/tailwind.css';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,11 +84,11 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
+  --chart-5: var(--chart-5);
+  --chart-4: var(--chart-4);
+  --chart-3: var(--chart-3);
+  --chart-2: var(--chart-2);
+  --chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);

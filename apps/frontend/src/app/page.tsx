@@ -1,7 +1,6 @@
 'use client'
 import DotField from '@/components/DotField';
 import { Button } from '@/components/ui/button';
-import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
 import container, { TYPES } from '@/infrastructure/Container';
 import ModalState from '@/state/Modal.state';
 

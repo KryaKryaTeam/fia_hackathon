@@ -10,7 +10,6 @@ import { MapPin } from "lucide-react";
 const modalState = container.get<ModalState>(TYPES.ModalState);
 
 function GeolocationAccessModal() {
-  const router = useRouter();
 
   if (!modalState.isActive("Geo")) return null;
 
