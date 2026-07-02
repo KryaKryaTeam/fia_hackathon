@@ -95,6 +95,7 @@
     "cors": "^2.8.6",
     "glob": "^13.0.6",
     "google-auth-library": "^10.9.0",
+    "h3-js": "^4.5.0",
     "inversify": "^8.1.1",
     "joi": "^18.2.3",
     "leaflet.heat": "^0.2.0",
