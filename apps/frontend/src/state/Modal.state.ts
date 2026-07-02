@@ -1,23 +1,23 @@
 import { injectable } from "inversify";
 import { makeAutoObservable } from "mobx";
-
+type ModalName = "Geo" | "InputStreet" // Add other modal names as needed
 @injectable()
 export default class ModalState {
-  private activeModals: Record<string, boolean> = {};
+  private activeModals: Record<ModalName, boolean> = {} as Record<ModalName, boolean>;
 
   constructor() {
     makeAutoObservable(this); 
   }
 
-  isActive(modalName: string): boolean {
+  isActive(modalName: ModalName): boolean {
     return !!this.activeModals[modalName];
   }
 
-  active(modalName: string) {
+  active(modalName: ModalName) {
     this.activeModals[modalName] = true;
   }
 
-  unactive(modalName: string) {
+  unactive(modalName: ModalName) {
     this.activeModals[modalName] = false;
   }
 }

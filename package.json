@@ -95,6 +95,7 @@
     "cors": "^2.8.6",
     "glob": "^13.0.6",
     "google-auth-library": "^10.9.0",
+    "h3": "^2.0.1-rc.22",
     "inversify": "^8.1.1",
     "joi": "^18.2.3",
     "mobx": "^6.16.1",
@@ -102,8 +103,18 @@
     "next": "~16.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.80.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.0",
     "tailwind-merge": "^3.6.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.6": true,
+    "@scarf/scarf@1.4.0": true,
+    "@swc/core@1.15.8": true,
+    "less@4.5.1": true,
+    "nx@23.0.1": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.12.2": true
   }
 }
