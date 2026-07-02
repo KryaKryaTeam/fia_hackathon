@@ -22,7 +22,7 @@
     "jest.config.[ct]s",
     ".*\\.spec.tsx?$",
     ".*\\.test.tsx?$",
-    "./src/jest-setup.ts$",
+    "./@/st-setup.ts$",
     "./**/jest-setup.ts$",
     ".*.js$",
     ".*.d.ts$"

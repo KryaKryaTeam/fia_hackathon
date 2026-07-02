@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemastore.org",
+  "jsc": {
+    "parser": {
+      "syntax": "typescript"
+    },
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}

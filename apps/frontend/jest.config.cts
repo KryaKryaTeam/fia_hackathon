@@ -1,3 +1,4 @@
+/// <reference types="node" />
 const nextJest = require('next/jest.js');
 
 const createJestConfig = nextJest({

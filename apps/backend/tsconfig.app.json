@@ -3,11 +3,21 @@
   "compilerOptions": {
     "outDir": "dist",
     "types": ["node"],
+    "baseUrl": ".",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es2021"
+    "target": "es2021",
+    "strictPropertyInitialization": false,
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "ignoreDeprecations": "6.0"
+  },
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval",
+    "watchDirectory": "fixedPollingInterval"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -17,6 +27,7 @@
     "jest.config.cts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
+    "src/**/*.e2e-spec.ts",
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
