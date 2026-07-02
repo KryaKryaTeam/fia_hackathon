@@ -1,9 +1,12 @@
-import URLEnum from '../URLEnum';
-import { HTTPMethod } from '../type';
-import { UserState } from '../../state/User.state';
+import URLEnum from '../infrastructure/URLEnum';
+import { HTTPMethod } from '../infrastructure/type';
+import { UserState } from '../state/User.state';
 import { inject } from 'inversify';
-import { ISubRequestData, NetworkRequest } from '../BaseNetworkRequest';
-import { TYPES } from '../Container.types';
+import {
+  ISubRequestData,
+  NetworkRequest,
+} from '../infrastructure/BaseNetworkRequest';
+import { TYPES } from '../infrastructure/Container.types';
 
 interface LoginWithGoogleInput {
   code: string;

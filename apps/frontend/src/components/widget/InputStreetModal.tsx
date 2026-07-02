@@ -37,8 +37,8 @@ function InputStreetModal() {
   }
 
   return (
-    <Card className="max-w-120">
-      <CardHeader className="flex flex-row space-x-2">
+    <Card className="max-w-120 pointer-events-auto">
+      <CardHeader className="flex flex-row space-x-2 items-center">
         <div className="flex items-center justify-center w-12 h-10  bg-primary/10 text-primary">
           <MapPinPen />
         </div>
@@ -46,7 +46,7 @@ function InputStreetModal() {
           Напишіть, де ви зараз перебуваєте для підтримки
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-5">
         <p className="text-sm text-muted-foreground">
           Будь ласка, вкажіть назву вулиці вручну, щоб ми могли коректно
           обробити ваш запит.

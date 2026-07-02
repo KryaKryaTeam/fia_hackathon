@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
 import container, { TYPES } from '@/infrastructure/Container';
 import ModalState from '@/state/Modal.state';
+import Link from 'next/link';
 
 function Page() {
   //   if ('geolocation' in navigator) {
@@ -55,9 +56,11 @@ function Page() {
             Твоя ініціатива <br /> зміни зараз
           </h1>
           <div className="flex row">
-            <Button className="w-100 h-15 font-semibold text-lg font-heading">
-              Написати заяву
-            </Button>
+            <Link href={'/ticket/create'}>
+              <Button className="w-100 h-15 font-semibold text-lg font-heading">
+                Написати заяву
+              </Button>{' '}
+            </Link>
           </div>
         </section>
       </div>

@@ -33,14 +33,16 @@ function GeolocationAccessModal() {
   }
 
   return (
-    <Card className='max-w-120'>
-      <CardHeader className='flex flex-row items-center space-x-2.5'>
+    <Card className="max-w-120 pointer-events-auto">
+      <CardHeader className="flex flex-row items-center space-x-2.5">
         <div className="flex items-center justify-center w-12 h-10  bg-primary/10 text-primary">
           <MapPin />
         </div>
-        <CardTitle className="text-lg font-semibold text-foreground">Для спрощення роботи нам потрібна ваша геолокація</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">
+          Для спрощення роботи нам потрібна ваша геолокація
+        </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-5">
         <p className="text-sm text-muted-foreground">
           Це допоможе автоматично визначити, звідки надходить скарга. Якщо ви не
           бажаєте вмикати геолокацію, будь ласка, вказуйте вулицю та номер

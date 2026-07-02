@@ -8,9 +8,9 @@ function MainHeader() {
         <div className="absolute w-full h-full blur-sm bg-secondary opacity-30 left-[-15] z-[-1]"></div>
         <div className="w-10 font-bold font-['Oswald'] text-2xl">ТіЗ</div>
         <nav className="flex-1 mx-20 flex space-x-10 flex-row font-medium font-heading leading-0 text-sm">
-          <Link href="#">Про проєкт</Link>
-          <Link href="#">Написати заяву</Link>
-          <Link href="#">Карта скарг</Link>
+          <Link href="/">Про проєкт</Link>
+          <Link href="/ticket/create">Написати заяву</Link>
+          <Link href="/map">Карта скарг</Link>
         </nav>
       </div>
       <div className="flex-2 flex row justify-end items-center px-10 py-3">
