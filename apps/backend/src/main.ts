@@ -9,6 +9,7 @@ import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,7 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: 'v1',
   });
+  app.use(cookieParser());
   const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
