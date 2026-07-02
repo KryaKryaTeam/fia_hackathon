@@ -12,13 +12,13 @@ export class FileSchema {
   @PrimaryKey({ type: 'string' })
   url!: string;
 
-  @Property()
+  @Property({ type: 'string' })
   mimeType!: string;
 
   @Property({ type: 'int' })
   size!: number;
 
-  @Property()
+  @Property({ type: 'string' })
   slot!: string;
 
   @OneToMany(() => FileRelation, (rel) => rel.file)

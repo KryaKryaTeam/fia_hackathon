@@ -46,7 +46,9 @@ const providers: Provider[] = [
   imports: [
     DiscoveryModule,
     forwardRef(() => AuthorizationModule),
-    AutoScannerModule.forFeature(__dirname, [forwardRef(() => FilesModule)]),
+    AutoScannerModule.forFeatureAsync(process.cwd(), [
+      forwardRef(() => FilesModule),
+    ]),
   ],
   controllers: [FileController],
 })

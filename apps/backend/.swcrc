@@ -1,12 +1,27 @@
 {
-  "$schema": "https://schemastore.org",
+  "sourceMaps": true,
+  "module": {
+    "type": "es6",
+    "strict": false,
+    "strictMode": true,
+    "lazy": false,
+    "noInterop": false,
+    "resolveFully": true
+  },
   "jsc": {
     "parser": {
-      "syntax": "typescript"
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
     },
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "target": "es2022"
   }
 }

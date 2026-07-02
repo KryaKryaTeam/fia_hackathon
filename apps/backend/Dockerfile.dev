@@ -15,4 +15,6 @@ ENV WATCHPACK_POLLING=true
 # Фіксуємо змінні оточення окремо
 ENV NODE_OPTIONS="-r tsconfig-paths/register"
 
+RUN mkdir /usr/fia
+
 CMD ["npx", "nodemon", "--legacy-watch", "--watch", "src", "-e", "ts", "--exec", "npx nest start"]

@@ -29,6 +29,18 @@
           "docker compose -f docker-compose.dev.backend.yaml logs -f backend"
         ]
       }
+    },
+    "migration-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "cwd": ".",
+        "commands": [
+          "docker compose -f docker-compose.dev.backend.yaml down ",
+          "UID=$(id -u) GID=$(id -g) docker compose -f docker-compose.dev.backend.yaml up -d",
+          "DB_HOST=\"localhost\" SWC_NODE_PROJECT=\"./apps/backend/tsconfig.app.json\" npx mikro-orm migration:create --config ./apps/backend/src/mikro-orm-cli.config.ts"
+        ]
+      }
     }
   }
 }
