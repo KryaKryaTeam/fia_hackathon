@@ -53,7 +53,6 @@ export default function GoogleOAuthButton() {
     });
   };
 
-  // Функція, яка викликає вікно логіну при кліці на ТВОЮ власну кнопку
   const handleGoogleLogin = () => {
     if (window.google) {
       // Викликає стандартний Google One Tap або вікно вибору акаунту
