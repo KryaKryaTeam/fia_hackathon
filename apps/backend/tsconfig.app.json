@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "outDir": "dist",
     "types": ["node"],
     "baseUrl": ".",
@@ -8,7 +10,7 @@
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es2021",
+    "target": "es2022",
     "strictPropertyInitialization": false,
     "paths": {
       "@/*": ["src/*"]

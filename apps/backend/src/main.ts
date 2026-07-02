@@ -11,6 +11,8 @@ import { apiReference } from '@scalar/nestjs-api-reference';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import cookieParser from 'cookie-parser';
 
+import { orm } from './mikro-orm.config';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
@@ -43,6 +45,8 @@ async function bootstrap() {
     '/reference',
     apiReference({ theme: 'purple', content: document, hideModels: true }),
   );
+
+  await (await orm).migrator.up();
 
   await app.listen(port);
   Logger.log(

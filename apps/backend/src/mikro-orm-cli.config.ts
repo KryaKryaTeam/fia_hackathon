@@ -1,10 +1,10 @@
-import { MikroORM, PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { config } from 'dotenv';
+import { defineConfig } from '@mikro-orm/postgresql';
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
-config();
+import { config } from 'dotenv';
 
-export const orm = MikroORM.init({
-  driver: PostgreSqlDriver,
+config(); // Завантажуємо .env
+
+export default defineConfig({
   baseDir: process.cwd(),
   dbName: process.env.DB_NAME || 'my_database',
   user: process.env.DB_USER || 'postgres',
@@ -19,7 +19,6 @@ export const orm = MikroORM.init({
     './apps/backend/src/**/*.schema.ts',
     './apps/backend/src/**/*.entity.ts',
   ],
-
   migrations: {
     tableName: 'mikro_orm_migrations',
     path: './apps/backend/src/migrations',
@@ -42,5 +41,3 @@ export const orm = MikroORM.init({
     warnWhenNoEntities: false,
   },
 });
-
-export default orm;

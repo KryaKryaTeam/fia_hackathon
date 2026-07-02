@@ -19,15 +19,13 @@ export class AuthorizationProvider {
   })
   type!: AuthorizationProviderTypes;
 
-  @Property({ nullable: true })
-  passwordHash?: string;
-
-  @Property({ nullable: true })
+  @Property({ type: 'string', nullable: true })
   providerId?: string;
 
   @ManyToOne(() => UserSchema, {
     fieldName: 'user_id',
     deleteRule: 'cascade',
+    referenceColumnName: 'id',
     ref: true,
   })
   userId!: Ref<UserSchema>;
