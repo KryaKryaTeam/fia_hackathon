@@ -14,9 +14,6 @@ export class UserSchema {
   id: string;
 
   @Property({ type: 'string', unique: true })
-  username: string;
-
-  @Property({ type: 'string', unique: true })
   email: string;
 
   @Property({ type: 'string', name: 'avatar_url', default: 'https://....' })
@@ -41,19 +38,17 @@ export class UserSchema {
   @Property({
     name: 'created_at',
     type: 'timestamp',
-    onCreate(entity, em) {
-      entity.createdAt = new Date();
-    },
+    defaultRaw: 'now()',
   })
-  createdAt: Date;
+  createdAt: Date = new Date();
 
   @Property({
     name: 'updated_at',
     type: 'timestamp',
-    onCreate: () => new Date(),
+    defaultRaw: 'now()',
     onUpdate: () => new Date(),
   })
-  updatedAt!: Date;
+  updatedAt: Date = new Date();
 
   // Зв'язки
   @OneToMany(() => AuthorizationProvider, (provider) => provider.userId, {

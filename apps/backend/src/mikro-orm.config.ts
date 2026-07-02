@@ -1,30 +1,55 @@
-import { MikroORM, PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { config } from 'dotenv';
+import { defineConfig } from '@mikro-orm/postgresql';
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
+import { config } from 'dotenv';
+import { globSync } from 'glob';
+import { join, dirname } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
+
 config();
 
-export const orm = MikroORM.init({
-  driver: PostgreSqlDriver,
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const isRuntime = __dirname.includes('dist');
+
+async function loadEntities() {
+  const searchFolder = isRuntime ? __dirname : join(__dirname);
+  const extensionPattern = isRuntime ? '**/*.schema.js' : '**/*.schema.ts';
+
+  const pattern = join(searchFolder, extensionPattern);
+  const files = globSync(pattern);
+
+  const entities = [];
+
+  for (const file of files) {
+    const fileUrl = pathToFileURL(file).href;
+    const moduleExports = await import(fileUrl);
+
+    const classes = Object.values(moduleExports).filter(
+      (exp) => typeof exp === 'function',
+    );
+    entities.push(...classes);
+  }
+
+  return entities;
+}
+
+const loadedEntities = await loadEntities();
+
+export default defineConfig({
   baseDir: process.cwd(),
   dbName: process.env.DB_NAME || 'my_database',
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'secret',
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT) || 5432,
-  entities: [
-    './apps/backend/src/**/*.schema.ts',
-    './apps/backend/src/**/*.entity.ts',
-  ],
-  entitiesTs: [
-    './apps/backend/src/**/*.schema.ts',
-    './apps/backend/src/**/*.entity.ts',
-  ],
-
+  entities: loadedEntities,
   migrations: {
     tableName: 'mikro_orm_migrations',
-    path: './apps/backend/src/migrations',
-    pathTs: './apps/backend/src/migrations',
-    glob: '!(*.d).{js,ts,cjs}',
+    path: join(__dirname, 'migrations'),
+    pathTs: join(__dirname, 'migrations'),
+
+    glob: isRuntime ? '!(*.d).{js,cjs}' : '!(*.d).{ts,js}',
     silent: false,
     transactional: true,
     disableForeignKeys: false,
@@ -42,5 +67,3 @@ export const orm = MikroORM.init({
     warnWhenNoEntities: false,
   },
 });
-
-export default orm;

@@ -2,7 +2,7 @@ import { defineConfig } from '@mikro-orm/postgresql';
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
 import { config } from 'dotenv';
 
-config(); // Завантажуємо .env
+config();
 
 export default defineConfig({
   baseDir: process.cwd(),
@@ -11,14 +11,7 @@ export default defineConfig({
   password: process.env.DB_PASSWORD || 'secret',
   host: process.env.DB_HOST || 'localhost',
   port: Number(process.env.DB_PORT) || 5432,
-  entities: [
-    './apps/backend/src/**/*.schema.ts',
-    './apps/backend/src/**/*.entity.ts',
-  ],
-  entitiesTs: [
-    './apps/backend/src/**/*.schema.ts',
-    './apps/backend/src/**/*.entity.ts',
-  ],
+  entities: ['./apps/backend/src/schemas/*.schema.{js,ts}'],
   migrations: {
     tableName: 'mikro_orm_migrations',
     path: './apps/backend/src/migrations',
@@ -36,7 +29,9 @@ export default defineConfig({
     fileName: (timestamp: string, name?: string) =>
       `Migration${timestamp}${name ? '_' + name : ''}`,
   },
+
   extensions: [Migrator as any],
+
   discovery: {
     warnWhenNoEntities: false,
   },

@@ -10,8 +10,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import cookieParser from 'cookie-parser';
-
-import { orm } from './mikro-orm.config';
+import { MikroORM } from '@mikro-orm/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -46,7 +45,10 @@ async function bootstrap() {
     apiReference({ theme: 'purple', content: document, hideModels: true }),
   );
 
-  await (await orm).migrator.up();
+  Logger.log(`🚀 Start migrator`);
+
+  const nestOrm = app.get(MikroORM);
+  await nestOrm.migrator.up();
 
   await app.listen(port);
   Logger.log(

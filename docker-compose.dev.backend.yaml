@@ -40,7 +40,7 @@ services:
       dockerfile: ./apps/backend/Dockerfile.dev
     env_file: .backend.env
     ports:
-      - 3000:3000
+      - 4000:4000
       - 3001:3001
     volumes:
       - ./apps/backend:/app/apps/backend:rw
