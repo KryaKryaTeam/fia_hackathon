@@ -67,7 +67,7 @@ def parse_law(base_url: str, law_name: str, pages_range: tuple = None):
             for page, url in tabs:
                 try:
                     page.wait_for_load_state("domcontentloaded", timeout=30000)
-                    try:
+                    try:  # noqa: SIM105
                         page.wait_for_selector(
                             ".text-missed", state="detached", timeout=10000
                         )
@@ -141,7 +141,7 @@ def parse_law(base_url: str, law_name: str, pages_range: tuple = None):
         existing_log = []
         if os.path.exists(anomaly_filename):
             try:
-                with open(anomaly_filename, "r", encoding="utf-8") as f:
+                with open(anomaly_filename, encoding="utf-8") as f:
                     existing_log = json.load(f)
                     if not isinstance(existing_log, list):
                         existing_log = []
@@ -210,7 +210,7 @@ def run_final_validation(db_path="laws_database.json"):
 
     print(f"\n{'=' * 40}\n🔍 [Валідація] Запуск фінальної перевірки бази даних...")
 
-    with open(db_path, "r", encoding="utf-8") as f:
+    with open(db_path, encoding="utf-8") as f:
         try:
             db = json.load(f)
         except Exception as e:
@@ -248,7 +248,7 @@ def run_final_validation(db_path="laws_database.json"):
 
     if text_duplicates:
         print(
-            f"❌ УВАГА! Знайдено {len(text_duplicates)} унікальних текстів, які дублюються!"
+            f"❌ УВАГА! Знайдено {len(text_duplicates)} унікальних текстів, які дублюються!"  # noqa: E501
         )
         print(f"   Всього дубльованих рядків у базі: {sum(text_duplicates.values())}")
         print("\n📋 Приклади дублікатів (перші 3):")
@@ -266,7 +266,7 @@ def run_final_validation(db_path="laws_database.json"):
 
         if law_dup_count > 0:
             print(
-                f"   ⚠️ {law}: всього {total_law_articles} унікальних статей, з них {law_dup_count} дублюються номерами."
+                f"   ⚠️ {law}: всього {total_law_articles} унікальних статей, з них {law_dup_count} дублюються номерами."  # noqa: E501
             )
         else:
             print(f"   🔹 {law}: {total_law_articles} статей (чисто, дублікатів немає)")
@@ -302,11 +302,11 @@ if __name__ == "__main__":
             "url": "https://zakon.rada.gov.ua/laws/main/2947-14?lang=uk",
         },
         {
-            "name": "Закон України «Про об'єднання співвласників багатоквартирного будинку»",
+            "name": "Закон України «Про об'єднання співвласників багатоквартирного будинку»",  # noqa: E501
             "url": "https://zakon.rada.gov.ua/laws/show/2866-14#Text",
         },
         {
-            "name": "Закон України «Про особливості здійснення права власності у багатоквартирному будинку»",
+            "name": "Закон України «Про особливості здійснення права власності у багатоквартирному будинку»",  # noqa: E501
             "url": "https://zakon.rada.gov.ua/laws/show/417-19#Text",
         },
         {
@@ -363,7 +363,7 @@ if __name__ == "__main__":
 
     if os.path.exists(output_filename):
         print(f"Знайдено існуючу базу {output_filename}. Завантажуємо...")
-        with open(output_filename, "r", encoding="utf-8") as f:
+        with open(output_filename, encoding="utf-8") as f:
             try:
                 loaded_data = json.load(f)
                 if isinstance(loaded_data, dict) and "items" in loaded_data:
@@ -393,7 +393,7 @@ if __name__ == "__main__":
         )
         if not articles:
             print(
-                f"⚠️ Не вдалося отримати статті для {law['name']}. Переходимо до наступного."
+                f"⚠️ Не вдалося отримати статті для {law['name']}. Переходимо до наступного."  # noqa: E501
             )
             continue
 
@@ -422,7 +422,7 @@ if __name__ == "__main__":
             json.dump(db_structure, f, ensure_ascii=False, indent=4)
 
         print(
-            f"💾 Базу успішно оновлено! У хедері: {len(db_structure['indexed_laws_summary'])} законів. Разом збережено {len(db_structure['items'])} статей."
+            f"💾 Базу успішно оновлено! У хедері: {len(db_structure['indexed_laws_summary'])} законів. Разом збережено {len(db_structure['items'])} статей."  # noqa: E501
         )
 
         del embeddings
@@ -432,7 +432,7 @@ if __name__ == "__main__":
         if torch.cuda.is_available():
             free_mem, total_mem = torch.cuda.mem_get_info()
             print(
-                f" Стан GPU: {free_mem / 1024**3:.2f} GB вільних з {total_mem / 1024**3:.2f} GB"
+                f" Стан GPU: {free_mem / 1024**3:.2f} GB вільних з {total_mem / 1024**3:.2f} GB"  # noqa: E501
             )
 
     print("\n🎉 ВСЕ ЗАКОНОДАВСТВО УСПІШНО ПРОІНДЕКСОВАНО!")
