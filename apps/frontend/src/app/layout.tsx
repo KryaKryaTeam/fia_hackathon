@@ -31,7 +31,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
+
 
   return (
     <html
@@ -43,7 +43,7 @@ export default function RootLayout({
         'dark',
       )}
     >
-      <QueryClientProvider client={queryClient}>
+
         <body>
           <MainHeader />
           <div className="fixed w-full h-full top-0 left-0 z-[999] pointer-events-none flex justify-center items-center">
@@ -53,7 +53,7 @@ export default function RootLayout({
           {children}
           <MainFooter />
         </body>
-      </QueryClientProvider>
+
     </html>
   );
 }
