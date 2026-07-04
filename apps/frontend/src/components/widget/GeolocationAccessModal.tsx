@@ -21,6 +21,7 @@ function GeolocationAccessModal() {
     try {
       await request.execute();
       modalState.unactive('Geo');
+      modalState.active('ticket');
     } catch (error) {
       console.error(error);
       modalState.unactive('Geo');
