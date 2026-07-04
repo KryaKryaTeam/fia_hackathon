@@ -31,8 +31,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-
   return (
     <html
       lang="en"
@@ -43,17 +41,15 @@ export default function RootLayout({
         'dark',
       )}
     >
-
-        <body>
-          <MainHeader />
-          <div className="fixed w-full h-full top-0 left-0 z-[999] pointer-events-none flex justify-center items-center">
-            <GeolocationAccessModal />
-            <InputStreetModal />
-          </div>
-          {children}
-          <MainFooter />
-        </body>
-
+      <body>
+        <MainHeader />
+        <div className="fixed w-full h-full top-0 left-0 z-[999] pointer-events-none flex justify-center items-center">
+          <GeolocationAccessModal />
+          <InputStreetModal />
+        </div>
+        {children}
+        <MainFooter />
+      </body>
     </html>
   );
 }
