@@ -20,17 +20,18 @@ export class FileRelation {
   })
   file!: Ref<FileSchema>;
 
-  @Property()
+  @Property({ type: 'string' })
   slot!: string;
 
   @ManyToOne(() => UserSchema, {
     fieldName: 'user_id',
     deleteRule: 'cascade',
+    referenceColumnName: 'id',
     ref: true,
   })
   user!: Ref<UserSchema>;
 
-  @Property({ persist: false })
+  @Property({ type: 'string', persist: false })
   get user_id(): string | undefined {
     return this.user?.id;
   }

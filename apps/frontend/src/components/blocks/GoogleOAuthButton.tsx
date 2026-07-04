@@ -3,7 +3,7 @@ import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import container from '../../infrastructure/Container';
 import { usePathname, useRouter } from 'next/navigation';
-import { RequestLoginWithGoogle } from '../../infrastructure/requests/LoginWithGoogle.request';
+import { RequestLoginWithGoogle } from '../../request/LoginWithGoogle.request';
 import { Button } from '../ui/button';
 
 declare global {
@@ -53,7 +53,6 @@ export default function GoogleOAuthButton() {
     });
   };
 
-  // Функція, яка викликає вікно логіну при кліці на ТВОЮ власну кнопку
   const handleGoogleLogin = () => {
     if (window.google) {
       // Викликає стандартний Google One Tap або вікно вибору акаунту

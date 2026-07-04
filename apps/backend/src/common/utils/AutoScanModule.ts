@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { globSync } from 'glob';
 import { join } from 'path';
+import { pathToFileURL } from 'url';
 
 @Module({})
 export class AutoScannerModule {
@@ -14,28 +15,33 @@ export class AutoScannerModule {
    * Сканує вказану директорію на наявність команд та квері
    * @param moduleDir __dirname модуля, який викликає сканування
    */
-  static forFeature(
+  static async forFeatureAsync(
     moduleDir: string,
     imports: Array<
       Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference
     > = [],
-  ): DynamicModule {
+  ): Promise<DynamicModule> {
     const pattern = join(moduleDir, 'application/**/*.{command,query}.{ts,js}');
     const files = globSync(pattern);
 
-    const discoveredProviders: Provider[] = files.flatMap((file) => {
-      const moduleExports = require(file);
+    const promises = files.map(async (file) => {
+      const fileUrl = pathToFileURL(file).href;
+      const moduleExports = await import(fileUrl);
 
       return Object.values(moduleExports).filter(
         (exp) => typeof exp === 'function',
       ) as Provider[];
     });
 
+    const nestedProviders = await Promise.all(promises);
+
+    const providers: Provider[] = nestedProviders.flat();
+
     return {
       module: AutoScannerModule,
       imports: imports,
-      providers: discoveredProviders,
-      exports: discoveredProviders,
+      providers,
+      exports: providers,
     };
   }
 }

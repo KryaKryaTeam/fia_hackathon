@@ -108,15 +108,15 @@
     "serve": {
       "executor": "@nxlv/python:run-commands",
       "options": {
-        "command": "uv run uvicorn mlService.main:app --reload",
+        "command": "uv run python -m mlService",
         "cwd": "{projectRoot}"
       }
     },
     "worker": {
       "executor": "@nxlv/python:run-commands",
       "options": {
-        "command": "uv run python mlService/worker.py",
-        "cwd": "{projectRoot}"
+        "command": "uv run python -m celery -A celery_app:celery worker --loglevel=info",
+        "cwd": "{projectRoot}/mlService"
       }
     }
   },

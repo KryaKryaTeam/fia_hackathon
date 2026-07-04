@@ -20,6 +20,14 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { FilesModule } from '@/files/files.module';
 import { TransfromUserIdtoEntity } from './infrastructure/pipes/TransfromUserIdToEntity.pipe';
 import { AutoScannerModule } from '@/common/utils/AutoScanModule';
+import { GetCSRFToken } from './application/useCases/GetCSRFToken.command';
+import { GetProfileQuery } from './application/useCases/GetProfile.query';
+import { GetUsersByEmailQuery } from './application/useCases/GetUsersByEmail.query';
+import { LoginCommand } from './application/useCases/Login.command';
+import { RefreshCommand } from './application/useCases/Refresh.command';
+import { SetRoleToAUserCommand } from './application/useCases/SetRoleToAUser.command';
+import { UpdateAdditionalDataCommand } from './application/useCases/UpdateAdditionalData.command';
+import { UpdateAvatarCommand } from './application/useCases/UpdateAvatar.command';
 
 const providers: Provider[] = [
   {
@@ -44,6 +52,14 @@ const providers: Provider[] = [
     provide: ServiceTokens.JWTService,
     useClass: JWTTokenService,
   },
+  GetCSRFToken,
+  GetProfileQuery,
+  GetUsersByEmailQuery,
+  LoginCommand,
+  RefreshCommand,
+  SetRoleToAUserCommand,
+  UpdateAdditionalDataCommand,
+  UpdateAvatarCommand,
 ];
 
 @Module({
@@ -63,13 +79,6 @@ const providers: Provider[] = [
     },
   ],
   imports: [
-    AutoScannerModule.forFeature(__dirname, [
-      forwardRef(() => FilesModule),
-      DiscoveryModule,
-      JwtModule.register({}),
-      CacheModule.register(),
-      forwardRef(() => AuthorizationModule),
-    ]),
     DiscoveryModule,
     JwtModule.register({}),
     CacheModule.register(),

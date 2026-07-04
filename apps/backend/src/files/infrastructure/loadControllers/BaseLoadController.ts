@@ -64,7 +64,7 @@ export abstract class BaseLoadController {
       : new PassThrough();
 
     // 3. Prepare Temp File & Pipeline
-    const tempDir = path.join(os.tmpdir(), 'cinaGloria');
+    const tempDir = path.join(os.tmpdir(), 'fia');
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
 
     const tempFilePath = path.join(tempDir, `${randomUUID()}.temp`);

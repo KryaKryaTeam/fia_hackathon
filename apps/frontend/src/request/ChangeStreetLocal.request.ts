@@ -1,0 +1,29 @@
+import { TYPES } from '@/infrastructure/Container.types';
+import { LocalRequest } from '@/infrastructure/LocalRequest';
+import StreetDataState from '@/state/StreetData.state';
+import { UserState } from '@/state/User.state';
+import { inject, injectable } from 'inversify';
+
+@injectable()
+export default class ChangeStreetLocalRequest extends LocalRequest<
+  string,
+  void,
+  string
+> {
+  mockOutputData: string = 'Mocked Street Name';
+
+  constructor(
+    @inject(TYPES.UserState) protected override readonly userState: UserState,
+    @inject(TYPES.StreetState) private readonly streetState: StreetDataState,
+  ) {
+    super(userState);
+  }
+
+   async mapData(data: string): Promise<string> {
+    return data;
+  }
+
+   async onSuccess(data: string): Promise<void> {
+    this.streetState.street = data
+  }
+}

@@ -3,6 +3,10 @@ import { Golos_Text, Noto_Sans, Oswald } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import MainHeader from '@/components/blocks/MainHeader';
 import MainFooter from '@/components/blocks/MainFooter';
+import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
+import InputStreetModal from '@/components/widget/InputStreetModal';
+import TicketForm from '@/components/widget/TicketForm';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const notoSansHeading = Noto_Sans({
   subsets: ['latin', 'cyrillic'],
@@ -27,6 +31,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const queryClient = new QueryClient();
+
   return (
     <html
       lang="en"
@@ -37,11 +43,17 @@ export default function RootLayout({
         'dark',
       )}
     >
-      <body>
-        <MainHeader />
-        {children}
-        <MainFooter />
-      </body>
+      <QueryClientProvider client={queryClient}>
+        <body>
+          <MainHeader />
+          <div className="fixed w-full h-full top-0 left-0 z-[999] pointer-events-none flex justify-center items-center">
+            <GeolocationAccessModal />
+            <InputStreetModal />
+          </div>
+          {children}
+          <MainFooter />
+        </body>
+      </QueryClientProvider>
     </html>
   );
 }

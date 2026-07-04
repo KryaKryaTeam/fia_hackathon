@@ -8,5 +8,8 @@
       "swcrc": true,
       "configFile": ".swcrc"
     }
+  },
+  "launcherOptions": {
+    "nodeFlags": ["--experimental-specifier-resolution=node"]
   }
 }

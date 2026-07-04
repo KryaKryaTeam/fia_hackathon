@@ -10,27 +10,24 @@ import { AuthorizationProvider } from './AuthorizationProvider.schema';
 
 @Entity({ tableName: 'user' })
 export class UserSchema {
-  @Property({ type: 'uuid' })
+  @Property({ type: 'uuid', primary: true })
   id: string;
 
-  @Property({ unique: true })
-  username: string;
-
-  @Property({ unique: true })
+  @Property({ type: 'string', unique: true })
   email: string;
 
-  @Property({ name: 'avatar_url', default: 'https://....' })
+  @Property({ type: 'string', name: 'avatar_url', default: 'https://....' })
   avatarUrl: string;
 
   // Additional data for autofill
 
-  @Property({ name: 'first_name', nullable: true })
+  @Property({ type: 'string', name: 'first_name', nullable: true })
   firstName?: string;
 
-  @Property({ name: 'last_name', nullable: true })
+  @Property({ type: 'string', name: 'last_name', nullable: true })
   lastName?: string;
 
-  @Property({ name: 'sur_name', nullable: true })
+  @Property({ type: 'string', name: 'sur_name', nullable: true })
   surName?: string;
 
   // Role
@@ -41,19 +38,17 @@ export class UserSchema {
   @Property({
     name: 'created_at',
     type: 'timestamp',
-    onCreate(entity, em) {
-      entity.createdAt = new Date();
-    },
+    defaultRaw: 'now()',
   })
-  createdAt: Date;
+  createdAt: Date = new Date();
 
   @Property({
     name: 'updated_at',
     type: 'timestamp',
-    onCreate: () => new Date(),
+    defaultRaw: 'now()',
     onUpdate: () => new Date(),
   })
-  updatedAt!: Date;
+  updatedAt: Date = new Date();
 
   // Зв'язки
   @OneToMany(() => AuthorizationProvider, (provider) => provider.userId, {

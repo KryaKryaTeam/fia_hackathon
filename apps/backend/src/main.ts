@@ -8,16 +8,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import cookieParser from 'cookie-parser';
+import { MikroORM } from '@mikro-orm/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+    origin: [process.env.ALLOWED_ORIGIN, 'http://localhost:3000'],
+  } as CorsOptions);
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: 'v1',
   });
+  app.use(cookieParser());
   const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
@@ -37,6 +44,11 @@ async function bootstrap() {
     '/reference',
     apiReference({ theme: 'purple', content: document, hideModels: true }),
   );
+
+  Logger.log(`🚀 Start migrator`);
+
+  const nestOrm = app.get(MikroORM);
+  await nestOrm.migrator.up();
 
   await app.listen(port);
   Logger.log(
