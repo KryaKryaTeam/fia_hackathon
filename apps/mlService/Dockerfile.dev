@@ -1,18 +1,24 @@
-FROM python:3.14-slim AS development
-WORKDIR /app
+FROM python:3.12-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV UV_NO_CACHE=1 
+WORKDIR /app
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 COPY apps/mlService/pyproject.toml ./apps/mlService/
-COPY apps/mlService/uv.lock* ./apps/mlService
+COPY apps/mlService/uv.lock* ./apps/mlService/
 
-RUN uv pip install --system -r apps/mlService/pyproject.toml
 COPY ./apps/mlService/ ./apps/mlService/
 
-RUN uv pip install --system --editable ./apps/mlService
+WORKDIR /app/apps/mlService
 
-CMD ["python", "-m", "mlService"]
+RUN uv sync
+
+WORKDIR /app
+
+RUN mkdir /usr/fia
+ENV HF_CACHE=/usr/fia
+ENV HF_HOME=/usr/fia
+ENV SENTENCE_TRANSFORMERS_HOME=/usr/fia
+ENV TOKENIZERS_PARALLELISM=false
+
+CMD ["uv", "run", "python", "-m", "mlService"]

@@ -1,41 +1,73 @@
-import json
-import os
-
-import redis
+import redis, os
 from dotenv import load_dotenv
+from .get_pgvector import get_pgvector
+from .fetch_laws import fetch_laws
+from .generate_statement import generate_statement
 
 load_dotenv()
-r = redis.Redis(
-    host=os.getenv("REDIS_HOST"), port=os.getenv("REDIS_PORT"), decode_responses=True
-)
+def create_redis():
+    r = redis.Redis(
+        host=os.getenv("REDIS_HOST") or "redis", 
+        port=int(os.getenv("REDIS_PORT") or "6379"), 
+        decode_responses=True,
+        socket_timeout=None
+    )
+    r.xadd("ml_tasks", {"init": "true"})
+    r.xadd("ml_results", {"init": "true"})
+    r.xgroup_create(
+        name="ml_tasks",
+        groupname="ml-workers",
+        id="$",
+        mkstream=True,
+    )
 
+    return r
 
-def handle_event(event: dict):
-    print("🔥 received:", event)
-
-    # fake ML logic placeholder
-    result = {"input": event, "prediction": "something"}
-
-    print("✅ result:", result)
-
-
-def run():
-    print("🚀 worker running...")
+def run_worker():
+    r = create_redis()
 
     while True:
-        _, raw = r.blpop("ml_events")
+        result = r.xreadgroup(
+            groupname="ml-workers",
+            consumername="worker-1",
+            streams={"ml_tasks": ">"},
+            count=10,
+            block=0,
+        )
 
-        if not raw:
+        if not result:
             continue
 
-        try:
-            event = json.loads(raw)
-        except json.JSONDecodeError:
-            print("⚠️ bad message in queue:", raw)
+        if not result:
             continue
 
-        handle_event(event)
+        for stream_name, messages in result:
+            if stream_name != "ml_tasks":
+                continue
 
+            for msg_id, data in messages:
+                statement = process_message(data)
 
-if __name__ == "__main__":
-    run()
+                r.xadd("ml_results", {"statement": statement})
+                r.xack("ml_tasks", "ml-workers", msg_id)
+
+def process_message(data):
+    pgvector = get_pgvector(data["text"])
+    laws = fetch_laws(pgvector)
+    
+    statement = generate_statement(
+        data["text"], 
+        laws, 
+        data["address"], 
+        {"longitude": data["longitude"], "latitude": data["latitude"]}, 
+        {
+            "id": data["requester_id"],
+            "email": data["requester_email"],
+            "fullName": data["requester_fullName"] if data["requester_fullName"] else None,
+            "address": data["address"] if data["address"] else None,
+            "phone": data["requester_phone"] if data["requester_phone"] else None
+        }, 
+        data["createdAt"]
+    )
+
+    return statement.text

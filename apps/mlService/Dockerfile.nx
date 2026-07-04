@@ -11,9 +11,17 @@ RUN addgroup --system --gid 1001 pythonjs && \
 
 COPY ./apps/mlService/dist ./dist_packages
 
-RUN uv pip install --system --no-cache ./dist_packages/*.whl
+# RUN uv pip install --system --no-cache ./dist_packages/*.whl
+RUN uv sync
 RUN rm -rf ./dist_packages
 
 USER pythonapp
+
+RUN mkdir /usr/fia
+RUN chown -R pythonapp:pythonjs /usr/fia
+ENV HF_CACHE=/usr/fia
+ENV HF_HOME=/usr/fia
+ENV SENTENCE_TRANSFORMERS_HOME=/usr/fia
+ENV TOKENIZERS_PARALLELISM=false
 
 CMD ["python", "-m", "mlService"]

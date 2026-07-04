@@ -19,6 +19,11 @@ services:
       - '5432:5432'
     networks:
       - fia_hackathon_network
+    build:
+      context: .
+      dockerfile: apps/mlService/mlService/Dockerfile.pg
+      args:
+        DB_VERSION: ${DB_VERSION}
   mlService:
     user: '${UID}:${GID}'
     image: fia-hackathon-mlservice:dev
@@ -29,6 +34,8 @@ services:
     volumes:
       - ./apps/mlService:/app:rw
       - /app/apps/mlService/.egg-info
+      - ml:/usr/fia
+      - ~/Downloads/laws_database.json:/data/laws_database.json:ro
     networks:
       - fia_hackathon_network
     depends_on:
@@ -53,3 +60,4 @@ networks:
 volumes:
   deps_backend:
   postgres_data:
+  ml:
