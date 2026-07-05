@@ -4,7 +4,7 @@ import {
 } from '../../infrastructure/BaseNetworkRequest';
 import { HTTPMethod } from '../../infrastructure/type';
 import URLEnum from '../../infrastructure/URLEnum';
-interface Pointer {
+export interface Pointer {
   id: string;
   location_hint: string;
   count: number;
@@ -12,50 +12,50 @@ interface Pointer {
 }
 const mockPointers: Pointer[] = [
   {
-    id: '872ec18d6ffffff',
+    id: '871e6e7acffffff',
     location_hint: 'Київ, центр (Хрещатик / Майдан)',
     count: 4800,
     normalized: 1.0,
   },
   {
-    id: '872ec112effffff',
+    id: '891e6384a2fffff',
     location_hint: 'Київ, Поділ',
     count: 3200,
     normalized: 0.67,
   },
   {
-    id: '872a9dd2cffffff',
+    id: '891e6384a03ffff',
     location_hint: 'Львів, Старе Місто (Площа Ринок)',
     count: 4100,
     normalized: 0.85,
   },
   {
-    id: '872a906aaffffff',
+    id: '871e5dc8dffffff',
     location_hint: 'Одеса, Приморський бульвар / Опера',
     count: 2900,
     normalized: 0.6,
   },
   {
-    id: '872ebd020ffffff',
+    id: '871196404ffffff',
     location_hint: 'Харків, Площа Свободи',
     count: 2100,
     normalized: 0.44,
   },
   {
-    id: '872eb4b25ffffff',
+    id: '881e6bd86bfffff',
     location_hint: 'Дніпро, Набережна / центр',
     count: 1800,
     normalized: 0.38,
   },
   {
-    id: '872ec1852ffffff',
+    id: '881f1224d3fffff',
     location_hint: 'Київ, Гідропарк',
     count: 450,
     normalized: 0.09,
   },
 ];
 export default class GetPointersNetworkRequest extends NetworkRequest<
-  null,
+  void,
   Pointer[],
   Pointer[]
 > {
@@ -63,8 +63,7 @@ export default class GetPointersNetworkRequest extends NetworkRequest<
   authorized = false;
   method: HTTPMethod = 'GET';
   mockOutputData: Pointer[] = [...mockPointers];
-  showProgressInToast = false;
-  mapData(data: null): ISubRequestData {
+  mapData(data: void): ISubRequestData {
     return {
       url: new URL(URLEnum.POINTERS),
       init: {},

@@ -21,7 +21,7 @@
       }
     ],
     "paths": {
-      "@/": ["./src/"]
+      "@/*": ["./src/*"]
     },
     "types": ["jest", "node"],
     "outDir": "dist",
@@ -29,11 +29,11 @@
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": [
-    "src//*.ts",
-    "src//.tsx",
-    "src/**/.js",
-    "src//*.jsx",
-    ".next/types//.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    ".next/types/**/*.ts",
     "next-env.d.ts"
   ],
   "exclude": [
@@ -42,8 +42,8 @@
     "node_modules",
     "jest.config.ts",
     "jest.config.cts",
-    "src/**/.spec.ts",
-    "src/*/.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
     ".next",
     "eslint.config.js",
     "eslint.config.cjs",
