@@ -8,6 +8,8 @@ import StreetDataState from '@/state/StreetData.state';
 import { RequestLoginWithGoogle } from '../request/LoginWithGoogle.request';
 import { QueryClient } from '@tanstack/react-query';
 const queryClient = new QueryClient();
+import GetPointersNetworkRequest from '../request/point/GetPointersNetwork.request';
+
 const container: Container = new Container();
 
 // --- SINGLETONS (Using Constant Value for absolute safety) ---
@@ -23,5 +25,9 @@ container
   .inRequestScope();
 container.bind(TYPES.QUERY_CLIENT).toConstantValue(queryClient);
 container.bind(RequestLoginWithGoogle).toSelf().inRequestScope();
+container
+  .bind(TYPES.GetPointersNetworkRequest)
+  .to(GetPointersNetworkRequest)
+  .inRequestScope();
 export default container;
 export { TYPES };

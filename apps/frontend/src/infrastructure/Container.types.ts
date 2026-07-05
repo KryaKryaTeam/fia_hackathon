@@ -6,4 +6,5 @@ export const TYPES = {
   StreetState: Symbol.for('StreetState'),
   ChangeStreetRequest: Symbol.for('ChangeStreetRequest'),
   QUERY_CLIENT: Symbol.for('QueryClient'),
+  GetPointersNetworkRequest: Symbol.for('GetPointersNetworkRequest'),
 } as const;
