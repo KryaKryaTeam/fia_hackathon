@@ -48,7 +48,7 @@ def run_worker():
             for msg_id, data in messages:
                 statement = process_message(data)
 
-                r.xadd("ml_results", {"statement": statement})
+                r.xadd("ml_results", {"statement": statement, "id": data["id"]})
                 r.xack("ml_tasks", "ml-workers", msg_id)
 
 def process_message(data):
