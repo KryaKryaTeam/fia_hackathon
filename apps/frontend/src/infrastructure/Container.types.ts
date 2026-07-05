@@ -4,5 +4,6 @@ export const TYPES = {
   GetGeoData: Symbol.for('GetGeoData'),
   ModalState: Symbol.for('ModalState'),
   StreetState: Symbol.for('StreetState'),
-  ChangeStreetRequest: Symbol.for('ChangeStreetRequest')
+  ChangeStreetRequest: Symbol.for('ChangeStreetRequest'),
+  QUERY_CLIENT: Symbol.for('QueryClient'),
 } as const;

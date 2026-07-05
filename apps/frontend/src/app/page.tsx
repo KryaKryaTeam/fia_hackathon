@@ -8,25 +8,6 @@ import ModalState from '@/state/Modal.state';
 import Link from 'next/link';
 
 function Page() {
-  //   if ('geolocation' in navigator) {
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const { latitude, longitude, accuracy } = position.coords;
-  //       console.log(`Широта: ${latitude}, Довгота: ${longitude}`);
-  //       console.log(`Точність: ${accuracy} метрів`);
-  //     },
-  //     (error) => {
-  //       console.error('Помилка:', error.message);
-  //     },
-  //     {
-  //       enableHighAccuracy: true, // максимальна точність (GPS)
-  //       timeout: 5000,            // таймаут очікування (мс)
-  //       maximumAge: 0             // не використовувати кешовану позицію
-  //     }
-  //   );
-  // } else {
-  //   console.log('Geolocation не підтримується браузером');
-  // }
   return (
     <div className="w-screen flex flex-col">
       <div className="w-full h-screen flex flex-col">

@@ -21,6 +21,7 @@ export class RequestLoginWithGoogle extends NetworkRequest<
   boolean,
   LoginWithGoogleOutput
 > {
+  override name: string = 'LoginWithGoogle';
   authorized = false;
   withCSRF = true;
   method: HTTPMethod = 'POST';

@@ -1,10 +1,11 @@
 import { TYPES } from './Container.types';
 import { UserState } from '../state/User.state';
-import { inject, injectable } from 'inversify';
+import { inject, injectable, optional } from 'inversify';
 import { HTTPMethod } from './type';
 import URLEnum from './URLEnum';
 import URLAddValue from './URLAddKey';
 import { toast } from 'sonner';
+import { QueryClient } from '@tanstack/react-query';
 
 export interface ISubRequestData {
   url: URL | string;
@@ -15,6 +16,7 @@ export interface ISubRequestData {
 
 interface Option {
   mock: boolean;
+  skipCache?: boolean;
 }
 let refreshPr: undefined | Promise<void>;
 
@@ -28,18 +30,26 @@ export abstract class NetworkRequest<
   constructor(
     @inject(TYPES.UserState)
     protected readonly userState: UserState,
+    @inject(TYPES.QUERY_CLIENT)
+    @optional()
+    protected readonly queryClient?: QueryClient,
   ) {}
   protected toastConfig = {
     loading: 'Loading...',
     success: 'Done!',
     error: 'Error occurred',
   };
+  abstract name: string;
   abstract withCSRF: boolean;
   abstract authorized: boolean;
   abstract method: HTTPMethod;
   abstract mockOutputData: RequestOutput | undefined;
   protected showProgressInToast = false;
+  protected staleTime = 60_000; // 1m
   private retrying = 0;
+
+  // if returns null/undefined -> caching is disabled.
+  protected cacheKey?(data: Data): unknown[];
 
   async getCsrf(): Promise<string> {
     let csrfToken = '';
@@ -79,7 +89,30 @@ export abstract class NetworkRequest<
       toast.promise(pr, this.toastConfig);
     }
 
+    const key =
+      this.method === 'GET' && !option?.skipCache && this.cacheKey
+        ? this.cacheKey(request_data)
+        : undefined;
+
+    if (key && this.queryClient) {
+      return this.queryClient.fetchQuery({
+        queryKey: [this.name, ...key],
+        queryFn: () =>
+          this.makeRequest(request_data, 0, resolve, reject, option),
+        staleTime: this.staleTime,
+      });
+    }
+
     return await this.makeRequest(request_data, 0, resolve, reject, option);
+  }
+
+  // request after data is changed, invalidate cache for this request
+  invalidate(data?: Data) {
+    if (!this.queryClient) return;
+    const key = data && this.cacheKey ? this.cacheKey(data) : undefined;
+    this.queryClient.invalidateQueries({
+      queryKey: key ? [this.name, ...key] : [this.name],
+    });
   }
 
   private async refresh() {
