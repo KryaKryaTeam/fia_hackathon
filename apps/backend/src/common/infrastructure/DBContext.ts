@@ -17,6 +17,7 @@ export class DBContext implements IDBContext {
 
   async rollbackTransaction() {
     await this.em.rollback();
+    await this.em.clear();
   }
 
   get manager(): EntityManager {

@@ -6,6 +6,7 @@ import {
   IApplicationRequester,
 } from '../objects/Requester.object';
 import { AddressObject } from '../objects/Address.object';
+import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 
 export interface ApplicationJSON {
   id: string;
@@ -14,6 +15,7 @@ export interface ApplicationJSON {
   address: string;
   requester: IApplicationRequester;
   createdAt: Date;
+  status: ApplicationStatus;
 }
 
 export interface IApplication {
@@ -23,6 +25,7 @@ export interface IApplication {
   address: AddressObject;
   requester: ApplicationRequesterObject;
   createdAt: Date;
+  status: ApplicationStatus;
 }
 
 export interface ApplicationCreateData {
@@ -32,6 +35,11 @@ export interface ApplicationCreateData {
   requester: ApplicationRequesterObject;
 }
 
+export enum ApplicationStatus {
+  waiting = 'waiting',
+  processed = 'proccesed',
+}
+
 export class ApplicationEntity extends Entity {
   public readonly id: string;
   public readonly text: string;
@@ -39,10 +47,28 @@ export class ApplicationEntity extends Entity {
   public readonly address: AddressObject;
   public readonly requester: ApplicationRequesterObject;
   public readonly createdAt: Date;
+  private status_: ApplicationStatus = ApplicationStatus.waiting;
+
+  private pdfFile: InternalFile<'application:pdf'> | undefined;
+  private categories: string[];
+
+  get status() {
+    return this.status_;
+  }
+
+  completeTask() {
+    this.status_ = ApplicationStatus.processed;
+  }
 
   private constructor(data: IApplication) {
     super();
-    Object.assign(this, data);
+    this.id = data.id;
+    this.text = data.text;
+    this.location = data.location;
+    this.address = data.address;
+    this.requester = data.requester;
+    this.createdAt = data.createdAt;
+    this.status_ = data.status;
   }
 
   static validate(data: IApplication) {
@@ -54,6 +80,7 @@ export class ApplicationEntity extends Entity {
       ...createData,
       id: randomUUID(),
       createdAt: new Date(),
+      status: ApplicationStatus.waiting,
     };
 
     this.validate(data);
@@ -79,6 +106,7 @@ export class ApplicationEntity extends Entity {
       location: this.location.value,
       requester: this.requester.value,
       text: this.text,
+      status: this.status,
     };
   }
 }

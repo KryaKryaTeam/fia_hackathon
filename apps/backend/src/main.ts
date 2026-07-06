@@ -32,6 +32,26 @@ async function bootstrap() {
     .setDescription('The fia_hackhathon api documentation')
     .setVersion('v1')
     .addBearerAuth({ type: 'http' })
+    .addOAuth2(
+      {
+        type: 'oauth2',
+        description:
+          'Авторизація через Google OAuth (Scalar -> Google -> Ваш бекенд)',
+        flows: {
+          authorizationCode: {
+            authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+            tokenUrl: '/api/v1/auth/login?provider=GOOGLE',
+            scopes: {
+              'https://www.googleapis.com/auth/userinfo.email': 'Access email',
+              'https://www.googleapis.com/auth/userinfo.profile':
+                'Access profile',
+              openid: 'Get openId',
+            },
+          },
+        },
+      },
+      'GoogleOAuth',
+    )
     .setLicense(
       'MIT',
       'https://github.com/KryaKryaTeam/fia_hackathon?tab=MIT-1-ov-file',
@@ -42,7 +62,33 @@ async function bootstrap() {
 
   app.use(
     '/reference',
-    apiReference({ theme: 'purple', content: document, hideModels: true }),
+    apiReference({
+      theme: 'purple',
+      content: document,
+      hideModels: true,
+      authentication: {
+        preferredSecurityScheme: 'GoogleOAuth',
+        securitySchemes: {
+          GoogleOAuth: {
+            flows: {
+              authorizationCode: {
+                selectedScopes: [
+                  'https://www.googleapis.com/auth/userinfo.email',
+                  'https://www.googleapis.com/auth/userinfo.profile',
+                  'openid',
+                ],
+                'x-scalar-client-id':
+                  process.env.GOOGLE_CLIENT_ID ||
+                  'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+                'x-scalar-security-query': {
+                  prompt: 'consent',
+                },
+              },
+            },
+          },
+        },
+      },
+    }),
   );
 
   Logger.log(`🚀 Start migrator`);

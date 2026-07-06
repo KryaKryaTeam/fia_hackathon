@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 20mm 15mm 20mm 25mm;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+      body {
+        font-family: 'Roboto Condensed', sans-serif;
+        line-height: 1.5;
+        color: #000;
+        margin: 0;
+        padding: 0;
+        font-size: 14pt;
+      }
+      .container {
+        padding-top: 2em;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        padding-bottom: 5em;
+      }
+      .grid_head {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1em;
+        font-size: 0.9rem;
+      }
+      .reportT {
+        width: 100%;
+        text-align: center;
+        padding-top: 1em;
+        padding-bottom: 1em;
+      }
+      .bodyPart {
+        text-align: justify;
+        text-indent: 2em;
+        padding-bottom: 1em;
+        font-size: 1.1em;
+      }
+      .ending {
+        font-weight: bold;
+      }
+      .requestTitle {
+        font-size: 1.2em;
+        font-weight: bold;
+        padding-bottom: 0.5em;
+      }
+      .list {
+        padding-left: 2em;
+        font-size: 1.1em;
+      }
+      .footer {
+        padding-top: 2em;
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.1em;
+      }
+      .serviceSign {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-around;
+        height: 50px;
+        gap: 0;
+      }
+      .logo {
+        font-family: 'Oswald', sans-serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+      .serviceSign-mainText {
+        padding: 0;
+        margin: 0%;
+        font-size: 0.8em;
+        font-weight: 600;
+      }
+      .serviceSign-site {
+        padding: 0;
+        margin: 0%;
+        font-size: 0.6em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="serviceSign">
+        <p class="serviceSign-mainText">
+          <span class="logo">ТіЗ</span> - Тут і Зараз
+        </p>
+        <p class="serviceSign-site">tiz.swedka121.com</p>
+      </div>
+      <div class="grid_head">
+        <div class="placeSign"></div>
+        <div class="head">
+          Кому: Міському голові Львівської міської ради<br />
+          Від: Петренка Івана<br />
+          Адреса: вул. Шевченка, 15, Львів<br />
+          Телефон: +380671234567<br />
+          Електронна пошта: ivan.petrenko@example.com<br />
+        </div>
+      </div>
+      <h1 class="reportT">Заява</h1>
+
+      <p class="bodyPart">
+        У нашому дворі за адресою: вул. Шевченка, 15, м. Львів, вже протягом
+        двох тижнів не здійснюється вивезення твердих побутових відходів з
+        контейнерів. Це призвело до значного накопичення сміття, що спричиняє
+        неприємний сморід та рознесення сміттєвих пакетів вітром, створюючи
+        антисанітарні умови та загрозу для здоров'я мешканців.
+        <br />
+        <span class="ending">
+          На підставі викладеного та керуючись чинним законодавством України,
+        </span>
+      </p>
+      <h2 class="requestTitle">ПРОШУ:</h2>
+      <div class="list">
+        <p class="list-item">
+          1. Провести перевірку за фактом неналежного надання послуг з вивезення
+          твердих побутових відходів за адресою: вул. Шевченка, 15, м. Львів.
+        </p>
+        <p class="list-item">
+          2. Вжити невідкладних заходів для негайного вивезення накопиченого
+          сміття з контейнерів у дворі будинку за вказаною адресою.
+        </p>
+        <p class="list-item">
+          3. Забезпечити регулярне та своєчасне вивезення твердих побутових
+          відходів у майбутньому відповідно до встановлених графіків та
+          санітарних норм.
+        </p>
+        <p class="list-item">
+          4. Надати письмову відповідь щодо результатів розгляду цього звернення
+          та вжитих заходів у встановлений законодавством термін.
+        </p>
+      </div>
+      <div class="footer">
+        <p class="date">04 липня 2026 року</p>
+        <p class="signature">З повагою, __ І. Петренко</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 import { forwardRef, Module, Provider } from '@nestjs/common';
-import { CommandTokens, MapperTokens, ServiceTokens } from '@/common/Tokens';
+import { MapperTokens, ServiceTokens } from '@/common/Tokens';
 import { FileMapper } from './application/mappers/FileMapper';
 import { LoadFileService } from './infrastructure/services/LoadFileService';
 import { APP_INTERCEPTOR, DiscoveryModule } from '@nestjs/core';
@@ -21,16 +21,13 @@ const providers: Provider[] = [
   { provide: MapperTokens.FileMapper, useClass: FileMapper },
   { provide: ServiceTokens.LoadFileService, useClass: LoadFileService },
   { provide: MapperTokens.FileRelationMapper, useClass: FileRelationMapper },
-  { provide: CommandTokens.UploadFileCommand, useClass: UploadFileCommand },
-  { provide: CommandTokens.GetLinkQuery, useClass: GetLinkQuery },
+  UploadFileCommand,
+  GetLinkQuery,
   {
     provide: ServiceTokens.FileLinkerService,
     useClass: LinkerApplicationService,
   },
-  {
-    provide: CommandTokens.DeleteGarbageCommand,
-    useClass: DeleteGarbageCommand,
-  },
+  DeleteGarbageCommand,
   GarbageCollectorCronJobService,
   UserCreatedHandlerFile,
   S3LoadController,

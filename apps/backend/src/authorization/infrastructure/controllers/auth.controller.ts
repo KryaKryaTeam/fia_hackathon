@@ -30,7 +30,6 @@ import { ApiError, UserErrors } from '@/error/ApiError';
 @Controller('auth')
 export class AuthController {
   constructor(
-    // NestJS автоматично заінжектує всі usecases завдяки AutoScannerModule
     private readonly loginCommand: LoginCommand,
     private readonly refreshCommand: RefreshCommand,
     private readonly getCSRFTokenCommand: GetCSRFToken,
@@ -47,11 +46,19 @@ export class AuthController {
     @Response({ passthrough: true }) res: ExpressResponse,
     @Request() req: ExpressRequest,
   ) {
-    if (!provider || !state)
+    if (
+      !provider ||
+      (!state &&
+        this.configurationService.getOrThrow('app.csrfProtectionEnabled'))
+    )
       ApiError.throw(UserErrors.PROVIDER_OR_STATE_IS_UNDEFINED);
 
     const csrfProtected = req.cookies.csrf == state;
-    if (!csrfProtected) ApiError.throw(UserErrors.CSRF_PROTECTION_FAILED);
+    if (
+      !csrfProtected &&
+      this.configurationService.getOrThrow('app.csrfProtectionEnabled')
+    )
+      ApiError.throw(UserErrors.CSRF_PROTECTION_FAILED);
 
     if (!body.code && !code && !body.password)
       ApiError.throw(UserErrors.CREDENTIALS_ARE_UNDEFINED);
@@ -70,7 +77,8 @@ export class AuthController {
     );
 
     return {
-      accessToken: result.accessToken,
+      access_token: result.accessToken,
+      token_type: 'Bearer',
       userExistsBefore: result.userExists,
     };
   }

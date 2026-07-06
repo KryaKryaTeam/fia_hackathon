@@ -11,6 +11,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JsonInterceptor } from './infrastructure/interceptors/JsonInterceptor';
 import { AuthorizationModule } from '@/authorization/authorization.module';
 import { FilesModule } from '@/files/files.module';
+import { ApplicationModule } from '@/application/application.module';
+import { ApplicationRepository } from './infrastructure/repositories/ApplicationRepository';
 
 const providers: Provider[] = [
   { provide: BaseTokens.EventDispatcher, useClass: EventDispatcher },
@@ -25,6 +27,10 @@ const providers: Provider[] = [
   {
     provide: ReposTokens.FileRelationRepository,
     useClass: FileRelationRepository,
+  },
+  {
+    provide: ReposTokens.ApplicationRepository,
+    useClass: ApplicationRepository,
   },
 ];
 
@@ -41,6 +47,7 @@ const providers: Provider[] = [
   imports: [
     forwardRef(() => AuthorizationModule),
     forwardRef(() => FilesModule),
+    forwardRef(() => ApplicationModule),
   ],
 })
 export class CommonModule {}

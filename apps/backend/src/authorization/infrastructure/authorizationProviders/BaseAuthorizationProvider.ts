@@ -57,6 +57,8 @@ export abstract class BaseAuthorizationProvider<T> {
 
     const handshakeData = await this.handshake(loginData);
 
+    console.log(handshakeData);
+
     let findUser = await this.userRepository.findByEmail(handshakeData.email);
 
     let existsUser: boolean;
@@ -109,6 +111,7 @@ export abstract class BaseAuthorizationProvider<T> {
       await this.userRepository.save(findUser);
     } else {
       existsUser = true;
+      console.log('MEEEEEEEEEEEOW!!!');
       if (
         !findUser.hasAuthorizationProvider(this.type) ||
         !findUser.isAuthorizationDataCorrect(handshakeData.authorizationData)

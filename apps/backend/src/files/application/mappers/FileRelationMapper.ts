@@ -8,6 +8,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { ApiError, FileErrors } from '@/error/ApiError';
 import { MapperTokens } from '@/common/Tokens';
 import { ref } from '@mikro-orm/core';
+import { ApplicationMapper } from '@/application/application/mappers/Application.mapper';
 
 @Injectable()
 export class FileRelationMapper extends Mapper<
@@ -17,6 +18,8 @@ export class FileRelationMapper extends Mapper<
   constructor(
     @Inject(MapperTokens.UserMapper)
     private readonly userMapper: UserMapper,
+    @Inject(MapperTokens.ApplicationMapper)
+    private readonly applicationMapper: ApplicationMapper,
     @Inject(MapperTokens.FileMapper)
     private readonly fileMapper: FileMapper,
   ) {
@@ -30,6 +33,9 @@ export class FileRelationMapper extends Mapper<
       slot: schema.slot ? RelationString.define(schema.slot) : undefined,
       user: schema.user
         ? this.userMapper.toEntity(schema.user.unwrap())
+        : undefined,
+      application: schema.application
+        ? this.applicationMapper.toEntity(schema.application.unwrap())
         : undefined,
     });
   }
@@ -46,6 +52,12 @@ export class FileRelationMapper extends Mapper<
 
     if (entity.user) {
       sch.user = ref(this.userMapper.toSchema(entity.user));
+    }
+
+    if (entity.application) {
+      sch.application = ref(
+        this.applicationMapper.toSchema(entity.application),
+      );
     }
 
     sch.slot = entity.slot;

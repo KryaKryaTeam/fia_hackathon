@@ -6,6 +6,7 @@ import { FileRelationEntity } from '@/files/domain/entities/FileRelation.entity'
 import { RelationSlots } from '@/types/RelationSlots';
 import type { IFileRelationsRepository } from '../bounds/IFileRelationsRepository';
 import { RelationString } from '@/files/domain/objects/RelationSlots';
+import { ApplicationEntity } from '@/application/domain/entities/Application.entity';
 
 @Injectable()
 export class LinkerApplicationService {
@@ -26,6 +27,15 @@ export class LinkerApplicationService {
 
     relation.user = user;
     relation.slot = RelationSlots.user.avatar;
+
+    await this.relationRepository.save(relation);
+  }
+
+  async linkPdfToApplication(file: FileEntity, application: ApplicationEntity) {
+    const relation = FileRelationEntity.create(file);
+
+    relation.application = application;
+    relation.slot = RelationSlots.application.pdf;
 
     await this.relationRepository.save(relation);
   }

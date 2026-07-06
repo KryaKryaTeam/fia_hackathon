@@ -1,6 +1,12 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/decorators/legacy';
+import {
+  Entity,
+  Enum,
+  ManyToOne,
+  Property,
+} from '@mikro-orm/decorators/legacy';
 import { UserSchema } from './User.schema';
 import type { Cascade, Ref } from '@mikro-orm/core';
+import { ApplicationStatus } from '@/application/domain/entities/Application.entity';
 
 @Entity({ tableName: 'application' })
 export class ApplicationSchema {
@@ -21,6 +27,9 @@ export class ApplicationSchema {
 
   @Property({ type: 'timestamp', defaultRaw: 'now()', fieldName: 'created_at' })
   createdAt: Date = new Date();
+
+  @Enum({ items: () => ApplicationStatus, default: ApplicationStatus.waiting })
+  status: ApplicationStatus;
 
   @ManyToOne(() => UserSchema, {
     deleteRule: 'cascade',

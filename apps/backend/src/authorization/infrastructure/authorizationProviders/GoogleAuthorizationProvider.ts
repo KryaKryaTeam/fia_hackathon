@@ -12,6 +12,7 @@ import { AuthorizationProvider } from '../services/AuthorizationProviderService'
 
 interface GoogleLoginData {
   token: string;
+  code_verifier?: string;
 }
 
 @Injectable()
@@ -36,8 +37,24 @@ export class GoogleAuthorizationProvider extends BaseAuthorizationProvider<Googl
   }
   async handshake(loginData: GoogleLoginData): Promise<IHandshakeOutput> {
     try {
+      let codeOrToken = loginData.token;
+      if (
+        codeOrToken &&
+        !codeOrToken.includes('.') &&
+        !codeOrToken.startsWith('eJ')
+      ) {
+        if (!loginData.code_verifier)
+          throw new Error('No code_verifier property specified');
+        const { tokens } = await this.OAuthClient.getToken({
+          code: codeOrToken,
+          codeVerifier: loginData.code_verifier,
+        });
+        if (!tokens.id_token) throw new Error('Cannot find id_token');
+        codeOrToken = tokens.id_token;
+      }
+
       const ticket = await this.OAuthClient.verifyIdToken({
-        idToken: loginData.token,
+        idToken: codeOrToken,
         audience: this.configurationService.getOrThrow('google.clientId'),
       });
 
@@ -59,8 +76,16 @@ export class GoogleAuthorizationProvider extends BaseAuthorizationProvider<Googl
         avatarURL: payload.picture,
         email: payload.email,
       };
-    } catch {
-      ApiError.throw(UserErrors.GOOGLE_AUTHORIZATION_FAILED);
+    } catch (err) {
+      console.error(
+        'Detailed Google OAuth Error:',
+        JSON.stringify(err, null, 2),
+      );
+
+      ApiError.throw(
+        UserErrors.GOOGLE_AUTHORIZATION_FAILED,
+        (err as Error).message,
+      );
     }
   }
   createProvider(loginData: string): AuthProviderEntity {

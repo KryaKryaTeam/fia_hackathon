@@ -1,8 +1,9 @@
 import { ApplicationEntity } from '@/application/domain/entities/Application.entity';
+import { Entity } from '@/common/domain/Entity';
 import { Mapper } from '@/common/infrastructure/Mapper';
 import { ApplicationSchema } from '@/schemas/Application.schema';
 import { UserSchema } from '@/schemas/User.schema';
-import { Reference } from '@mikro-orm/core';
+import { PlainObject, Reference } from '@mikro-orm/core';
 
 export class ApplicationMapper extends Mapper<
   ApplicationSchema,
@@ -19,6 +20,7 @@ export class ApplicationMapper extends Mapper<
         latitude: schema.latitude,
         longitude: schema.longitude,
       },
+      status: schema.status,
       requester: {
         id: schema.user.id,
         email: user.email,
@@ -28,7 +30,7 @@ export class ApplicationMapper extends Mapper<
       },
     });
   }
-  public override toSchema(entity: ApplicationEntity): ApplicationSchema {
+  public override toSchema(entity: ApplicationEntity) {
     const schema = new ApplicationSchema();
 
     schema.id = entity.id;
@@ -38,6 +40,7 @@ export class ApplicationMapper extends Mapper<
     schema.address = entity.address.value;
     schema.user = Reference.createFromPK(UserSchema, entity.requester.value.id);
     schema.createdAt = entity.createdAt;
+    schema.status = entity.status;
     return schema;
   }
 }

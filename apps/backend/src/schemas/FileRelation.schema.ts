@@ -7,6 +7,7 @@ import {
 import type { Ref } from '@mikro-orm/core';
 import { FileSchema } from './File.schema';
 import { UserSchema } from './User.schema';
+import { ApplicationSchema } from './Application.schema';
 
 @Entity({ tableName: 'file_relation' })
 export class FileRelation {
@@ -31,8 +32,21 @@ export class FileRelation {
   })
   user!: Ref<UserSchema>;
 
+  @ManyToOne(() => ApplicationSchema, {
+    fieldName: 'application_id',
+    deleteRule: 'cascade',
+    referenceColumnName: 'id',
+    ref: true,
+  })
+  application: Ref<ApplicationSchema>;
+
   @Property({ type: 'string', persist: false })
   get user_id(): string | undefined {
     return this.user?.id;
+  }
+
+  @Property({ type: 'string', persist: false })
+  get application_id(): string | undefined {
+    return this.application?.id;
   }
 }

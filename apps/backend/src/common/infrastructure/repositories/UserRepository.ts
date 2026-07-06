@@ -32,16 +32,15 @@ export class UserRepository
 
   async save(user: UserEntity): Promise<void> {
     const schemaData = this.userMapper.toSchema(user);
-    await this.repository.upsert(schemaData);
+    const managedSchema = this.repository
+      .getEntityManager()
+      .merge(this._entitySchema, schemaData);
+
+    this.repository.getEntityManager().persist(managedSchema);
   }
 
   async existsByEmail(email: string): Promise<boolean> {
     const count = await this.repository.count({ email });
-    return count > 0;
-  }
-
-  async existsByUsername(username: string): Promise<boolean> {
-    const count = await this.repository.count({ username });
     return count > 0;
   }
 

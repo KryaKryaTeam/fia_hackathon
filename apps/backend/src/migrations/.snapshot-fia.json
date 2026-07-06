@@ -93,6 +93,26 @@
           "enumItems": [],
           "mappedType": "double"
         },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'waiting'",
+          "comment": null,
+          "collation": null,
+          "enumItems": [
+            "waiting",
+            "proccesed"
+          ],
+          "mappedType": "enum"
+        },
         "text": {
           "name": "text",
           "type": "varchar(255)",
@@ -140,7 +160,14 @@
           "unique": true
         }
       ],
-      "checks": [],
+      "checks": [
+        {
+          "name": "application_status_check",
+          "expression": "\"status\" in ('waiting', 'proccesed')",
+          "definition": "check (\"status\" in ('waiting', 'proccesed'))",
+          "columnName": "status"
+        }
+      ],
       "triggers": [],
       "foreignKeys": {
         "application_user_id_foreign": {
@@ -364,6 +391,23 @@
       "name": "file_relation",
       "schema": "public",
       "columns": {
+        "application_id": {
+          "name": "application_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
         "file_url": {
           "name": "file_url",
           "type": "varchar(255)",
@@ -448,6 +492,18 @@
       "checks": [],
       "triggers": [],
       "foreignKeys": {
+        "file_relation_application_id_foreign": {
+          "columnNames": [
+            "application_id"
+          ],
+          "constraintName": "file_relation_application_id_foreign",
+          "localTableName": "public.file_relation",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.application",
+          "deleteRule": "cascade"
+        },
         "file_relation_file_url_foreign": {
           "columnNames": [
             "file_url"

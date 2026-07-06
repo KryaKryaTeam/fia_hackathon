@@ -6,12 +6,12 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { Request as ExpressRequest } from 'express';
 import { ServiceTokens } from '@/common/Tokens';
 import type { IJWTTokenService } from '@/authorization/application/bounds/IJWTTokenService';
 import { Reflector } from '@nestjs/core';
 import { ApiError, documentError, UserErrors } from '@/error/ApiError';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { WsException } from '@nestjs/websockets';
 
 export const Authorization = Reflector.createDecorator();
 export const Secure = () => {
@@ -37,27 +37,55 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request: ExpressRequest = context.switchToHttp().getRequest();
-
     const isSecure = this.reflector.getAllAndOverride(Authorization, [
       context.getHandler(),
       context.getClass(),
     ]);
     if (!isSecure) return true;
 
-    const authorizatioHeader = request.headers.authorization;
-    if (!authorizatioHeader) ApiError.throw(UserErrors.NO_AUTHORIZATION_HEADER);
-    const parts = authorizatioHeader.split(' ');
-    if (parts[0] != 'Bearer')
-      ApiError.throw(UserErrors.UNEXPECTED_FORMAT_OF_TOKEN);
-    if (!this.jwtService.checkAccess(parts[1]))
-      ApiError.throw(UserErrors.UNAUTHORIZED);
+    const type = context.getType();
+    let authorizationHeader: string | undefined;
+    let targetObjectToAttachUser: any;
 
-    const decoded = this.jwtService.decode(parts[1]);
+    if (type === 'http') {
+      const request = context.switchToHttp().getRequest();
+      authorizationHeader = request.headers.authorization;
+      targetObjectToAttachUser = request;
+    } else if (type === 'ws') {
+      const client = context.switchToWs().getClient();
+      authorizationHeader =
+        client.handshake.auth?.token || client.handshake.headers?.authorization;
 
-    request['user_id'] = decoded.sub;
-    request['user_role'] = decoded.role;
+      targetObjectToAttachUser = client;
+    }
+
+    // Обробка помилок
+    if (!authorizationHeader) {
+      this.throwError(type, UserErrors.NO_AUTHORIZATION_HEADER);
+    }
+
+    const parts = authorizationHeader!.split(' ');
+    if (parts[0] !== 'Bearer') {
+      this.throwError(type, UserErrors.UNEXPECTED_FORMAT_OF_TOKEN);
+    }
+
+    const token = parts[1];
+    if (!this.jwtService.checkAccess(token)) {
+      this.throwError(type, UserErrors.UNAUTHORIZED);
+    }
+
+    const decoded = this.jwtService.decode(token);
+
+    targetObjectToAttachUser['user_id'] = decoded.sub;
+    targetObjectToAttachUser['user_role'] = decoded.role;
 
     return true;
+  }
+
+  private throwError(contextType: string, errorType: any) {
+    if (contextType === 'ws') {
+      throw new WsException(errorType?.message || 'Unauthorized');
+    }
+    ApiError.throw(errorType);
   }
 }

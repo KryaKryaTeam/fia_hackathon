@@ -12,7 +12,6 @@ import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 import { Secure } from '@/authorization/infrastructure/guards/auth/auth.guard';
 import busboy from 'busboy';
 import type { Request as RequestExpress } from 'express';
-import { CommandTokens } from '@/common/Tokens';
 import { UploadFileCommand } from '@/files/application/useCases/UploadFileCommand';
 import { GetLinkQuery } from '@/files/application/useCases/GetLinkQuery';
 import { RelationString } from '@/files/domain/objects/RelationSlots';
@@ -23,10 +22,7 @@ import { FileDto } from '../dto/File.dto';
 @Controller('file')
 @Secure()
 export class FileController {
-  @Inject(CommandTokens.UploadFileCommand)
   private readonly uploadFileCommand: UploadFileCommand;
-
-  @Inject(CommandTokens.GetLinkQuery)
   private readonly getLinkQuery: GetLinkQuery;
 
   private readonly logger: Logger = new Logger(FileController.name);

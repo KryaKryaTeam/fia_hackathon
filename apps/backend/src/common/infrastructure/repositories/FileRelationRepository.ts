@@ -67,12 +67,13 @@ export class FileRelationRepository
       {
         file: { url: relation.file.url },
       },
-      { populate: ['file'] },
+      { populate: ['file', 'user', 'application'] },
     );
 
     if (!result) return null;
 
-    return this.fileMapper.toEntity(result.file.unwrap());
+    const file = (result.file as any).unwrap?.() ?? result.file;
+    return this.fileMapper.toEntity(file);
   }
 
   async deleteRelationByUserAndScope(

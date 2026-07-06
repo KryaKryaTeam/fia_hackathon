@@ -1,11 +1,9 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { CommandTokens } from '@/common/Tokens';
 import { DeleteGarbageCommand } from '@/files/application/useCases/DeleteGarbage.command';
 
 @Injectable()
 export class GarbageCollectorCronJobService {
-  @Inject(CommandTokens.DeleteGarbageCommand)
   private readonly deleteGarbageCommand: DeleteGarbageCommand;
 
   private readonly logger = new Logger('Garbage collector');
