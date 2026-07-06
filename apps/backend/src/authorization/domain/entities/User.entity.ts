@@ -11,16 +11,21 @@ import { IEventJSON } from '@/common/domain/Event';
 import { getEventClass } from '@/common/domain/EventRegister';
 import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 import { RelationSlots } from '@/types/RelationSlots';
+import { ApiError, DomainErrors, UserErrors } from '@/error/ApiError';
 
 export interface IUserAdditionalData {
-  fullName: string;
-  phone: string;
-  address: string;
+  firstName?: string;
+  lastName?: string;
+  surName?: string;
 }
 
 interface IUserEntityConstructorProps {
   id: string;
+  email: string;
+  _avatarUrl: InternalFile<'user:avatar'>;
   _additionalData?: IUserAdditionalData;
+  _role: string;
+  _authorizationProviders: AuthProviderEntity[];
 }
 
 export interface IUserForAdminList {
@@ -30,21 +35,38 @@ export interface IUserForAdminList {
   role: RoleEnum;
 }
 
+export interface IProfile {
+  id: string;
+  email: string;
+  fullName?: {
+    value: string;
+    firstName?: string;
+    lastName?: string;
+    surName?: string;
+  };
+  avatarURL: InternalFile<'user:avatar'>;
+  role: RoleEnum;
+}
+
 export interface IUserEntityJSON {
   id: string;
-  fullName: string;
-  address: string;
-  phone: string;
+  email: string;
+  avatarURL: string;
+  role: RoleEnum;
+  firstName: string;
+  lastName: string;
+  surName: string;
+  authorizationProvider: IAuthProviderConstructorProps[];
   events: IEventJSON<unknown>[];
 }
 
 export class UserEntity extends Entity {
   public readonly id: string;
-  private _additionalData: IUserAdditionalData = {
-    fullName: '',
-    phone: '',
-    address: '',
-  };
+  public readonly email: string;
+  private _avatarUrl: InternalFile<typeof RelationSlots.user.avatar>;
+  private _additionalData: IUserAdditionalData = {};
+  private _role: RoleEnum;
+  private _authorizationProviders: AuthProviderEntity[] = [];
 
   constructor(partial: IUserEntityConstructorProps) {
     super();
@@ -57,9 +79,25 @@ export class UserEntity extends Entity {
   ) {
     const id = randomUUID();
 
-    const ent = new UserEntity({ id });
+    const ent = new UserEntity({
+      email,
+      id: id,
+      _role: RoleEnum.USER,
+      _authorizationProviders: [],
+      _avatarUrl: avatarUrl,
+    });
 
-    ent.addEvent(new UserCreated(new UserEntity({ id })));
+    ent.addEvent(
+      new UserCreated(
+        new UserEntity({
+          email,
+          id: id,
+          _role: RoleEnum.USER,
+          _authorizationProviders: [],
+          _avatarUrl: avatarUrl,
+        }),
+      ),
+    );
 
     return ent;
   }
@@ -67,10 +105,20 @@ export class UserEntity extends Entity {
   static load(plain: IUserEntityJSON): UserEntity {
     const ent = new UserEntity({
       id: plain.id,
+      email: plain.email,
+      _avatarUrl: InternalFile.define<typeof RelationSlots.user.avatar>(
+        plain.avatarURL,
+        'user:avatar',
+        'user:avatar',
+      ),
+      _role: plain.role,
+      _authorizationProviders: plain.authorizationProvider.map(
+        (el) => new AuthProviderEntity(el),
+      ),
       _additionalData: {
-        fullName: plain.fullName,
-        phone: plain.phone,
-        address: plain.address,
+        firstName: plain.firstName,
+        lastName: plain.lastName,
+        surName: plain.surName,
       },
     });
 
@@ -92,9 +140,13 @@ export class UserEntity extends Entity {
   static createFake(): UserEntity {
     const fakeData: IUserEntityJSON = {
       id: randomUUID(),
-      fullName: 'John Doe Smith',
-      address: 'Somewhere in the universe',
-      phone: '+380 96 228 67 52',
+      email: 'fakeuser@example.com',
+      avatarURL: 'fake-avatar-url',
+      firstName: 'John',
+      lastName: 'Doe',
+      surName: 'Smith',
+      role: RoleEnum.USER,
+      authorizationProvider: [],
       events: [],
     };
 
@@ -104,9 +156,15 @@ export class UserEntity extends Entity {
   toJSON(): IUserEntityJSON {
     return {
       id: this.id,
-      fullName: this._additionalData.fullName || '',
-      address: this._additionalData.address || '',
-      phone: this._additionalData.phone || '',
+      email: this.email,
+      avatarURL: this._avatarUrl.value,
+      role: this._role,
+      firstName: this._additionalData.firstName || '',
+      lastName: this._additionalData.lastName || '',
+      surName: this._additionalData.surName || '',
+      authorizationProvider: this._authorizationProviders.map((p) =>
+        p.toJSON(),
+      ),
       events: this.events.map((ev) => ({
         eventType: ev.constructor.name,
         payload: ev,
@@ -114,25 +172,46 @@ export class UserEntity extends Entity {
     };
   }
 
-  // async linkProvider(
-  //   provider: AuthProviderEntity,
-  //   checkProviderUnique: (providerId: string) => Promise<boolean>,
-  // ) {
-  //   if (this._authorizationProviders?.find((ent) => ent.isType(provider.type)))
-  //     ApiError.throw(UserErrors.PROVIDERS_DUPLICATION);
+  async linkProvider(
+    provider: AuthProviderEntity,
+    checkProviderUnique: (providerId: string) => Promise<boolean>,
+  ) {
+    if (this._authorizationProviders?.find((ent) => ent.isType(provider.type)))
+      ApiError.throw(UserErrors.PROVIDERS_DUPLICATION);
 
-  //   if (!(await checkProviderUnique(provider.getProviderId())))
-  //     ApiError.throw(DomainErrors.DUPLICATION);
+    if (!(await checkProviderUnique(provider.getProviderId())))
+      ApiError.throw(DomainErrors.DUPLICATION);
 
-  //   this._authorizationProviders.push(provider);
-  // }
+    this._authorizationProviders.push(provider);
+  }
+
+  hasRole(role: RoleEnum) {
+    return role == this._role;
+  }
+
+  setRoleTo(requester: UserEntity, role: RoleEnum) {
+    if (!requester.hasRole(RoleEnum.ADMIN))
+      ApiError.throw(UserErrors.USER_ROLE_CANT_BE_CHANGED);
+
+    if (this.hasRole(role)) ApiError.throw(DomainErrors.NO_CHANGE);
+
+    this._role = role;
+  }
+
+  changeAvatarURL(avatar_url: InternalFile<typeof RelationSlots.user.avatar>) {
+    this._avatarUrl = avatar_url;
+  }
+
+  public get avatarURL() {
+    return this._avatarUrl;
+  }
+
+  public get role() {
+    return this._role;
+  }
 
   public get isProfileFull() {
-    if (
-      !this._additionalData.fullName ||
-      !this._additionalData.address ||
-      !this._additionalData.phone
-    )
+    if (!this._additionalData.firstName || !this._additionalData.lastName)
       return false;
 
     return true;
@@ -143,22 +222,62 @@ export class UserEntity extends Entity {
   }
 
   public set additionalData(data: IUserAdditionalData) {
-    this._additionalData.fullName =
-      data.fullName ?? this._additionalData.fullName;
-    this._additionalData.phone = data.phone ?? this._additionalData.phone;
-    this._additionalData.address = data.address ?? this._additionalData.address;
+    this._additionalData.firstName =
+      data.firstName ?? this._additionalData.firstName;
+    this._additionalData.lastName =
+      data.lastName ?? this._additionalData.lastName;
+    this._additionalData.surName = data.surName ?? this._additionalData.surName;
   }
 
-  // get forAdminList(): IUserForAdminList {
-  //   return {
-  //     id: this.id,
-  //     avatarUrl: this.avatarURL,
-  //     email: this.email,
-  //     role: this.role,
-  //   };
-  // }
+  public get authorizationProviders() {
+    return this._authorizationProviders;
+  }
+
+  public get publicProfile(): IProfile {
+    return {
+      id: this.id,
+      email: this.email,
+      avatarURL: InternalFile.define<typeof RelationSlots.user.avatar>(
+        this.avatarURL.value,
+        'user:avatar',
+        'user:avatar',
+      ),
+      role: this.role,
+    };
+  }
+
+  get forAdminList(): IUserForAdminList {
+    return {
+      id: this.id,
+      avatarUrl: this.avatarURL,
+      email: this.email,
+      role: this.role,
+    };
+  }
 
   public get fullName() {
-    return this._additionalData.fullName ?? null
+    const { firstName, lastName, surName } = this._additionalData;
+
+    return [firstName, lastName, surName].filter(Boolean).join(' ');
+  }
+
+  public isAuthorizationDataCorrect(data: string) {
+    return (
+      this.authorizationProviders.findIndex((provider) =>
+        provider.isDataEqual(data),
+      ) !== -1
+    );
+  }
+
+  public hasAuthorizationProvider(type: AuthorizationProviderTypes) {
+    return (
+      this.authorizationProviders.findIndex((provider) =>
+        provider.isType(type),
+      ) !== -1
+    );
+  }
+
+  __forceSetRole(role: RoleEnum) {
+    this._role = role;
   }
 }
