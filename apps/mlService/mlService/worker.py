@@ -1,11 +1,10 @@
-import os
-
-import redis
+import redis, os, json
 from dotenv import load_dotenv
 
 from .fetch_laws import fetch_laws
 from .generate_statement import generate_statement
 from .get_pgvector import get_pgvector
+from .fetch_categories import fetch_categories
 
 load_dotenv()
 
@@ -52,16 +51,17 @@ def run_worker():
                 continue
 
             for msg_id, data in messages:
-                statement = process_message(data)
+                statement, categories = process_message(data)
 
-                r.xadd("ml_results", {"statement": statement, "id": data["id"]})
+                r.xadd("ml_results", {"statement": statement, "id": data["id"], "categories": json.dumps(categories)})
                 r.xack("ml_tasks", "ml-workers", msg_id)
 
 
 def process_message(data):
     pgvector = get_pgvector(data["text"])
     laws = fetch_laws(pgvector)
-
+    categories = fetch_categories(pgvector)
+    
     statement = generate_statement(
         data["text"],
         laws,
@@ -72,11 +72,11 @@ def process_message(data):
             "email": data["requester_email"],
             "fullName": data["requester_fullName"]
             if data["requester_fullName"]
-            else None,  # noqa: E501
+            else None,
             "address": data["address"] if data["address"] else None,
             "phone": data["requester_phone"] if data["requester_phone"] else None,
         },
         data["createdAt"],
     )
 
-    return statement.text
+    return statement.text, categories

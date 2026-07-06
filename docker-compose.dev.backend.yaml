@@ -38,8 +38,10 @@ services:
       - ./apps/mlService:/app:rw
       - ml_venv:/app/.venv
       - /app/apps/mlService/.egg-info
-      - /media/swedka/Additional/Projects/hf_cache:/usr/fia
+      - /media/swedka/Additional/Projects/hf_cache:/usr/fia # so selfish, swedka. So selfish
       - ./laws_database.json:/data/laws_database.json:ro
+      - ml:/usr/fia
+      - ./categories.json:/data/categories.json:ro
     networks:
       - fia_hackathon_network
     depends_on:
