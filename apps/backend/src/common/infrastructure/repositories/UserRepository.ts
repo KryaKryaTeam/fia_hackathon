@@ -17,14 +17,20 @@ export class UserRepository
   protected _entitySchema = UserSchema;
 
   async findByEmail(email: string): Promise<UserEntity | null> {
-    const res = await this.repository.findOne({ email });
+    const res = await this.repository.findOne(
+      { email },
+      { populate: ['authorizationProviders'] },
+    );
     if (!res) return null;
 
     return this.userMapper.toEntity(res);
   }
 
   async findById(userId: string): Promise<UserEntity | null> {
-    const res = await this.repository.findOne({ id: userId });
+    const res = await this.repository.findOne(
+      { id: userId },
+      { populate: ['authorizationProviders'] },
+    );
     if (!res) return null;
 
     return this.userMapper.toEntity(res);
@@ -38,7 +44,10 @@ export class UserRepository
   }
 
   async existsByEmail(email: string): Promise<boolean> {
-    const count = await this.repository.count({ email });
+    const count = await this.repository.count(
+      { email },
+      { populate: ['authorizationProviders'] },
+    );
     return count > 0;
   }
 
@@ -48,6 +57,7 @@ export class UserRepository
       {
         offset: 20 * page,
         limit: 20,
+        populate: ['authorizationProviders'],
       },
     );
 
@@ -67,6 +77,7 @@ export class UserRepository
       .orderBy({ [`similarity(user.email, '${email}')`]: 'DESC' })
       .limit(20)
       .offset(page * 20)
+      .populate([{ field: 'authorizationProviders' }])
       .getResult();
 
     if (!result || result.length === 0) return [];

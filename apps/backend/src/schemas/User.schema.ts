@@ -5,7 +5,7 @@ import {
   Enum,
   OneToMany,
 } from '@mikro-orm/decorators/legacy';
-import { Cascade } from '@mikro-orm/core';
+import { Cascade, Ref } from '@mikro-orm/core';
 import { AuthorizationProvider } from './AuthorizationProvider.schema';
 
 @Entity({ tableName: 'user' })
@@ -52,8 +52,7 @@ export class UserSchema {
 
   // Зв'язки
   @OneToMany(() => AuthorizationProvider, (provider) => provider.userId, {
-    eager: true,
     cascade: [Cascade.ALL],
   })
-  authorizationProviders!: AuthorizationProvider[];
+  authorizationProviders!: Ref<AuthorizationProvider>[];
 }

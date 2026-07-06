@@ -7,6 +7,8 @@ import { MapperTokens } from '@/common/Tokens';
 import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 import { RelationSlots } from '@/types/RelationSlots';
 import { AddressObject } from '@/application/domain/objects/Address.object';
+import { Reference } from '@mikro-orm/core';
+import { AuthorizationProvider } from '@/schemas/AuthorizationProvider.schema';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class UserMapper extends Mapper<UserSchema, UserEntity> {
@@ -20,9 +22,13 @@ export class UserMapper extends Mapper<UserSchema, UserEntity> {
     return new UserEntity({
       id: schema.id,
       _role: schema.role,
-      _authorizationProviders: schema.authorizationProviders?.map((schema) =>
-        this.AuthProviderMapper.toEntity(schema),
-      ),
+      _authorizationProviders: schema.authorizationProviders
+        .map((schema) =>
+          schema.unwrap()
+            ? this.AuthProviderMapper.toEntity(schema.unwrap())
+            : null,
+        )
+        .filter((a) => a !== null),
       _avatarUrl: InternalFile.define<typeof RelationSlots.user.avatar>(
         schema.avatarUrl,
         'user:avatar',
@@ -44,7 +50,7 @@ export class UserMapper extends Mapper<UserSchema, UserEntity> {
     user.email = entity.email;
     user.avatarUrl = entity.avatarURL.value;
     user.authorizationProviders = entity.authorizationProviders?.map((ent) =>
-      this.AuthProviderMapper.toSchema(ent),
+      Reference.createFromPK(AuthorizationProvider, ent.id),
     );
     user.address = entity.address?.value;
     user.phone = entity.phone;
