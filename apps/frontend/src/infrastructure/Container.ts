@@ -6,7 +6,8 @@ import ChangeStreetLocalRequest from '@/request/ChangeStreetLocal.request'; // <
 import ModalState from '@/state/Modal.state';
 import StreetDataState from '@/state/StreetData.state';
 import { RequestLoginWithGoogle } from '../request/LoginWithGoogle.request';
-
+import { QueryClient } from '@tanstack/react-query';
+const queryClient = new QueryClient();
 const container: Container = new Container();
 
 // --- SINGLETONS (Using Constant Value for absolute safety) ---
@@ -19,8 +20,8 @@ container.bind(TYPES.GetGeoData).to(GetGeoDataLocalRequest).inRequestScope();
 container
   .bind(TYPES.ChangeStreetRequest)
   .to(ChangeStreetLocalRequest)
-  .inRequestScope(); // <-- Додано реєстрацію
-
+  .inRequestScope();
+container.bind(TYPES.QUERY_CLIENT).toConstantValue(queryClient);
 container.bind(RequestLoginWithGoogle).toSelf().inRequestScope();
 export default container;
 export { TYPES };

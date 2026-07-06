@@ -1,1 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="0.027" timestamp="2026-06-29T01:05:40.957775+03:00" hostname="DESKTOP-MSI-Q8"><testcase classname="tests.test_dummy" name="test_dummy" time="0.000" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="16.639" timestamp="2026-07-04T18:56:50.572815+03:00" hostname="fedora"><testcase classname="tests.test_process_message" name="test_process_message" time="0.692"><failure message="psycopg.OperationalError: connection is bad: connection to server on socket &quot;/var/run/postgresql/.s.PGSQL.5432&quot; failed: No such file or directory&#10;&#09;Is the server running locally and accepting connections on that socket?">#x1B[0m#x1B[94mdef#x1B[39;49;00m#x1B[90m #x1B[39;49;00m#x1B[92mtest_process_message#x1B[39;49;00m():#x1B[90m#x1B[39;49;00m
+        data = {#x1B[90m#x1B[39;49;00m
+            #x1B[33m"#x1B[39;49;00m#x1B[33mtext#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m: #x1B[33m"#x1B[39;49;00m#x1B[33mhello#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+            #x1B[33m"#x1B[39;49;00m#x1B[33mtask#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m: #x1B[33m"#x1B[39;49;00m#x1B[33membed#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        }#x1B[90m#x1B[39;49;00m
+    #x1B[90m#x1B[39;49;00m
+&gt;       result = process_message(data)#x1B[90m#x1B[39;49;00m
+                 ^^^^^^^^^^^^^^^^^^^^^#x1B[90m#x1B[39;49;00m
+
+#x1B[1m#x1B[31mtests/test_process_message.py#x1B[0m:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+#x1B[1m#x1B[31mmlService/worker.py#x1B[0m:53: in process_message
+    #x1B[0mlaws = fetch_laws(pgvector)#x1B[90m#x1B[39;49;00m
+           ^^^^^^^^^^^^^^^^^^^^#x1B[90m#x1B[39;49;00m
+#x1B[1m#x1B[31mmlService/fetch_laws.py#x1B[0m:8: in fetch_laws
+    #x1B[0mconn = psycopg.connect(#x1B[90m#x1B[39;49;00m
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = &lt;class 'psycopg.Connection'&gt;, conninfo = '', autocommit = False
+prepare_threshold = 5, context = None, row_factory = None, cursor_factory = None
+kwargs = {'host': None, 'dbname': None, 'user': None, 'password': None}
+
+    #x1B[0m#x1B[37m@classmethod#x1B[39;49;00m#x1B[90m#x1B[39;49;00m
+    #x1B[94mdef#x1B[39;49;00m#x1B[90m #x1B[39;49;00m#x1B[92mconnect#x1B[39;49;00m(#x1B[90m#x1B[39;49;00m
+        #x1B[96mcls#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        conninfo: #x1B[96mstr#x1B[39;49;00m = #x1B[33m"#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        *,#x1B[90m#x1B[39;49;00m
+        autocommit: #x1B[96mbool#x1B[39;49;00m = #x1B[94mFalse#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        prepare_threshold: #x1B[96mint#x1B[39;49;00m | #x1B[94mNone#x1B[39;49;00m = #x1B[94m5#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        context: AdaptContext | #x1B[94mNone#x1B[39;49;00m = #x1B[94mNone#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        row_factory: RowFactory[Row] | #x1B[94mNone#x1B[39;49;00m = #x1B[94mNone#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        cursor_factory: #x1B[96mtype#x1B[39;49;00m[Cursor[Row]] | #x1B[94mNone#x1B[39;49;00m = #x1B[94mNone#x1B[39;49;00m,#x1B[90m#x1B[39;49;00m
+        **kwargs: ConnParam,#x1B[90m#x1B[39;49;00m
+    ) -&gt; Self:#x1B[90m#x1B[39;49;00m
+    #x1B[90m    #x1B[39;49;00m#x1B[33m"""#x1B[39;49;00m
+    #x1B[33m    Connect to a database server and return a new `Connection` instance.#x1B[39;49;00m
+    #x1B[33m    """#x1B[39;49;00m#x1B[90m#x1B[39;49;00m
+    #x1B[90m#x1B[39;49;00m
+        params = #x1B[96mcls#x1B[39;49;00m._get_connection_params(conninfo, **kwargs)#x1B[90m#x1B[39;49;00m
+        timeout = timeout_from_conninfo(params)#x1B[90m#x1B[39;49;00m
+        rv = #x1B[94mNone#x1B[39;49;00m#x1B[90m#x1B[39;49;00m
+        attempts = conninfo_attempts(params)#x1B[90m#x1B[39;49;00m
+        conn_errors: #x1B[96mlist#x1B[39;49;00m[#x1B[96mtuple#x1B[39;49;00m[e.Error, #x1B[96mstr#x1B[39;49;00m]] = []#x1B[90m#x1B[39;49;00m
+        #x1B[94mfor#x1B[39;49;00m attempt #x1B[95min#x1B[39;49;00m attempts:#x1B[90m#x1B[39;49;00m
+            tdescr = (attempt.get(#x1B[33m"#x1B[39;49;00m#x1B[33mhost#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m), attempt.get(#x1B[33m"#x1B[39;49;00m#x1B[33mport#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m), attempt.get(#x1B[33m"#x1B[39;49;00m#x1B[33mhostaddr#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m))#x1B[90m#x1B[39;49;00m
+            descr = #x1B[33m"#x1B[39;49;00m#x1B[33mhost: #x1B[39;49;00m#x1B[33m%r#x1B[39;49;00m#x1B[33m, port: #x1B[39;49;00m#x1B[33m%r#x1B[39;49;00m#x1B[33m, hostaddr: #x1B[39;49;00m#x1B[33m%r#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m % tdescr#x1B[90m#x1B[39;49;00m
+            logger.debug(#x1B[33m"#x1B[39;49;00m#x1B[33mconnection attempt: #x1B[39;49;00m#x1B[33m%s#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m, descr)#x1B[90m#x1B[39;49;00m
+            #x1B[94mtry#x1B[39;49;00m:#x1B[90m#x1B[39;49;00m
+                conninfo = make_conninfo(#x1B[33m"#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m, **attempt)#x1B[90m#x1B[39;49;00m
+                gen = #x1B[96mcls#x1B[39;49;00m._connect_gen(conninfo, timeout=timeout)#x1B[90m#x1B[39;49;00m
+                rv = waiting.wait_conn(gen, interval=_WAIT_INTERVAL)#x1B[90m#x1B[39;49;00m
+            #x1B[94mexcept#x1B[39;49;00m e.Error #x1B[94mas#x1B[39;49;00m ex:#x1B[90m#x1B[39;49;00m
+                logger.debug(#x1B[33m"#x1B[39;49;00m#x1B[33mconnection failed: #x1B[39;49;00m#x1B[33m%s#x1B[39;49;00m#x1B[33m: #x1B[39;49;00m#x1B[33m%s#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m, descr, #x1B[96mstr#x1B[39;49;00m(ex))#x1B[90m#x1B[39;49;00m
+                conn_errors.append((ex, descr))#x1B[90m#x1B[39;49;00m
+            #x1B[94mexcept#x1B[39;49;00m e._NO_TRACEBACK #x1B[94mas#x1B[39;49;00m ex:#x1B[90m#x1B[39;49;00m
+                #x1B[94mraise#x1B[39;49;00m ex.with_traceback(#x1B[94mNone#x1B[39;49;00m)#x1B[90m#x1B[39;49;00m
+            #x1B[94melse#x1B[39;49;00m:#x1B[90m#x1B[39;49;00m
+                logger.debug(#x1B[33m"#x1B[39;49;00m#x1B[33mconnection succeeded: #x1B[39;49;00m#x1B[33m%s#x1B[39;49;00m#x1B[33m"#x1B[39;49;00m, descr)#x1B[90m#x1B[39;49;00m
+                #x1B[94mbreak#x1B[39;49;00m#x1B[90m#x1B[39;49;00m
+    #x1B[90m#x1B[39;49;00m
+        #x1B[94mif#x1B[39;49;00m #x1B[95mnot#x1B[39;49;00m rv:#x1B[90m#x1B[39;49;00m
+            last_ex = conn_errors[-#x1B[94m1#x1B[39;49;00m][#x1B[94m0#x1B[39;49;00m]#x1B[90m#x1B[39;49;00m
+            #x1B[94mif#x1B[39;49;00m #x1B[96mlen#x1B[39;49;00m(conn_errors) == #x1B[94m1#x1B[39;49;00m:#x1B[90m#x1B[39;49;00m
+&gt;               #x1B[94mraise#x1B[39;49;00m last_ex.with_traceback(#x1B[94mNone#x1B[39;49;00m)#x1B[90m#x1B[39;49;00m
+#x1B[1m#x1B[31mE               psycopg.OperationalError: connection is bad: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: No such file or directory#x1B[0m
+#x1B[1m#x1B[31mE               	Is the server running locally and accepting connections on that socket?#x1B[0m
+
+#x1B[1m#x1B[31m.venv/lib/python3.11/site-packages/psycopg/connection.py#x1B[0m:122: OperationalError</failure></testcase></testsuite></testsuites>

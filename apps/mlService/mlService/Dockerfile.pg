@@ -1,0 +1,8 @@
+ARG DB_VERSION=18
+FROM postgres:${DB_VERSION}
+
+ARG DB_VERSION
+
+RUN apt-get update && \
+    apt-get install -y postgresql-${DB_VERSION}-pgvector && \
+    rm -rf /var/lib/apt/lists/*

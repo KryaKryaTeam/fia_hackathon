@@ -25,11 +25,9 @@ function InputStreetModal() {
     );
 
     try {
-      if (streetInput.length === 0) {
-        return;
-      }
       await request.execute(streetInput);
       modalState.unactive('InputStreet');
+      modalState.active('ticket');
     } catch (error) {
       console.error(error);
       modalState.unactive('InputStreet');

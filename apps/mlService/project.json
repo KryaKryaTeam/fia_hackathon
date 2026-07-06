@@ -16,7 +16,7 @@
         "parallel": false,
         "commands": [
           "docker compose -f docker-compose.dev.backend.yaml down ",
-          "UID=$(id -u) GID=$(id -g) docker compose -f docker-compose.dev.backend.yaml up -d --build",
+          "docker compose -f docker-compose.dev.backend.yaml up -d --build",
           "docker compose -f docker-compose.dev.backend.yaml logs -f mlService"
         ]
       }
@@ -88,7 +88,10 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "command": "uv run pytest tests/",
+        "commands": [
+          "export HF_CACHE=$HONE/.cache/huggingface",
+          "uv run pytest tests/"
+        ],
         "cwd": "{projectRoot}"
       },
       "cache": true
