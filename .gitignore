@@ -33,6 +33,8 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/laws_database.json
+/categories.json
 
 # System Files
 .DS_Store

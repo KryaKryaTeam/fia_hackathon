@@ -38,8 +38,14 @@ services:
       - ./apps/mlService:/app:rw
       - ml_venv:/app/.venv
       - /app/apps/mlService/.egg-info
+<<<<<<< HEAD
       - /media/swedka/Additional/Projects/hf_cache:/usr/fia
       - ./laws_database.json:/data/laws_database.json:ro
+=======
+      - ml:/usr/fia
+      - ./laws_database.json:/data/laws_database.json:ro
+      - ./categories.json:/data/categories.json:ro
+>>>>>>> dd8654a (feat(MlService): add categories + improve the LLM prompt)
     networks:
       - fia_hackathon_network
     depends_on:

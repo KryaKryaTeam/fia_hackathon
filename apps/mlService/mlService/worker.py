@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 import os
 
 import redis
+=======
+import redis, os, json
+>>>>>>> dd8654a (feat(MlService): add categories + improve the LLM prompt)
 from dotenv import load_dotenv
 
 from .fetch_laws import fetch_laws
 from .generate_statement import generate_statement
+<<<<<<< HEAD
 from .get_pgvector import get_pgvector
+=======
+from .fetch_categories import fetch_categories
+>>>>>>> dd8654a (feat(MlService): add categories + improve the LLM prompt)
 
 load_dotenv()
 
@@ -52,16 +60,17 @@ def run_worker():
                 continue
 
             for msg_id, data in messages:
-                statement = process_message(data)
+                statement, categories = process_message(data)
 
-                r.xadd("ml_results", {"statement": statement, "id": data["id"]})
+                r.xadd("ml_results", {"statement": statement, "id": data["id"], "categories": json.dumps(categories)})
                 r.xack("ml_tasks", "ml-workers", msg_id)
 
 
 def process_message(data):
     pgvector = get_pgvector(data["text"])
     laws = fetch_laws(pgvector)
-
+    categories = fetch_categories(pgvector)
+    
     statement = generate_statement(
         data["text"],
         laws,
@@ -79,4 +88,4 @@ def process_message(data):
         data["createdAt"],
     )
 
-    return statement.text
+    return statement.text, categories
