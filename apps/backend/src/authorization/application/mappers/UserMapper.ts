@@ -6,6 +6,7 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { MapperTokens } from '@/common/Tokens';
 import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 import { RelationSlots } from '@/types/RelationSlots';
+import { AddressObject } from '@/application/domain/objects/Address.object';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class UserMapper extends Mapper<UserSchema, UserEntity> {
@@ -29,9 +30,11 @@ export class UserMapper extends Mapper<UserSchema, UserEntity> {
       ),
       email: schema.email,
       _additionalData: {
-        firstName: schema.firstName,
-        lastName: schema.lastName,
-        surName: schema.surName,
+        fullName: schema.fullName,
+        address: schema.address
+          ? AddressObject.create(schema.address)
+          : undefined,
+        phone: schema.phone,
       },
     });
   }
@@ -43,9 +46,9 @@ export class UserMapper extends Mapper<UserSchema, UserEntity> {
     user.authorizationProviders = entity.authorizationProviders?.map((ent) =>
       this.AuthProviderMapper.toSchema(ent),
     );
-    user.firstName = entity.additionalData.firstName;
-    user.lastName = entity.additionalData.lastName;
-    user.surName = entity.additionalData.surName;
+    user.address = entity.address?.value;
+    user.phone = entity.phone;
+    user.fullName = entity.fullName;
     user.role = entity.role;
     return user;
   }

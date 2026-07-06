@@ -7,6 +7,7 @@ import ModalState from '@/state/Modal.state';
 import StreetDataState from '@/state/StreetData.state';
 import { RequestLoginWithGoogle } from '../request/LoginWithGoogle.request';
 import { QueryClient } from '@tanstack/react-query';
+import { MyUserRequest } from '@/request/MyUser.request';
 const queryClient = new QueryClient();
 const container: Container = new Container();
 
@@ -23,5 +24,6 @@ container
   .inRequestScope();
 container.bind(TYPES.QUERY_CLIENT).toConstantValue(queryClient);
 container.bind(RequestLoginWithGoogle).toSelf().inRequestScope();
+container.bind(MyUserRequest).toSelf().inRequestScope();
 export default container;
 export { TYPES };

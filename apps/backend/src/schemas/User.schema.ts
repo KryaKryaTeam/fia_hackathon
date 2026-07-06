@@ -21,14 +21,14 @@ export class UserSchema {
 
   // Additional data for autofill
 
-  @Property({ type: 'string', name: 'first_name', nullable: true })
-  firstName?: string;
+  @Property({ type: 'string', name: 'full_name', nullable: true })
+  fullName?: string;
 
-  @Property({ type: 'string', name: 'last_name', nullable: true })
-  lastName?: string;
+  @Property({ type: 'string', nullable: true })
+  address?: string;
 
-  @Property({ type: 'string', name: 'sur_name', nullable: true })
-  surName?: string;
+  @Property({ type: 'string', nullable: true })
+  phone?: string;
 
   // Role
   @Enum({ items: () => RoleEnum, name: 'Role', default: RoleEnum.USER })

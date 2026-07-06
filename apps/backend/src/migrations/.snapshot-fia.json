@@ -555,6 +555,23 @@
           ],
           "mappedType": "enum"
         },
+        "address": {
+          "name": "address",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
         "avatar_url": {
           "name": "avatar_url",
           "type": "varchar(255)",
@@ -606,8 +623,8 @@
           "enumItems": [],
           "mappedType": "string"
         },
-        "first_name": {
-          "name": "first_name",
+        "full_name": {
+          "name": "full_name",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -640,25 +657,8 @@
           "enumItems": [],
           "mappedType": "uuid"
         },
-        "last_name": {
-          "name": "last_name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "unique": false,
-          "length": 255,
-          "precision": null,
-          "scale": null,
-          "default": null,
-          "comment": null,
-          "collation": null,
-          "enumItems": [],
-          "mappedType": "string"
-        },
-        "sur_name": {
-          "name": "sur_name",
+        "phone": {
+          "name": "phone",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,

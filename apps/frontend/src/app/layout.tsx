@@ -5,6 +5,7 @@ import MainHeader from '@/components/blocks/MainHeader';
 import MainFooter from '@/components/blocks/MainFooter';
 import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
 import InputStreetModal from '@/components/widget/InputStreetModal';
+import Providers from '@/components/Providers';
 
 const notoSansHeading = Noto_Sans({
   subsets: ['latin', 'cyrillic'],
@@ -40,13 +41,15 @@ export default function RootLayout({
       )}
     >
       <body>
-        <MainHeader />
-        <div className="fixed w-full h-full top-0 left-0 z-[999] pointer-events-none flex justify-center items-center">
-          <GeolocationAccessModal />
-          <InputStreetModal />
-        </div>
-        {children}
-        <MainFooter />
+        <Providers>
+          <MainHeader />
+          <div className="fixed w-full h-full top-0 left-0 z-[999] pointer-events-none flex justify-center items-center">
+            <GeolocationAccessModal />
+            <InputStreetModal />
+          </div>
+          {children}
+          <MainFooter />
+        </Providers>
       </body>
     </html>
   );

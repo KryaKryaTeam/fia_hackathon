@@ -129,6 +129,8 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
+    width: 100vw;
+    overflow-x: hidden;
   }
 
   button:not(:disabled),

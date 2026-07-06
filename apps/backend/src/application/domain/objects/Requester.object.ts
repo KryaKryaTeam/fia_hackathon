@@ -35,6 +35,8 @@ export class ApplicationRequesterObject {
       id: user.id,
       email: user.email,
       fullName: user.fullName,
+      address: user.address?.value,
+      phone: user.phone,
     });
   }
 }

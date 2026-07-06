@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
   },
 
   output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cinagloria-service-bucket.s3.us-east-1.amazonaws.com',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

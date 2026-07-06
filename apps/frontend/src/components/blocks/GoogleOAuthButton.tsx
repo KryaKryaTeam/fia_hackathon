@@ -45,8 +45,8 @@ export default function GoogleOAuthButton() {
           const request = container.get<RequestLoginWithGoogle>(
             RequestLoginWithGoogle,
           );
-          const existsBefore = await request.execute({ code: res.credential });
-          router.push(existsBefore ? '/app/profile/information' : '/auth/info');
+          await request.execute({ code: res.credential });
+          router.refresh();
         } catch (err) {
           setError(`Login failed: ${(err as Error).message}`);
         }

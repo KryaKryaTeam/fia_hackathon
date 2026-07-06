@@ -12,11 +12,12 @@ import { getEventClass } from '@/common/domain/EventRegister';
 import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 import { RelationSlots } from '@/types/RelationSlots';
 import { ApiError, DomainErrors, UserErrors } from '@/error/ApiError';
+import { AddressObject } from '@/application/domain/objects/Address.object';
 
 export interface IUserAdditionalData {
-  firstName?: string;
-  lastName?: string;
-  surName?: string;
+  fullName?: string;
+  phone?: string;
+  address?: AddressObject;
 }
 
 interface IUserEntityConstructorProps {
@@ -28,22 +29,12 @@ interface IUserEntityConstructorProps {
   _authorizationProviders: AuthProviderEntity[];
 }
 
-export interface IUserForAdminList {
-  id: string;
-  email: string;
-  avatarUrl: InternalFile<'user:avatar'>;
-  role: RoleEnum;
-}
-
 export interface IProfile {
   id: string;
   email: string;
-  fullName?: {
-    value: string;
-    firstName?: string;
-    lastName?: string;
-    surName?: string;
-  };
+  fullName?: string;
+  phone?: string;
+  address?: AddressObject;
   avatarURL: InternalFile<'user:avatar'>;
   role: RoleEnum;
 }
@@ -53,9 +44,11 @@ export interface IUserEntityJSON {
   email: string;
   avatarURL: string;
   role: RoleEnum;
-  firstName: string;
-  lastName: string;
-  surName: string;
+  additionalData: {
+    fullName?: string;
+    phone?: string;
+    address?: string;
+  };
   authorizationProvider: IAuthProviderConstructorProps[];
   events: IEventJSON<unknown>[];
 }
@@ -115,11 +108,6 @@ export class UserEntity extends Entity {
       _authorizationProviders: plain.authorizationProvider.map(
         (el) => new AuthProviderEntity(el),
       ),
-      _additionalData: {
-        firstName: plain.firstName,
-        lastName: plain.lastName,
-        surName: plain.surName,
-      },
     });
 
     if (plain.events && Array.isArray(plain.events)) {
@@ -142,9 +130,11 @@ export class UserEntity extends Entity {
       id: randomUUID(),
       email: 'fakeuser@example.com',
       avatarURL: 'fake-avatar-url',
-      firstName: 'John',
-      lastName: 'Doe',
-      surName: 'Smith',
+      additionalData: {
+        fullName: 'Ivanov Ivan Ivanovych',
+        phone: '+380000000000',
+        address: AddressObject.create('London, str. Backstreet 2').value,
+      },
       role: RoleEnum.USER,
       authorizationProvider: [],
       events: [],
@@ -159,9 +149,12 @@ export class UserEntity extends Entity {
       email: this.email,
       avatarURL: this._avatarUrl.value,
       role: this._role,
-      firstName: this._additionalData.firstName || '',
-      lastName: this._additionalData.lastName || '',
-      surName: this._additionalData.surName || '',
+      additionalData: {
+        ...this.additionalData,
+        address: this.additionalData.address
+          ? this._additionalData.address?.value
+          : undefined,
+      },
       authorizationProvider: this._authorizationProviders.map((p) =>
         p.toJSON(),
       ),
@@ -211,8 +204,9 @@ export class UserEntity extends Entity {
   }
 
   public get isProfileFull() {
-    if (!this._additionalData.firstName || !this._additionalData.lastName)
-      return false;
+    if (!this._additionalData.fullName) return false;
+    if (!this._additionalData.phone) return false;
+    if (!this._additionalData.address) return false;
 
     return true;
   }
@@ -222,11 +216,9 @@ export class UserEntity extends Entity {
   }
 
   public set additionalData(data: IUserAdditionalData) {
-    this._additionalData.firstName =
-      data.firstName ?? this._additionalData.firstName;
-    this._additionalData.lastName =
-      data.lastName ?? this._additionalData.lastName;
-    this._additionalData.surName = data.surName ?? this._additionalData.surName;
+    this._additionalData.fullName = data.fullName;
+    this._additionalData.phone = data.phone;
+    this._additionalData.address = data.address;
   }
 
   public get authorizationProviders() {
@@ -246,19 +238,15 @@ export class UserEntity extends Entity {
     };
   }
 
-  get forAdminList(): IUserForAdminList {
-    return {
-      id: this.id,
-      avatarUrl: this.avatarURL,
-      email: this.email,
-      role: this.role,
-    };
+  public get fullName() {
+    return this.additionalData.fullName;
   }
 
-  public get fullName() {
-    const { firstName, lastName, surName } = this._additionalData;
-
-    return [firstName, lastName, surName].filter(Boolean).join(' ');
+  public get phone() {
+    return this.additionalData.phone;
+  }
+  public get address() {
+    return this.additionalData.address;
   }
 
   public isAuthorizationDataCorrect(data: string) {

@@ -7,6 +7,7 @@ export class UserState {
   @observable isAuthorized = false;
   @observable authToken = '';
   @observable User: User | null = null;
+
   @action
   setAuthToken(token: string) {
     this.authToken = token;

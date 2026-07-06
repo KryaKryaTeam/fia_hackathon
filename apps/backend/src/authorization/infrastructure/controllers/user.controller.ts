@@ -5,14 +5,10 @@ import { Secure } from '../guards/auth/auth.guard';
 import { UpdateUserAdditionalDataDto } from '../dtos/UpdateUserAdditionalData';
 import { UpdateAdditionalDataCommand } from '@/authorization/application/useCases/UpdateAdditionalData.command';
 import { UpdateAvatarCommand } from '@/authorization/application/useCases/UpdateAvatar.command';
-import { UpdateAvatarReq } from '../dtos/UpdateAvatarReq';
 import { UserId } from '../decorators/user.decorator';
-import { UserEntity } from '@/authorization/domain/entities/User.entity';
-import { AllowRoles } from '../guards/role/role.guard';
-import { RoleEnum } from '@/types/RoleEnum';
 import { SetRoleToAUserCommand } from '@/authorization/application/useCases/SetRoleToAUser.command';
-import { UpdateRoleBodyDto } from '../dtos/UpdateRoleBody.dto';
 import { GetProfileQuery } from '@/authorization/application/useCases/GetProfile.query';
+import { AddressObject } from '@/application/domain/objects/Address.object';
 
 @Controller('user')
 export class UserController {
@@ -53,35 +49,38 @@ export class UserController {
     @UserId() id: string,
   ) {
     await this.updateUserAdditionalDataCommand.execute({
-      data: body,
+      data: {
+        ...body,
+        address: body.address ? AddressObject.create(body.address) : undefined,
+      },
       id,
     });
   }
 
-  @Patch('/avatar')
-  @Version('1')
-  @Secure()
-  @ApiBody({ type: UpdateAvatarReq })
-  async updateAvatar(@Body() body: UpdateAvatarReq, @UserId() id: string) {
-    await this.updateAvatarCommand.execute({
-      avatar: body.avatar,
-      id,
-    });
-  }
+  // @Patch('/avatar')
+  // @Version('1')
+  // @Secure()
+  // @ApiBody({ type: UpdateAvatarReq })
+  // async updateAvatar(@Body() body: UpdateAvatarReq, @UserId() id: string) {
+  //   await this.updateAvatarCommand.execute({
+  //     avatar: body.avatar,
+  //     id,
+  //   });
+  // }
 
-  @Patch('/role')
-  @Version('1')
-  @Secure()
-  @AllowRoles([RoleEnum.ADMIN])
-  @ApiBody({ type: UpdateRoleBodyDto })
-  async updateRole(
-    @UserId() actor: UserEntity,
-    @Body() dto: UpdateRoleBodyDto,
-  ) {
-    return await this.setRoleToAUserCommand.execute({
-      actor,
-      role: dto.role,
-      userToChangeId: dto.userId,
-    });
-  }
+  // @Patch('/role')
+  // @Version('1')
+  // @Secure()
+  // @AllowRoles([RoleEnum.ADMIN])
+  // @ApiBody({ type: UpdateRoleBodyDto })
+  // async updateRole(
+  //   @UserId() actor: UserEntity,
+  //   @Body() dto: UpdateRoleBodyDto,
+  // ) {
+  //   return await this.setRoleToAUserCommand.execute({
+  //     actor,
+  //     role: dto.role,
+  //     userToChangeId: dto.userId,
+  //   });
+  // }
 }

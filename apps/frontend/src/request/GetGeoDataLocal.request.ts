@@ -10,16 +10,18 @@ export interface GeoCoords {
 }
 
 @injectable()
-export default class GetGeoDataLocalRequest extends LocalRequest<void, GeoCoords, GeoCoords> {
+export default class GetGeoDataLocalRequest extends LocalRequest<
+  void,
+  GeoCoords,
+  GeoCoords
+> {
   mockOutputData: GeoCoords | undefined = {
     latitude: 50.4501,
     longitude: 30.5234,
     accuracy: 10,
   };
 
-  constructor(
-    @inject(TYPES.UserState) userState: UserState,
-  ) {
+  constructor(@inject(TYPES.UserState) userState: UserState) {
     super(userState);
   }
 

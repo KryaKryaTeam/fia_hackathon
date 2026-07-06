@@ -22,7 +22,7 @@ import { TransfromUserIdtoEntity } from './infrastructure/pipes/TransfromUserIdT
 import { AutoScannerModule } from '@/common/utils/AutoScanModule';
 import { GetCSRFToken } from './application/useCases/GetCSRFToken.command';
 import { GetProfileQuery } from './application/useCases/GetProfile.query';
-import { GetUsersByEmailQuery } from './application/useCases/GetUsersByEmail.query';
+// import { GetUsersByEmailQuery } from './application/useCases/GetUsersByEmail.query';
 import { LoginCommand } from './application/useCases/Login.command';
 import { RefreshCommand } from './application/useCases/Refresh.command';
 import { SetRoleToAUserCommand } from './application/useCases/SetRoleToAUser.command';
@@ -54,7 +54,7 @@ const providers: Provider[] = [
   },
   GetCSRFToken,
   GetProfileQuery,
-  GetUsersByEmailQuery,
+  // GetUsersByEmailQuery,
   LoginCommand,
   RefreshCommand,
   SetRoleToAUserCommand,

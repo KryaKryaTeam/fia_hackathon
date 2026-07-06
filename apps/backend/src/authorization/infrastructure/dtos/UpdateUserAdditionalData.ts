@@ -3,42 +3,21 @@ import { IsString, IsOptional, Length, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UpdateUserAdditionalDataDto {
-  @ApiPropertyOptional({ example: '@john_doe', nullable: true })
-  @IsOptional()
-  @IsString()
-  telegram?: string;
-
-  @ApiPropertyOptional({ example: 'john#1234', nullable: true })
-  @IsOptional()
-  @IsString()
-  discord?: string;
-
-  @ApiPropertyOptional({ example: 'John', nullable: true })
-  @IsOptional()
-  @IsString()
-  @Length(0, 50)
-  firstName?: string;
-
-  @ApiPropertyOptional({ example: 'Doe', nullable: true })
-  @IsOptional()
-  @IsString()
-  @Length(0, 50)
-  lastName?: string;
-
   @ApiPropertyOptional({ example: 'Smith', nullable: true })
   @IsOptional()
   @IsString()
-  @Length(0, 50)
-  surName?: string;
+  @Length(0, 300)
+  fullName?: string;
 
-  @ApiPropertyOptional({
-    example: '2010-05-20T00:00:00.000Z',
-    description: 'ISO 8601 date string',
-    nullable: true,
-    format: 'date',
-  })
+  @ApiPropertyOptional({ example: '+380000000000', nullable: true })
   @IsOptional()
-  @IsDate()
-  @Type(() => Date) // Важливо: перетворює рядок з JSON на об'єкт Date
-  birthDay?: Date;
+  @IsString()
+  @Length(0, 50)
+  phone?: string;
+
+  @ApiPropertyOptional({ example: 'London, str. BackStreet 5', nullable: true })
+  @IsOptional()
+  @IsString()
+  @Length(0, 300)
+  address?: string;
 }

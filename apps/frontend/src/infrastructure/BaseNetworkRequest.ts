@@ -49,7 +49,7 @@ export abstract class NetworkRequest<
   private retrying = 0;
 
   // if returns null/undefined -> caching is disabled.
-  protected cacheKey?(data: Data): unknown[];
+  public cacheKey?(data: Data): unknown[];
 
   async getCsrf(): Promise<string> {
     let csrfToken = '';

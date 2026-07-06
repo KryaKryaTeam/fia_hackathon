@@ -6,11 +6,14 @@ import GetGeoDataLocalRequest from '@/request/GetGeoDataLocal.request';
 import ModalState from '@/state/Modal.state';
 import { MapPin } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { usePathname } from 'next/navigation';
 
 const modalState = container.get<ModalState>(TYPES.ModalState);
 
 function GeolocationAccessModal() {
-  if (!modalState.isActive('Geo')) return null;
+  const path = usePathname();
+  if (!modalState.isActive('Geo') || !path.includes('/ticket/create'))
+    return null;
 
   async function handle() {
     const request = container.get<GetGeoDataLocalRequest>(TYPES.GetGeoData);

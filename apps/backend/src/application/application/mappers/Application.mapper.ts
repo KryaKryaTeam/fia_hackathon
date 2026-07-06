@@ -24,13 +24,9 @@ export class ApplicationMapper extends Mapper<
       requester: {
         id: schema.user.id,
         email: schema.user.email,
-        fullName: [
-          schema.user.firstName,
-          schema.user.lastName,
-          schema.user.surName,
-        ]
-          .filter(Boolean)
-          .join(' '),
+        fullName: [schema.user.fullName].filter(Boolean).join(' '),
+        address: schema.user.address,
+        phone: schema.user.phone,
       },
     });
   }
