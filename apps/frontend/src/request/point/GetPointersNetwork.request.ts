@@ -59,6 +59,7 @@ export default class GetPointersNetworkRequest extends NetworkRequest<
   Pointer[],
   Pointer[]
 > {
+  name = 'GetPointersNetworkRequest';
   withCSRF = false;
   authorized = false;
   method: HTTPMethod = 'GET';

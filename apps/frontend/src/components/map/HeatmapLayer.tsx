@@ -5,7 +5,7 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat';
 
-type HeatPoint = [number, number, number?];
+type HeatPoint = [number, number, number];
 
 interface HeatmapLayerProps {
   points: HeatPoint[];

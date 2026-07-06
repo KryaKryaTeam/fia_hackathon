@@ -35,7 +35,6 @@ export default function BaseMap() {
     fetchPointers();
   }, []);
 
-  const totalCount = pointers.reduce((acc, pointer) => acc + pointer.count, 0);
 
   const heatPoints = useMemo(() => {
     return pointers

@@ -2,9 +2,6 @@
 import DotField from '@/components/DotField';
 import Silk from '@/components/Silk';
 import { Button } from '@/components/ui/button';
-import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
-import container, { TYPES } from '@/infrastructure/Container';
-import ModalState from '@/state/Modal.state';
 import Link from 'next/link';
 
 function Page() {

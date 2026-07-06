@@ -1,20 +1,21 @@
 import { injectable } from "inversify";
-import { action, makeObservable, observable, computed, makeAutoObservable } from "mobx";
+import { action, observable, makeAutoObservable } from "mobx";
 
 @injectable()
 export default class StreetDataState {
-    @observable
-    private _street: string = "";
+  @observable
+  private _street: string = "";
 
-    constructor() {
-        makeAutoObservable(this);
-    }
-    @action
-    set street(data: string) {
-        this._street = data;
-    }
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-    get street(): string {
-        return this._street;
-    }
+  @action
+  set street(data: string) {
+    this._street = data;
+  }
+
+  get street(): string {
+    return this._street;
+  }
 }
