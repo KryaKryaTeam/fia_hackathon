@@ -4,7 +4,7 @@ import { action, makeObservable, observable, computed, makeAutoObservable } from
 @injectable()
 export default class StreetDataState {
     @observable
-    private _street: string = "";
+    private _street = "";
 
     constructor() {
         makeAutoObservable(this);

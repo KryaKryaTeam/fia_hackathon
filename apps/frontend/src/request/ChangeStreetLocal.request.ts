@@ -10,7 +10,7 @@ export default class ChangeStreetLocalRequest extends LocalRequest<
   void,
   string
 > {
-  mockOutputData: string = 'Mocked Street Name';
+  mockOutputData = 'Mocked Street Name';
 
   constructor(
     @inject(TYPES.UserState) protected override readonly userState: UserState,
