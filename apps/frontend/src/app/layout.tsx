@@ -5,7 +5,6 @@ import MainHeader from '@/components/blocks/MainHeader';
 import MainFooter from '@/components/blocks/MainFooter';
 import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
 import InputStreetModal from '@/components/widget/InputStreetModal';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const notoSansHeading = Noto_Sans({
   subsets: ['latin', 'cyrillic'],

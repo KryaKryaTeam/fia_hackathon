@@ -4,15 +4,12 @@ import container, { TYPES } from '@/infrastructure/Container';
 import { Button } from '../ui/button';
 import GetGeoDataLocalRequest from '@/request/GetGeoDataLocal.request';
 import ModalState from '@/state/Modal.state';
-import { useRouter } from 'next/navigation';
 import { MapPin } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 const modalState = container.get<ModalState>(TYPES.ModalState);
 
 function GeolocationAccessModal() {
-  const router = useRouter();
-
   if (!modalState.isActive('Geo')) return null;
 
   async function handle() {
