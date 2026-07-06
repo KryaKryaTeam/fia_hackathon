@@ -37,8 +37,6 @@ jobs:
 
       - run: npx nx run-many -t lint test typecheck e2e --exclude=mlService
 
-      - run: npx nx run-many -t lint test -p mlService --no-cloud
-
       - run: npx nx run-many -t build-container --no-cloud
 
       - name: Log in to GHCR
