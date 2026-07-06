@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-import os
-
-import redis
-=======
 import redis, os, json
->>>>>>> dd8654a (feat(MlService): add categories + improve the LLM prompt)
 from dotenv import load_dotenv
 
 from .fetch_laws import fetch_laws
 from .generate_statement import generate_statement
-<<<<<<< HEAD
 from .get_pgvector import get_pgvector
-=======
 from .fetch_categories import fetch_categories
->>>>>>> dd8654a (feat(MlService): add categories + improve the LLM prompt)
 
 load_dotenv()
 
@@ -81,7 +72,7 @@ def process_message(data):
             "email": data["requester_email"],
             "fullName": data["requester_fullName"]
             if data["requester_fullName"]
-            else None,  # noqa: E501
+            else None,
             "address": data["address"] if data["address"] else None,
             "phone": data["requester_phone"] if data["requester_phone"] else None,
         },
