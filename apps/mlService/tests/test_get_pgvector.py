@@ -1,5 +1,6 @@
 from mlService.worker import process_message
 
+
 def test_get_pgvector():
     data = {
         "text": "hello",
