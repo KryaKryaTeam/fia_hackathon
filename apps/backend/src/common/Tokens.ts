@@ -32,6 +32,7 @@ export enum ServiceTokens {
   FileLinkerService = 'FILE_LINKER_SERVICE',
   GeoCoderService = 'GEO_CODER_SERVICE',
   PDFGeneratorService = 'PDF_GENERATOR_SERVICE',
+  MlService = 'ML_SERVICE',
 }
 
 export enum MetadataTokens {

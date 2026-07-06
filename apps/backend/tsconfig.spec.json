@@ -3,6 +3,10 @@
   "compilerOptions": {
     "outDir": "./out-tsc/jest",
     "types": ["jest", "node"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "rootDirs": ["src", "."],
+    "target": "es2022",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "composite": false,
@@ -11,8 +15,10 @@
     "declarationMap": false,
     "emitDeclarationOnly": false,
     "strictPropertyInitialization": false,
+    "baseUrl": ".",
+
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": [

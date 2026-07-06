@@ -8,6 +8,7 @@ import { LocationObject } from '@/application/domain/objects/Location.object';
 import { AddressObject } from '@/application/domain/objects/Address.object';
 import { ApplicationRequesterObject } from '@/application/domain/objects/Requester.object';
 import type { IApplicationRepository } from '../bounds/IApplicationRepository';
+import type { IMlService } from '../bounds/IMlService';
 
 export enum LocationType {
   address = 'address',
@@ -36,6 +37,8 @@ export class CreateApplicationCommand extends Command<
   @Inject(ReposTokens.ApplicationRepository)
   private readonly applicationRepository: IApplicationRepository;
 
+  @Inject(ServiceTokens.MlService) private readonly mlService: IMlService;
+
   override async implementation(
     data: CreateApplicationCommandData,
   ): Promise<CreateApplicationCommandResult> {
@@ -62,6 +65,8 @@ export class CreateApplicationCommand extends Command<
     });
 
     await this.applicationRepository.save(application);
+
+    await this.mlService.sendToService(application);
 
     return { application };
   }

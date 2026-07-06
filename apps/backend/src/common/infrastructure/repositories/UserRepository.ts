@@ -32,11 +32,9 @@ export class UserRepository
 
   async save(user: UserEntity): Promise<void> {
     const schemaData = this.userMapper.toSchema(user);
-    const managedSchema = this.repository
+    await this.repository
       .getEntityManager()
-      .merge(this._entitySchema, schemaData);
-
-    this.repository.getEntityManager().persist(managedSchema);
+      .upsert(this._entitySchema, schemaData);
   }
 
   async existsByEmail(email: string): Promise<boolean> {

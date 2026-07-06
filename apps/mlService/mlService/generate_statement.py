@@ -1,7 +1,8 @@
+import os
+
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-import os 
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -12,20 +13,22 @@ GOOGLE_CLOUD_LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION")
 GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME")
 
 client = genai.Client(
-    enterprise=GOOGLE_GENAI_USE_ENTERPRISE, project=GOOGLE_CLOUD_PROJECT, location=GOOGLE_CLOUD_LOCATION
+    enterprise=GOOGLE_GENAI_USE_ENTERPRISE,
+    project=GOOGLE_CLOUD_PROJECT,
+    location=GOOGLE_CLOUD_LOCATION,
 )
 
+
 def generate_statement(text, laws_plain, address, location, requester, createdAt):
-    laws = ''
+    laws = ""
 
     for law in laws_plain:
         laws += f"{law[1]}: {law[2]}\n"
 
     response = client.models.generate_content(
         model=GEMINI_MODEL_NAME,
-        contents = {
-            "text": 
-f"""
+        contents={
+            "text": f"""
 Ти є юридичним помічником, який допомагає громадянам України складати офіційні звернення до органів державної влади або місцевого самоврядування.
 
 На основі наданої інформації склади грамотний, офіційний текст заяви українською мовою.
@@ -40,12 +43,39 @@ f"""
 Вимоги:
 - Пиши офіційно-діловим стилем.
 - Не вигадуй жодних фактів, яких немає у вхідних даних.
-- Використовуй лише ті статті Конституції, які були надані.
+- Використовуй лише ті статті Конституції, які були надані. Але старайся застосувати хочаб одну наведену статтю
 - Якщо певна стаття не стосується описаної ситуації, не згадуй її.
 - Логічно поясни, яким чином наведені статті Конституції стосуються ситуації.
 - Наприкінці сформулюй чітке прохання до компетентного органу розглянути звернення, провести перевірку та вжити необхідних заходів.
 - Не використовуй Markdown.
 - Поверни лише готовий текст звернення без будь-яких пояснень чи коментарів.
+- Рядки з маркерами ПІДПИС: та ДАТА: повинні обов'язково бути присутніми в самому кінці заяви та починатися саме з цих слів великими літерами.
+
+СТРУКТУРА (ШАБЛОН), ЯКОЇ ТИ ЗОБОВ'ЯЗАНИЙ ДОТРИМУВАТИСЬ ДОСЛІВНО:
+
+Кому: [Посада та назва органу влади в давальному відмінку, наприклад: Міському голові Львівської міської ради]
+
+Від: [ПІБ заявника в родовому відмінку]
+Адреса: [Адреса заявника]
+Телефон: [Телефон заявника]
+Електронна пошта: [Email заявника]
+
+ЗАЯВА
+
+[Основний текст заяви. Перший абзац — детальний опис проблеми з прив'язкою до адреси події. Наступні абзаци — правове обґрунтування на основі наданих статей законів.]
+
+На підставі викладеного та керуючись чинним законодавством України,
+
+ПРОШУ:
+
+1. [Перша вимога]
+2. [Друга вимога]
+3. [Третя вимога]
+...
+n. [Вимога n]
+
+ПІДПИС: З повагою, ____ [Ініціали та Прізвище заявника, наприклад: І. Петренко]
+ДАТА: [Дата створення звернення у форматі "ДД місяця РРРР року", наприклад: 04 липня 2026 року]
 
 Дані звернення:
 
@@ -53,10 +83,10 @@ f"""
 {createdAt}
 
 Заявник:
-{"ПІБ: " + requester["fullName"] if requester["fullName"] else ''}
+{"ПІБ: " + requester["fullName"] if requester["fullName"] else ""}
 Email: {requester["email"]}
-{"Телефон: " + requester["phone"] if requester["phone"] else ''}
-{"Адреса заявника: " + requester["address"] if requester["address"] else ''}
+{"Телефон: " + requester["phone"] if requester["phone"] else ""}
+{"Адреса заявника: " + requester["address"] if requester["address"] else ""}
 
 Адреса події:
 {address}
@@ -72,9 +102,7 @@ Email: {requester["email"]}
 {laws}
 """
         },
-        config={
-            "temperature": 0.7
-        }
+        config={"temperature": 0.7},
     )
 
     return response

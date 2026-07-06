@@ -1,5 +1,5 @@
 import { MapperTokens, ServiceTokens } from '@/common/Tokens';
-import { Module, Provider } from '@nestjs/common';
+import { forwardRef, Module, Provider } from '@nestjs/common';
 import { GeoCoderService } from './infrastructure/services/GeoCoderService';
 import { CreateApplicationCommand } from './application/commands/CreateApplication.command';
 import { ApplicationMapper } from './application/mappers/Application.mapper';
@@ -9,11 +9,15 @@ import { MlService } from './infrastructure/services/MlService';
 import { ApplicationSoket } from './infrastructure/gateway/websocket.gateway';
 import { PDFGeneratorService } from './infrastructure/services/PDFGeneratorService';
 import { FilesModule } from '@/files/files.module';
+import { AuthorizationModule } from '@/authorization/authorization.module';
+import { CompleteApplicationCommand } from './application/commands/CompleteApplication.command';
 
 const providers: Provider[] = [
   { provide: ServiceTokens.GeoCoderService, useClass: GeoCoderService },
   { provide: MapperTokens.ApplicationMapper, useClass: ApplicationMapper },
   { provide: ServiceTokens.PDFGeneratorService, useClass: PDFGeneratorService },
+  { provide: ServiceTokens.MlService, useClass: MlService },
+  CompleteApplicationCommand,
   CreateApplicationCommand,
   GetMyApplicationQuery,
   MlService,
@@ -21,7 +25,10 @@ const providers: Provider[] = [
 ];
 @Module({
   providers,
-  imports: [FilesModule],
+  imports: [
+    forwardRef(() => FilesModule),
+    forwardRef(() => AuthorizationModule),
+  ],
   exports: [...providers],
   controllers: [ApplicationController],
 })

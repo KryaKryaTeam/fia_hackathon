@@ -16,6 +16,7 @@ import { UserCreatedHandlerFile } from './infrastructure/handlers/UserCreateHand
 import { DeleteGarbageCommand } from './application/useCases/DeleteGarbage.command';
 import { GarbageCollectorCronJobService } from './infrastructure/cron/GarbageCollectorCronJob.cron';
 import { AutoScannerModule } from '@/common/utils/AutoScanModule';
+import { ApplicationModule } from '@/application/application.module';
 
 const providers: Provider[] = [
   { provide: MapperTokens.FileMapper, useClass: FileMapper },
@@ -43,6 +44,7 @@ const providers: Provider[] = [
   imports: [
     DiscoveryModule,
     forwardRef(() => AuthorizationModule),
+    forwardRef(() => ApplicationModule),
     AutoScannerModule.forFeatureAsync(process.cwd(), [
       forwardRef(() => FilesModule),
     ]),

@@ -36,5 +36,5 @@ export class ApplicationSchema {
     eager: true,
     referenceColumnName: 'id',
   })
-  user: Ref<UserSchema>;
+  user: UserSchema;
 }

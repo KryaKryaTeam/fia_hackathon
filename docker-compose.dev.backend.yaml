@@ -31,11 +31,15 @@ services:
       context: .
       dockerfile: ./apps/mlService/Dockerfile.dev
     env_file: .mlService.env
+    environment:
+      - UV_LINK_MODE=copy
+      - UV_PROJECT_ENVIRONMENT=/tmp/.venv
     volumes:
       - ./apps/mlService:/app:rw
+      - ml_venv:/app/.venv
       - /app/apps/mlService/.egg-info
-      - ml:/usr/fia
-      - ~/Downloads/laws_database.json:/data/laws_database.json:ro
+      - /media/swedka/Additional/Projects/hf_cache:/usr/fia
+      - ./laws_database.json:/data/laws_database.json:ro
     networks:
       - fia_hackathon_network
     depends_on:
@@ -61,3 +65,4 @@ volumes:
   deps_backend:
   postgres_data:
   ml:
+  ml_venv:

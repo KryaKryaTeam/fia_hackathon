@@ -17,6 +17,7 @@ import type { IFileRepository } from '@/files/application/bounds/IFileRepository
 import { FileEntity } from '@/files/domain/entities/File.entity';
 import { RelationString } from '@/files/domain/objects/RelationSlots';
 import { ApiError, UserErrors } from '@/error/ApiError';
+import { EntityManager } from '@mikro-orm/core';
 
 export interface IHandshakeOutput {
   email: string;
@@ -111,13 +112,13 @@ export abstract class BaseAuthorizationProvider<T> {
       await this.userRepository.save(findUser);
     } else {
       existsUser = true;
-      console.log('MEEEEEEEEEEEOW!!!');
       if (
         !findUser.hasAuthorizationProvider(this.type) ||
         !findUser.isAuthorizationDataCorrect(handshakeData.authorizationData)
       )
         ApiError.throw(UserErrors.UNAUTHORIZED);
     }
+
     return { user: findUser, existsUser };
   }
 

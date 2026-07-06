@@ -20,11 +20,25 @@ export class ApplicationRepository
     await this.repository.upsert(ent_);
   }
   async findById(id: string): Promise<ApplicationEntity> {
-    const ent_ = await this.repository.findOneOrFail({ id });
-    return this.applicationMapper.toEntity(ent_);
+    const ent_ = await this.repository.findOneOrFail(
+      { id },
+      { populate: ['user'] },
+    );
+    return await this.applicationMapper.toEntity(ent_);
   }
   async findByUserId(userId: string): Promise<ApplicationEntity[]> {
-    const ent_ = await this.repository.find({ user: { id: userId } });
-    return ent_.map((e) => this.applicationMapper.toEntity(e));
+    const ent_ = await this.repository.find(
+      {
+        user: { id: userId },
+      },
+      { populate: ['user'] },
+    );
+
+    const mapped = [];
+    for (const ent__ of ent_) {
+      mapped.push(await this.applicationMapper.toEntity(ent__));
+    }
+
+    return mapped;
   }
 }

@@ -1,5 +1,10 @@
 import { IMlService } from '@/application/application/bounds/IMlService';
+import { CompleteApplicationCommand } from '@/application/application/commands/CompleteApplication.command';
 import { ApplicationEntity } from '@/application/domain/entities/Application.entity';
+import type { IDBContext } from '@/common/application/IDBcontext';
+import { BaseTokens } from '@/common/Tokens';
+import { MikroORM } from '@mikro-orm/core';
+import { CreateRequestContext } from '@mikro-orm/decorators/legacy';
 import {
   Injectable,
   OnModuleInit,
@@ -18,6 +23,8 @@ export class MlService implements IMlService, OnModuleInit, OnModuleDestroy {
   private isRunning = true;
 
   @Inject() configService: ConfigService;
+  @Inject() completeApplicationCommand: CompleteApplicationCommand;
+  @Inject(BaseTokens.DBContext) private readonly dbContext: IDBContext;
 
   async addToStream(streamName: string, data: Record<string, string>) {
     const payload = Object.entries(data).flat();
@@ -73,6 +80,13 @@ export class MlService implements IMlService, OnModuleInit, OnModuleDestroy {
             this.logger.log(`Get message ${messageId} from stream:`, data);
 
             lastId = messageId;
+
+            await this.dbContext.isolate(async () => {
+              await this.completeApplicationCommand.execute({
+                applicationId: data.id,
+                text: data.statement,
+              });
+            });
           }
         }
       } catch (error) {

@@ -2,8 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Command } from '@/common/application/Command';
 import { AuthorizationProviderTypes } from '@/types/AuthorizationProvidersTypes';
 import type { IAuthorizationProviderService } from '../bounds/IAuthorizationProviderService';
-import type { IUserRepository } from '../bounds/IUserRepository';
-import { ReposTokens, ServiceTokens } from '@/common/Tokens';
+import { ServiceTokens } from '@/common/Tokens';
 import type { IJWTTokenService } from '../bounds/IJWTTokenService';
 
 interface LoginCommandProps {
@@ -25,9 +24,6 @@ export class LoginCommand extends Command<
   @Inject(ServiceTokens.AuthorizationProviderService)
   private readonly authorizationProviderService: IAuthorizationProviderService;
 
-  @Inject(ReposTokens.UserRepository)
-  private readonly userRepository: IUserRepository;
-
   @Inject(ServiceTokens.JWTService)
   private readonly jwtService: IJWTTokenService;
 
@@ -38,7 +34,7 @@ export class LoginCommand extends Command<
         data.loginData,
       );
 
-    await this.userRepository.save(user);
+    // await this.userRepository.save(user);
 
     const tokens = this.jwtService.sign({
       role: user.role,

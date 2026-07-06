@@ -24,9 +24,13 @@ export class DBContext implements IDBContext {
     return this.em;
   }
 
-  async isolate(fun: () => Promise<void> | void): Promise<void> {
-    await this.em.transactional(async (forkedEm) => {
-      await fun();
+  async isolate(
+    fun: (forkedEm: EntityManager) => Promise<void> | void,
+  ): Promise<void> {
+    const forkedEm = this.em.fork();
+
+    await forkedEm.transactional(async (txEm) => {
+      await fun(txEm);
     });
   }
 }

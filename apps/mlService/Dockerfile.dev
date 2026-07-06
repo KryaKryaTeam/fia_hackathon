@@ -4,6 +4,9 @@ WORKDIR /app
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+RUN groupadd -g 1000 fiauser && \
+    useradd -u 1000 -g fiauser -m -s /bin/bash fiauser
+
 COPY apps/mlService/pyproject.toml ./apps/mlService/
 COPY apps/mlService/uv.lock* ./apps/mlService/
 
@@ -15,7 +18,11 @@ RUN uv sync
 
 WORKDIR /app
 
-RUN mkdir /usr/fia
+RUN mkdir -p /usr/fia && chown -R 1000:1000 /usr/fia
+RUN mkdir -p /.cache/uv && chown -R 1000:1000 /.cache/uv
+
+USER fiauser
+
 ENV HF_CACHE=/usr/fia
 ENV HF_HOME=/usr/fia
 ENV SENTENCE_TRANSFORMERS_HOME=/usr/fia

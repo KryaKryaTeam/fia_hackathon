@@ -1,7 +1,7 @@
 import { IPDFGeneratorService } from '@/application/application/bounds/IPDFGeneratorService';
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Readable } from 'node:stream';
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 
 interface ParsedDocument {
   headerBlock: string;
@@ -11,7 +11,23 @@ interface ParsedDocument {
   date: string;
 }
 @Injectable()
-export class PDFGeneratorService implements IPDFGeneratorService {
+export class PDFGeneratorService
+  implements IPDFGeneratorService, OnModuleInit, OnModuleDestroy
+{
+  private browser: Browser;
+  async onModuleInit() {
+    this.browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
+    });
+  }
+  async onModuleDestroy() {
+    await this.browser.close();
+  }
   async generate(text: string): Promise<Readable> {
     const parsed = this.parseAiResponse(text);
     return await this.generateWithP(parsed);
@@ -26,7 +42,7 @@ export class PDFGeneratorService implements IPDFGeneratorService {
       : '';
 
     const bodyMatch = cleanText.match(
-      /ЗАЯВА\s*([\s\S]*?)(?=На підставі викладеного|ПРОШУ:)/i,
+      /ЗАЯВА\s*([\s\S]*?)(?=На підставі викладеного|ПРОШУ:|З повагою:?)/i,
     );
     let bodyHtml = '';
     if (bodyMatch) {
@@ -37,12 +53,21 @@ export class PDFGeneratorService implements IPDFGeneratorService {
         .map((paragraph) => `<p class="bodyPart">${paragraph.trim()}</p>`)
         .join('\n');
     }
+    const introMatch = cleanText.match(
+      /(На підставі викладеного[\s\S]*?)(?=ПРОШУ:|З повагою:?)/i,
+    );
+    if (introMatch && !bodyHtml.includes(introMatch[1].trim())) {
+      bodyHtml += `\n<p class="bodyPart">${introMatch[1].trim()}</p>`;
+    }
 
-    const requestsBlockMatch = cleanText.match(/ПРОШУ:([\s\S]*?)(?=Підпис:)/i);
+    const requestsBlockMatch = cleanText.match(
+      /ПРОШУ:([\s\S]*?)(?=Підпис:|З повагою:|06 липня|$)/i,
+    );
     const requests: string[] = [];
     if (requestsBlockMatch) {
       const lines = requestsBlockMatch[1].split('\n');
       for (const line of lines) {
+        // Витягуємо текст без цифр (наприклад, "1.  Розглянути..." -> "Розглянути...")
         const itemMatch = line.match(/^\s*\d+[.)]\s*(.*)/);
         if (itemMatch) {
           requests.push(itemMatch[1].trim());
@@ -52,11 +77,20 @@ export class PDFGeneratorService implements IPDFGeneratorService {
       }
     }
 
-    const signatureMatch = cleanText.match(/Підпис:\s*([\s\S]*?)(?=Дата:|$)/i);
-    const signature = signatureMatch ? signatureMatch[1].trim() : '';
+    const signatureMatch = cleanText.match(
+      /(?:Підпис:|З повагою:?)\s*([\s\S]*?)(?=\d{2}\s[а-яА-ЯёЁіІїЇєЄґҐ]+\s\d{4}|Дата:|$)/i,
+    );
+    const signature = signatureMatch
+      ? signatureMatch[1].trim().split('\n')[0]
+      : ''; // беремо лише перший рядок ім'я
 
-    const dateMatch = cleanText.match(/Дата:\s*(.*)/i);
-    const date = dateMatch ? dateMatch[1].trim() : '';
+    const dateMatch = cleanText.match(
+      /(?:Дата:\s*(.*)|(\d{2}\s[а-яА-ЯёЁіІїЇєЄґҐ]+\s\d{4}(?:\sроку)?))$/i,
+    );
+    let date = '';
+    if (dateMatch) {
+      date = (dateMatch[1] || dateMatch[2] || '').trim();
+    }
 
     return {
       headerBlock,
@@ -66,10 +100,8 @@ export class PDFGeneratorService implements IPDFGeneratorService {
       date,
     };
   }
-
   private async generateWithP(parsed: ParsedDocument) {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+    const page = await this.browser.newPage();
 
     try {
       page.setContent(`
@@ -102,7 +134,7 @@ export class PDFGeneratorService implements IPDFGeneratorService {
             }
             .grid_head {
                 display: grid;
-                grid-template-columns: 2fr 1fr;
+                grid-template-columns: 3fr 2fr;
                 gap: 1em;
                 font-size: 0.9rem;
             }
@@ -183,7 +215,7 @@ export class PDFGeneratorService implements IPDFGeneratorService {
             <h1 class="reportT">Заява</h1>
 
        
-            ${parsed.bodyHtml}
+            ${parsed.bodyHtml.replaceAll('На підставі викладеного та керуючись чинним законодавством України,', '')}
             <br />
             <span class="ending">
             На підставі викладеного та керуючись чинним законодавством України,
@@ -203,12 +235,15 @@ export class PDFGeneratorService implements IPDFGeneratorService {
         `);
       const stream = await page.createPDFStream({});
 
-      return Readable.fromWeb(stream);
+      const r = Readable.fromWeb(stream);
+      r.on('close', () => {
+        page.close();
+      });
+
+      return r;
     } catch {
-      throw new Error('Failed to start');
-    } finally {
       await page.close();
-      await browser.close();
+      throw new Error('Failed to start');
     }
   }
 }

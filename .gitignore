@@ -63,3 +63,8 @@ test-output
 .mlService.env
 .backend.env
 .frontend.env
+
+/apps/mlService/.venv
+/apps/mlService/.egg-info
+/apps/mlService/mlService/__pycache__
+laws_database.json

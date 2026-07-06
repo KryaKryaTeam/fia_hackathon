@@ -16,6 +16,7 @@ export interface ApplicationJSON {
   requester: IApplicationRequester;
   createdAt: Date;
   status: ApplicationStatus;
+  pdfFile: InternalFile<'application:pdf'> | undefined;
 }
 
 export interface IApplication {
@@ -26,6 +27,7 @@ export interface IApplication {
   requester: ApplicationRequesterObject;
   createdAt: Date;
   status: ApplicationStatus;
+  pdfFile: InternalFile<'application:pdf'> | undefined;
 }
 
 export interface ApplicationCreateData {
@@ -49,14 +51,18 @@ export class ApplicationEntity extends Entity {
   public readonly createdAt: Date;
   private status_: ApplicationStatus = ApplicationStatus.waiting;
 
-  private pdfFile: InternalFile<'application:pdf'> | undefined;
-  private categories: string[];
+  private pdfFile_: InternalFile<'application:pdf'> | undefined;
+  // private categories: string[];
 
   get status() {
     return this.status_;
   }
+  get pdfFile() {
+    return this.pdfFile_;
+  }
 
-  completeTask() {
+  completeTask(pdfFile: InternalFile<'application:pdf'>) {
+    this.pdfFile_ = pdfFile;
     this.status_ = ApplicationStatus.processed;
   }
 
@@ -69,6 +75,7 @@ export class ApplicationEntity extends Entity {
     this.requester = data.requester;
     this.createdAt = data.createdAt;
     this.status_ = data.status;
+    this.pdfFile_ = data.pdfFile;
   }
 
   static validate(data: IApplication) {
@@ -81,6 +88,7 @@ export class ApplicationEntity extends Entity {
       id: randomUUID(),
       createdAt: new Date(),
       status: ApplicationStatus.waiting,
+      pdfFile: undefined,
     };
 
     this.validate(data);
@@ -92,6 +100,7 @@ export class ApplicationEntity extends Entity {
       address: AddressObject.create(loadData.address),
       location: LocationObject.create(loadData.location),
       requester: ApplicationRequesterObject.create(loadData.requester),
+      pdfFile: undefined,
     };
 
     this.validate(data);
@@ -107,6 +116,7 @@ export class ApplicationEntity extends Entity {
       requester: this.requester.value,
       text: this.text,
       status: this.status,
+      pdfFile: this.pdfFile,
     };
   }
 }

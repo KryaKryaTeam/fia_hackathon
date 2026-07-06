@@ -7,6 +7,7 @@ import { ReposTokens, ServiceTokens } from '@/common/Tokens';
 import type { ILoadFileService } from '@/files/application/bounds/ILoadFileService';
 import { RelationString } from '@/files/domain/objects/RelationSlots';
 import type { IFileRepository } from '@/files/application/bounds/IFileRepository';
+import { InternalFile } from '@/files/domain/objects/InternalFile.object';
 
 interface CompleteApplicationCommandData {
   applicationId: string;
@@ -40,7 +41,16 @@ export class CompleteApplicationCommand extends Command<
     );
 
     await this.fileRepository.save(result);
+    const link = await this.loadFile.getLink(result);
 
-    application.completeTask();
+    application.completeTask(
+      InternalFile.define(result.url, 'application:pdf', 'application:pdf'),
+    );
+
+    console.log(link);
+
+    await this.applicationRepo.save(application);
+
+    this.socket.sendToSpecificRoom(application.id, link);
   }
 }
