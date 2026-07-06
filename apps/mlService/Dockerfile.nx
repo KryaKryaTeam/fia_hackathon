@@ -11,8 +11,7 @@ RUN addgroup --system --gid 1001 pythonjs && \
 
 COPY ./apps/mlService/dist ./dist_packages
 
-# RUN uv pip install --system --no-cache ./dist_packages/*.whl
-RUN uv sync
+RUN uv pip install --system --no-cache ./dist_packages/*.whl
 RUN rm -rf ./dist_packages
 
 USER pythonapp
