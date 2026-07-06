@@ -5,6 +5,7 @@ import container from '../../infrastructure/Container';
 import { usePathname, useRouter } from 'next/navigation';
 import { RequestLoginWithGoogle } from '../../request/LoginWithGoogle.request';
 import { Button } from '../ui/button';
+import { env } from 'next-runtime-env';
 
 declare global {
   interface Window {
@@ -29,7 +30,7 @@ export default function GoogleOAuthButton() {
   const initializeGoogle = () => {
     if (!window.google) return;
 
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    const clientId = env('NEXT_PUBLIC_GOOGLE_CLIENT_ID');
 
     if (!clientId) {
       setError('Google Client ID is missing.');

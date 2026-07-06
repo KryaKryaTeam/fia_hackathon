@@ -1,5 +1,7 @@
+import { env } from 'next-runtime-env';
+
 const BASE_URL: string =
-  process.env.NEXT_PUBLIC_BACKEND_BASE_URL ||
+  env('NEXT_PUBLIC_BACKEND_BASE_URL') ||
   (typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
 
 export const URLEnum = {
