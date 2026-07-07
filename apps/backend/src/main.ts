@@ -21,7 +21,7 @@ async function bootstrap() {
     origin: [
       process.env.ALLOWED_ORIGIN,
       'http://localhost:3000',
-      'http://192.168.31.30:3000',
+      'https://nondeclamatory-beverlee-unverdantly.ngrok-free.dev',
     ],
   } as CorsOptions);
   app.enableVersioning({
