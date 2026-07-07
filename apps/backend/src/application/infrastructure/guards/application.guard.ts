@@ -10,6 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import RedisConfig from '@/config/Redis.config';
 import type { ConfigType } from '@nestjs/config';
+import type { Request as ExpressRequest } from 'express';
 
 @Injectable()
 export class ApplicationGuard implements CanActivate {
@@ -26,10 +27,10 @@ export class ApplicationGuard implements CanActivate {
     });
   }
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean> | Observable<boolean> {
-    const key = `user:limit:${userId}`;
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request: ExpressRequest = context.switchToHttp().getRequest();
+    if (!request.user_id) return false;
+    const key = `user:limit:${request.user_id}`;
     const MAX_LIMIT_PER_WEEK = 10;
     const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
