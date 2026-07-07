@@ -124,6 +124,9 @@
 
   html {
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    width: 100vw;
+    overflow-x: hidden;
+    position: relative;
   }
 
   body {
@@ -131,6 +134,7 @@
     color: var(--foreground);
     width: 100vw;
     overflow-x: hidden;
+    position: relative;
   }
 
   button:not(:disabled),

@@ -14,14 +14,18 @@ export interface IUserEntityData {
   avatarURL: string;
   role: RoleEnum;
   email: string;
-  fullName: IUserFullName;
+  fullName: string | undefined;
+  address: string | undefined;
+  phone: string | undefined;
 }
 
 export interface IUserConstructorProps {
   id: string;
   email: Email;
   avatarUrl: AvatarURL;
-  fullName?: IUserFullName;
+  fullName?: string | undefined;
+  address?: string | undefined;
+  phone?: string | undefined;
   role: string;
 }
 
@@ -33,7 +37,9 @@ export interface IUserShortProfile {
 export interface IUserAdditionalData {
   id: string;
   email: string;
-  fullName: IUserFullName | null;
+  fullName: string | null;
+  address: string | null;
+  phone: string | null;
 }
 
 export default class User {
@@ -41,7 +47,9 @@ export default class User {
   public readonly email: string;
   private _avatarUrl: AvatarURL;
   private _role: RoleEnum;
-  private _fullName: IUserFullName | null;
+  private _fullName: string | null;
+  private _phone: string | null;
+  private _address: string | null;
 
   constructor(partial: IUserConstructorProps) {
     this.id = partial.id;
@@ -49,14 +57,28 @@ export default class User {
     this._avatarUrl = partial.avatarUrl;
     this._role = partial.role as RoleEnum;
     this._fullName = partial.fullName ?? null;
+    this._phone = partial.phone ?? null;
+    this._address = partial.address ?? null;
   }
 
-  public static create(id: string, email: Email, avatarUrl: AvatarURL) {
+  public static create(
+    id: string,
+    email: Email,
+    avatarUrl: AvatarURL,
+    {
+      address,
+      fullName,
+      phone,
+    }: { fullName?: string; phone?: string; address?: string },
+  ) {
     return new User({
       id,
       email,
       avatarUrl,
       role: RoleEnum.USER,
+      fullName,
+      address,
+      phone,
     });
   }
 
@@ -73,22 +95,6 @@ export default class User {
 
   changeAvatarURL(avatar_url: AvatarURL) {
     this._avatarUrl = avatar_url;
-  }
-
-  updateFullName(fullName: {
-    firstName: string;
-    lastName: string;
-    surName: string;
-  }) {
-    if (this._fullName && fullName) {
-      this._fullName.firstName = fullName.firstName;
-      this._fullName.lastName = fullName.lastName;
-      this._fullName.surName = fullName.surName;
-      this._fullName.value =
-        fullName.firstName.trim() +
-        fullName.lastName.trim() +
-        fullName.surName.trim();
-    }
   }
 
   clearAdditionData() {
@@ -109,6 +115,8 @@ export default class User {
 
   public get isProfileFull() {
     if (!this._fullName) return false;
+    if (!this._address) return false;
+    if (!this._phone) return false;
     return true;
   }
 
@@ -124,6 +132,8 @@ export default class User {
       id: this.id,
       email: this.email,
       fullName: this.fullName,
+      address: this._address,
+      phone: this._phone,
     };
   }
 
@@ -134,6 +144,8 @@ export default class User {
       avatarURL: this._avatarUrl.value,
       role: this._role,
       fullName: this._fullName!,
+      address: this._address!,
+      phone: this._phone!,
     };
   }
 }

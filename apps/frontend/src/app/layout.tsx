@@ -12,6 +12,15 @@ const notoSansHeading = Noto_Sans({
   variable: '--font-heading',
 });
 
+import type { Viewport } from 'next';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1, // Забороняє масштабування вище 100%
+  userScalable: false, // Повністю вимикає можливість зуму пальцями
+};
+
 //@ts-expect-error ddd
 const oswald = Oswald({ variable: '--font-logo' });
 

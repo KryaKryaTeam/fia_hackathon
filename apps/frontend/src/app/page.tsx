@@ -30,24 +30,24 @@ function Page() {
         <div className="h-20"></div>
         <section className="w-full flex-1 flex justify-center items-center flex-col space-y-20 relative">
           <div className="absolute mx-auto my-auto w-250 h-150 bg-primary blur-3xl rounded-full opacity-20 z-[-2]"></div>
-          <h1 className="text-[8rem] font-['Oswald'] font-black font-stretch-extra-condensed leading-32 text-center tracking-tight uppercase">
+          <h1 className="text-[8rem] font-['Oswald'] font-black font-stretch-extra-condensed leading-32 text-center tracking-tight uppercase max-md:text-5xl max-md:leading-16">
             Твоя ініціатива <br /> зміни зараз
           </h1>
           <div className="flex row">
             <Link href={'/ticket/create'}>
-              <Button className="w-100 h-15 font-semibold text-lg font-heading">
+              <Button className="w-100 h-15 font-semibold text-lg font-heading max-md:w-60">
                 Написати заяву
               </Button>{' '}
             </Link>
           </div>
         </section>
       </div>
-      <section className="w-full h-screen grid grid-cols-2 grid-rows-1">
-        <div className="flex flex-col items-center justify-center gap-10">
-          <div className="font-bold font-['Oswald'] text-[4rem] w-full max-w-150">
+      <section className="w-full h-screen grid grid-cols-2 grid-rows-1 max-md:grid-cols-1 max-md:grid-rows-2 max-md:space-y-20 max-md:h-max max-md:py-20">
+        <div className="flex flex-col items-center justify-center gap-10 ">
+          <div className="font-bold font-['Oswald'] text-[4rem] w-full max-md:max-w-90 max-w-150 max-md:text-[3rem] ">
             Про проєкт
           </div>
-          <p className="max-w-150 text-2xl">
+          <p className="max-w-150 text-2xl max-md:max-w-90 max-md:text-lg">
             ТіЗ - це сучасна SmartCity платформа, яка ліквідує бюрократичний
             бар'єр між громадянами та органами управління (ОСББ, комунальними
             службами, міською владою). Ми об'єднали штучний інтелект, геодані та
@@ -57,7 +57,7 @@ function Page() {
           </p>
         </div>
         <div className="flex flex-col items-center justify-center">
-          <div className="max-w-150 w-full h-200 rounded-md overflow-hidden relative">
+          <div className="max-w-150 w-full h-200 rounded-md overflow-hidden relative max-md:max-w-90 max-md:h-100">
             <Silk
               speed={5}
               scale={1}

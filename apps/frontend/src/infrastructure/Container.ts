@@ -13,6 +13,7 @@ import { TicketState } from '@/state/Ticket.state';
 import { CurrentApplicationState } from '@/state/CurrentApplication.state';
 import { CreateApplicationRequest } from '@/request/CreateApplication.request';
 import { SocketState } from '@/state/Soket.state';
+import { LogoutRequest } from '@/request/Logout.request';
 const queryClient = new QueryClient();
 const container: Container = new Container();
 
@@ -36,5 +37,6 @@ container.bind(RequestLoginWithGoogle).toSelf().inRequestScope();
 container.bind(MyUserRequest).toSelf().inRequestScope();
 container.bind(UpdateMyDataRequest).toSelf().inRequestScope();
 container.bind(CreateApplicationRequest).toSelf().inRequestScope();
+container.bind(LogoutRequest).toSelf().inRequestScope();
 export default container;
 export { TYPES };

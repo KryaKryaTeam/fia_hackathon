@@ -13,8 +13,24 @@ import { inject } from 'inversify';
 
 export class MyUserRequest extends NetworkRequest<
   undefined,
-  { id: string; email: string; avatarURL: string; role: string },
-  { id: string; email: string; avatarURL: string; role: string }
+  {
+    id: string;
+    email: string;
+    avatarURL: string;
+    role: string;
+    fullName?: string;
+    phone?: string;
+    address?: string;
+  },
+  {
+    id: string;
+    email: string;
+    avatarURL: string;
+    role: string;
+    fullName?: string;
+    phone?: string;
+    address?: string;
+  }
 > {
   override name = 'my_user';
   override method: HTTPMethod = 'GET';
@@ -41,12 +57,25 @@ export class MyUserRequest extends NetworkRequest<
     email: string;
     avatarURL: string;
     role: string;
-  }): { id: string; email: string; avatarURL: string; role: string } {
+    fullName: string;
+    phone: string;
+    address: string;
+  }): {
+    id: string;
+    email: string;
+    avatarURL: string;
+    role: string;
+    fullName?: string;
+    phone?: string;
+    address?: string;
+  } {
+    console.log(data);
     this.userState.setUser(
       User.create(
         data.id,
         Email.create(data.email),
         AvatarURL.create(data.avatarURL),
+        { address: data.address, fullName: data.fullName, phone: data.phone },
       ),
     );
     return data;

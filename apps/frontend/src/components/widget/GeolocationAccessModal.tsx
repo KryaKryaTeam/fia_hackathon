@@ -56,7 +56,7 @@ function GeolocationAccessModal() {
   }
 
   return (
-    <Card className="max-w-120 pointer-events-auto shadow-2xl border-primary/20 backdrop-blur-md">
+    <Card className="max-w-120 pointer-events-auto shadow-2xl border-primary/20 backdrop-blur-md max-md:max-w-90">
       <CardHeader className="flex flex-row items-center space-x-2.5">
         <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary shrink-0">
           <MapPin className="w-6 h-6" />

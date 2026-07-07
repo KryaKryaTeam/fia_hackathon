@@ -35,7 +35,7 @@ function InputStreetModal() {
   }
 
   return (
-    <Card className="max-w-120 pointer-events-auto">
+    <Card className="max-w-120 pointer-events-auto max-md:max-w-90">
       <CardHeader className="flex flex-row space-x-2 items-center">
         <div className="flex items-center justify-center w-12 h-10  bg-primary/10 text-primary">
           <MapPinPen />

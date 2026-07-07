@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 function MainFooter() {
   return (
-    <footer className=" h-150 w-screen  relative">
+    <footer className="h-150 w-screen relative max-md:h-max">
       <div className="absolute w-full h-full z-[-1] opacity-20 bg-linear-180 from-55% from-background to-primary"></div>
-      <div className="grid grid-cols-3 grid-rows-[1fr_100px] h-full w-full text-foreground pt-10 font-sans px-30">
+      <div className="grid grid-cols-3 grid-rows-[1fr_100px] h-full w-full text-foreground pt-10 font-sans px-30 max-md:grid-cols-1 max-md:grid-rows-[1fr_1fr_1fr_100px] max-md:px-5 max-md:space-y-10 max-md:pb-10">
         <div className="">
           <span className="flex items-center space-x-2">
             <div className="font-bold font-['Oswald'] text-4xl leading-none">
@@ -38,9 +38,6 @@ function MainFooter() {
             </Link>
             <Link className="text-foreground leading-4" href="/tickets/create">
               Написати заяву
-            </Link>
-            <Link className="text-foreground leading-4" href="/map">
-              Карта скарг
             </Link>
             <Link
               className="text-foreground leading-4"
@@ -84,7 +81,7 @@ function MainFooter() {
             </Link>
           </nav>
         </div>
-        <div className="col-span-3 grid grid-cols-[48px_1fr] grid-rows-[24px_24px] gap-x-4">
+        <div className="col-span-3 grid grid-cols-[48px_1fr] grid-rows-[24px_24px] gap-x-4 max-md:col-span-1 max-md:grid-rows-[48px_48px]">
           <Image
             src={'/KryaKryaTeamLogo.png'}
             width={48}

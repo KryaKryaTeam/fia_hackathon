@@ -9,6 +9,7 @@ export const URLEnum = {
   LOGIN: `${BASE_URL}/auth/login?provider=GOOGLE`,
   CSRF: `${BASE_URL}/auth/csrf`,
   REFRESH: `${BASE_URL}/auth/refresh`,
+  LOGOUT: `${BASE_URL}/auth/logout`,
 
   // --- USER ---
   ME: `${BASE_URL}/user/me`,

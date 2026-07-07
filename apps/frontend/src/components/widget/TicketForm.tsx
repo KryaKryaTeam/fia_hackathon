@@ -49,7 +49,7 @@ function TicketForm() {
 
   return (
     <form
-      className="w-full max-w-300 h-max flex flex-col"
+      className="w-full max-w-300 h-max flex flex-col max-md:max-w-90"
       onSubmit={form.handleSubmit(onSubmit)}
     >
       <section className="w-full max-w-300 rounded-lg flex flex-row gap-2 h-max bg-background p-2">
