@@ -13,14 +13,18 @@ import type { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class ApplicationGuard implements CanActivate {
-  @Inject(RedisConfig.KEY)
-  private readonly redisConfig: ConfigType<typeof RedisConfig>;
+  private readonly redisClient: Redis;
 
-  private readonly redisClient = new Redis({
-    host: this.redisConfig.host,
-    port: this.redisClient.port,
-    ttl: this.redisClient.ttl,
-  });
+  constructor(
+    @Inject(RedisConfig.KEY)
+    private readonly redisConfig: ConfigType<typeof RedisConfig>,
+  ) {
+    this.redisClient = new Redis({
+      host: redisConfig.host,
+      port: redisConfig.port,
+      // ioredis doesn't actually have a `ttl` option
+    });
+  }
 
   async canActivate(
     context: ExecutionContext,
