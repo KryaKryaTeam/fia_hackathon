@@ -48,6 +48,6 @@ export class ApplicationGuard implements CanActivate {
       );
     }
 
-    return false;
+    return true;
   }
 }
