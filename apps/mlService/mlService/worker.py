@@ -1,10 +1,13 @@
-import redis, os, json
+import json
+import os
+
+import redis
 from dotenv import load_dotenv
 
+from .fetch_categories import fetch_categories
 from .fetch_laws import fetch_laws
 from .generate_statement import generate_statement
 from .get_pgvector import get_pgvector
-from .fetch_categories import fetch_categories
 
 load_dotenv()
 
@@ -18,6 +21,7 @@ def create_redis():
     )
     r.xadd("ml_tasks", {"init": "true"})
     r.xadd("ml_results", {"init": "true"})
+    r.xadd("ml_errors", {"init": "true"})
     try:
         r.xgroup_create(
             name="ml_tasks",
@@ -55,17 +59,37 @@ def run_worker():
                 continue
 
             for msg_id, data in messages:
-                statement, categories = process_message(data)
+                if data.get("init") == "true":
+                    r.xack("ml_tasks", "ml-workers", msg_id)
+                    continue
 
-                r.xadd("ml_results", {"statement": statement, "id": data["id"], "categories": json.dumps(categories)})
-                r.xack("ml_tasks", "ml-workers", msg_id)
+                task_id = data.get("id") or "unknown"
+
+                try:
+                    statement, categories = process_message(data)
+
+                    r.xadd(
+                        "ml_results",
+                        {
+                            "statement": statement,
+                            "id": task_id,
+                            "categories": json.dumps(categories),
+                        },
+                    )
+
+                    r.xack("ml_tasks", "ml-workers", msg_id)
+                    print(f"✅ Заявку {task_id} успішно оброблено!")
+                except Exception as e:
+                    print(f"❌ Помилка обробки повідомлення {msg_id}: {e}")
+                    r.xack("ml_tasks", "ml-workers", msg_id)
+                    r.xadd("ml_errors", {"id": task_id})
 
 
 def process_message(data):
     pgvector = get_pgvector(data["text"])
     laws = fetch_laws(pgvector)
     categories = fetch_categories(pgvector)
-    
+
     statement = generate_statement(
         data["text"],
         laws,
