@@ -18,12 +18,16 @@ def create_redis():
     )
     r.xadd("ml_tasks", {"init": "true"})
     r.xadd("ml_results", {"init": "true"})
-    r.xgroup_create(
-        name="ml_tasks",
-        groupname="ml-workers",
-        id="$",
-        mkstream=True,
-    )
+    try:
+        r.xgroup_create(
+            name="ml_tasks",
+            groupname="ml-workers",
+            id="$",
+            mkstream=True,
+        )
+    except Exception as e:
+        print(e)
+        print("Skipping group creation")
 
     return r
 

@@ -60,20 +60,17 @@ def create_schema():
                 );
             """)
 
-            # cur.execute("""
-            #     CREATE TABLE IF NOT EXISTS ml.categories (
-            #         id BIGSERIAL PRIMARY KEY,
-            #         category_name TEXT NOT NULL,
-            #         embedding VECTOR(1024) NOT NULL
-            #     );
-            # """)
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS ml.categories (
+                    id BIGSERIAL PRIMARY KEY,
+                    category_name TEXT NOT NULL,
+                    embedding VECTOR(1024) NOT NULL
+                );
+            """)
 
             if os.getenv("LOAD_SCRIPT", "").lower() == "true":
                 cur.execute("SELECT EXISTS (SELECT 1 FROM ml.law_embeddings LIMIT 1)")
                 laws_not_empty = cur.fetchone()[0]
-
-                # cur.execute("SELECT EXISTS (SELECT 1 FROM ml.categories LIMIT 1)")
-                # categories_not_empty = cur.fetchone()[0]
 
                 if laws_not_empty:
                     print("law_embeddings already contains data. Skipping import.")
@@ -86,16 +83,21 @@ def create_schema():
                         ["law_name", "url", "article"],
                     )
 
-                # if categories_not_empty:
-                #     print("categories already contains data. Skipping import.")
-                # else:
-                # import_embeddings(
-                #     cur,
-                #     "/data/categories.json",
-                #     "ml.categories",
-                #     "category_name",
-                #     ["text"],
-                # )
+            if os.getenv("LOAD_CATEGORIES").lower() == "true":
+                cur.execute("SELECT EXISTS (SELECT 1 FROM ml.categories LIMIT 1)")
+                categories_not_empty = cur.fetchone()[0]
+
+                if categories_not_empty:
+                    print("categories already contains data. Skipping import.")
+                else:
+                    import_embeddings(
+                        cur,
+                        "/data/categories.json",
+                        "ml.categories",
+                        "category_name",
+                        ["text"],
+                    )
+
 
 
 print("Service is started!")
