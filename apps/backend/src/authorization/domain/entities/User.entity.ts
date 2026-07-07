@@ -235,6 +235,9 @@ export class UserEntity extends Entity {
         'user:avatar',
       ),
       role: this.role,
+      fullName: this.fullName,
+      address: this.address,
+      phone: this.phone,
     };
   }
 
