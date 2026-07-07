@@ -18,7 +18,11 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   app.enableCors({
     credentials: true,
-    origin: [process.env.ALLOWED_ORIGIN, 'http://localhost:3000'],
+    origin: [
+      process.env.ALLOWED_ORIGIN,
+      'http://localhost:3000',
+      'http://192.168.31.30:3000',
+    ],
   } as CorsOptions);
   app.enableVersioning({
     type: VersioningType.URI,
