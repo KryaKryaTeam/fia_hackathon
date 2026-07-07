@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { FileUser, HomeIcon, LogOut, MenuIcon, UserRound } from 'lucide-react';
+import { HomeIcon, LogOut, MenuIcon, UserRound } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useIsMobile } from '@/lib/useIsMobilde';
 import { useRequestMutation } from '@/lib/useRequestMutation';
