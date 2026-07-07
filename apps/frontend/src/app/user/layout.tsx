@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { observer } from 'mobx-react-lite';
 import container, { TYPES } from '@/infrastructure/Container';
 import { UserState } from '@/state/User.state';
-import { Skeleton } from '@/components/ui/skeleton';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const userState = container.get<UserState>(TYPES.UserState);

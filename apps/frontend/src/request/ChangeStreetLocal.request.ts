@@ -1,7 +1,6 @@
 import container from '@/infrastructure/Container';
 import { TYPES } from '@/infrastructure/Container.types';
 import { LocalRequest } from '@/infrastructure/LocalRequest';
-import StreetDataState from '@/state/StreetData.state';
 import { TicketState } from '@/state/Ticket.state';
 import { UserState } from '@/state/User.state';
 import { inject, injectable } from 'inversify';
@@ -16,7 +15,6 @@ export default class ChangeStreetLocalRequest extends LocalRequest<
 
   constructor(
     @inject(TYPES.UserState) protected override readonly userState: UserState,
-    @inject(TYPES.StreetState) private readonly streetState: StreetDataState,
   ) {
     super(userState);
   }
