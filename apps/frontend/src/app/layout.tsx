@@ -1,8 +1,8 @@
 import './global.css';
 import { Golos_Text, Noto_Sans, Oswald } from 'next/font/google';
 import { cn } from '@/lib/utils';
-import MainHeader from '@/components/blocks/MainHeader';
-import MainFooter from '@/components/blocks/MainFooter';
+import MainHeader from '@/components/widget/MainHeader';
+import MainFooter from '@/components/widget/MainFooter';
 import GeolocationAccessModal from '@/components/widget/GeolocationAccessModal';
 import InputStreetModal from '@/components/widget/InputStreetModal';
 import Providers from '@/components/Providers';

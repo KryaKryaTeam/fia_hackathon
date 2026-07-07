@@ -1,6 +1,8 @@
+import container from '@/infrastructure/Container';
 import { TYPES } from '@/infrastructure/Container.types';
 import { LocalRequest } from '@/infrastructure/LocalRequest';
 import StreetDataState from '@/state/StreetData.state';
+import { TicketState } from '@/state/Ticket.state';
 import { UserState } from '@/state/User.state';
 import { inject, injectable } from 'inversify';
 
@@ -19,11 +21,11 @@ export default class ChangeStreetLocalRequest extends LocalRequest<
     super(userState);
   }
 
-   async mapData(data: string): Promise<string> {
+  async mapData(data: string): Promise<string> {
     return data;
   }
 
-   async onSuccess(data: string): Promise<void> {
-    this.streetState.street = data
+  async onSuccess(data: string): Promise<void> {
+    container.get<TicketState>(TicketState).chooseAddress(data);
   }
 }

@@ -21,6 +21,8 @@ client = genai.Client(
 def generate_statement(text, laws_plain, address, location, requester, createdAt):
     laws = ""
 
+    print(requester)
+
     for law in laws_plain:
         laws += f"{law[1]}: {law[2]}\n"
 
@@ -59,9 +61,9 @@ def generate_statement(text, laws_plain, address, location, requester, createdAt
 Кому: [Посада та назва органу влади в давальному відмінку, наприклад: Міському голові 
 Львівської міської ради]
 
-Від: [ПІБ заявника в родовому відмінку]
+Від: [{requester["fullName"] if requester["fullName"] else "ПІБ заявника"} в родовому відмінку]
 Адреса: [Адреса заявника]
-Телефон: [Телефон заявника]
+Телефон: [{requester["phone"] if requester["phone"] else "Номер телефону заявника"}]
 Електронна пошта: [Email заявника]
 
 ЗАЯВА

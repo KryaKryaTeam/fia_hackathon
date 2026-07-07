@@ -9,7 +9,6 @@ import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
   path: '/ws',
-  namespace: 'application',
   cors: { origin: '*' },
   pingTimeout: 20000,
   pingInterval: 25000,
@@ -21,6 +20,9 @@ export class ApplicationSoket {
   @SubscribeMessage('join_application_room')
   @UseGuards(AuthGuard)
   handleRoomJoin(client: Socket, data: { applicationId: string }) {
+    console.log(
+      `👤 Клієнт ${client.id} успішно зайшов у кімнату: ${`app_${data.applicationId}`}`,
+    );
     client.join(`app_${data.applicationId}`);
   }
 

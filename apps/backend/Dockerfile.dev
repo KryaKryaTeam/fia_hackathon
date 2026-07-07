@@ -23,7 +23,6 @@ WORKDIR /app/apps/backend
 ENV CHOKIDAR_USEPOLLING=true
 ENV WATCHPACK_POLLING=true
 
-# Фіксуємо змінні оточення окремо
 ENV NODE_OPTIONS="-r tsconfig-paths/register"
 
 RUN mkdir /usr/fia

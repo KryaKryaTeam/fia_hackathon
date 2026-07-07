@@ -22,13 +22,23 @@ export class UserMapper extends Mapper<UserSchema, UserEntity> {
     return new UserEntity({
       id: schema.id,
       _role: schema.role,
-      _authorizationProviders: schema.authorizationProviders
-        .map((schema) =>
-          schema.unwrap()
-            ? this.AuthProviderMapper.toEntity(schema.unwrap())
-            : null,
-        )
-        .filter((a) => a !== null),
+      _authorizationProviders:
+        schema.authorizationProviders
+          ?.map((provider: any) => {
+            if (provider && typeof provider.unwrap === 'function') {
+              const unpacked = provider.unwrap();
+              return unpacked
+                ? this.AuthProviderMapper.toEntity(unpacked)
+                : null;
+            }
+
+            if (provider) {
+              return this.AuthProviderMapper.toEntity(provider);
+            }
+
+            return null;
+          })
+          .filter((a): a is NonNullable<typeof a> => a !== null) ?? [],
       _avatarUrl: InternalFile.define<typeof RelationSlots.user.avatar>(
         schema.avatarUrl,
         'user:avatar',

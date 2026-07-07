@@ -12,5 +12,9 @@ export const URLEnum = {
 
   // --- USER ---
   ME: `${BASE_URL}/user/me`,
+  UPDATE_DATA: `${BASE_URL}/user/additional`,
+
+  // --- APPLICATION ---
+  CREATE_APPLICATION: `${BASE_URL}/application`,
 } as const;
 export default URLEnum;

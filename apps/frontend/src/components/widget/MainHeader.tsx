@@ -15,9 +15,11 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { FileUser, LogOut, UserRound } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const MainHeader = observer(() => {
   const { data, isLoading } = useRequestQuery(MyUserRequest, undefined);
+  const router = useRouter();
 
   return (
     <header className="fixed top-0 left-0 w-screen flex row">
@@ -50,8 +52,12 @@ const MainHeader = observer(() => {
                 <DropdownMenuItem>
                   Переглянути мої заяви <FileUser />
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Змінити дані користувача <UserRound />
+                <DropdownMenuItem
+                  onClick={() => {
+                    router.push('/user/changeData');
+                  }}
+                >
+                  Оновити мої дані <UserRound />
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-red-300">
                   Вийти <LogOut />
