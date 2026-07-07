@@ -3,18 +3,20 @@ import { GetMyApplicationQuery } from '@/application/application/commands/GetMyA
 import { UserEntity } from '@/authorization/domain/entities/User.entity';
 import { UserId } from '@/authorization/infrastructure/decorators/user.decorator';
 import { Secure } from '@/authorization/infrastructure/guards/auth/auth.guard';
-import { Body, Controller, Get, Inject, Post, Version } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, UseGuards, Version } from '@nestjs/common';
 import { CreateApplicationBody } from '../dtos/CreateApplicationBody.dto';
 import { AddressObject } from '@/application/domain/objects/Address.object';
 import { LocationObject } from '@/application/domain/objects/Location.object';
 import { ApiResponse } from '@nestjs/swagger';
 import { CreateApplicationResponse } from '../dtos/CreateApplicationResponse.dto';
+import { ApplicationGuard } from '../guards/application.guard';
 
 @Controller('/application')
 export class ApplicationController {
   @Inject() private readonly createApplicationCommand: CreateApplicationCommand;
   @Inject() private readonly getMyApplicationsQuery: GetMyApplicationQuery;
 
+  @UseGuards(ApplicationGuard)
   @Post()
   @Secure()
   @Version('1')
