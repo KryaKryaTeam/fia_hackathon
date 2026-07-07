@@ -67,7 +67,7 @@ function Page() {
     <div className="w-full h-screen flex justify-center items-center">
       <div className="absolute my-auto -right-100 blur-3xl w-200 h-screen bg-primary rounded-full opacity-10 -z-20"></div>
       <div className="absolute my-auto -left-100 blur-3xl w-200 h-screen bg-primary rounded-full opacity-10 -z-20"></div>
-      <Card className="h-100 max-w-200 max-md:max-w-90">
+      <Card className="h-100 max-w-200 max-md:max-w-90 w-full">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Заява</CardTitle>
           <p className="text-foreground/70 text-xs font-light">

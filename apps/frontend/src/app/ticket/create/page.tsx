@@ -1,7 +1,9 @@
 'use client';
 import Orb from '@/components/Orb';
+import GoogleOAuthButton from '@/components/widget/GoogleOAuthButton';
 import TicketForm from '@/components/widget/TicketForm';
 import container, { TYPES } from '@/infrastructure/Container';
+import { useIsMobile } from '@/lib/useIsMobilde';
 import ModalState from '@/state/Modal.state';
 import { UserState } from '@/state/User.state';
 import { LucideMessageCircleWarning } from 'lucide-react';
@@ -12,6 +14,8 @@ import { useEffect, useState } from 'react';
 function TicketPage() {
   const modal = container.get<ModalState>(TYPES.ModalState);
   const user = container.get<UserState>(TYPES.UserState);
+
+  const isMobile = useIsMobile();
 
   const [ShowAlert, setShowAlert] = useState(false);
   useEffect(() => {
@@ -26,23 +30,26 @@ function TicketPage() {
   modal.active('Geo');
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 w-full max-md:space-y-10">
       <h1 className="text-4xl font-black font-heading">Щось турбує?</h1>
       <div className="absolute my-auto -right-100 blur-3xl w-200 h-screen bg-primary rounded-full opacity-10 -z-20"></div>
       <div className="absolute my-auto -left-100 blur-3xl w-200 h-screen bg-primary rounded-full opacity-10 -z-20"></div>
-      <div className="relative w-200 h-200 max-md:w-90 max-md:h-90 max-md:py-10">
-        <Orb
-          hue={283}
-          hoverIntensity={0}
-          rotateOnHover={false}
-          forceHoverState={false}
-        />
-      </div>
+      {isMobile ? null : (
+        <div className="relative max-w-200 max-h-200 w-1/2 h-[50vh] max-md:w-90 max-md:h-90 max-md:py-10">
+          <Orb
+            hue={283}
+            hoverIntensity={0}
+            rotateOnHover={false}
+            forceHoverState={false}
+          />
+        </div>
+      )}
+
       {user.isAuthorized ? (
         <TicketForm />
       ) : (
         <div className="w-full p-5 flex items-center justify-center">
-          Авторизуйтесь будь-ласка
+          <GoogleOAuthButton fullSize={true} />
         </div>
       )}
       {user.isAuthorized && !user.User?.isProfileFull && ShowAlert ? (

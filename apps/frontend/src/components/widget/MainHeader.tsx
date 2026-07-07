@@ -34,7 +34,9 @@ const MainHeader = observer(() => {
     return (
       <header className="fixed top-0 left-0 w-screen flex row items-center py-5">
         <div className="w-max flex px-6 flex-row items-center rounded-full relative overflow-clip">
-          <div className="w-10 font-bold font-['Oswald'] text-2xl">ТіЗ</div>
+          <Link href={'/'} className="w-max h-max">
+            <div className="w-10 font-bold font-['Oswald'] text-2xl">ТіЗ</div>
+          </Link>
         </div>
         <div className="flex-2 flex row justify-end items-center px-6 space-x-4">
           <DropdownMenu dir="rtl">
@@ -112,9 +114,11 @@ const MainHeader = observer(() => {
     <header className="fixed top-0 left-0 w-screen flex row">
       <div className="w-max py-3 mt-5 flex px-15 max-h-15 mx-12 flex-row items-center rounded-full relative overflow-clip">
         <div className="absolute w-full h-full blur-sm bg-secondary opacity-30 left-[-15] z-[-1]"></div>
-        <div className="w-10 font-bold font-['Oswald'] text-2xl">ТіЗ</div>
+        <Link href={'/'} className="w-max h-max">
+          <div className="w-10 font-bold font-['Oswald'] text-2xl">ТіЗ</div>
+        </Link>
         <nav className="flex-1 mx-20 flex space-x-10 flex-row font-medium font-heading leading-0 text-sm">
-          <Link href="/">Про проєкт</Link>
+          <Link href="/#project">Про проєкт</Link>
           <Link href="/ticket/create">Написати заяву</Link>
         </nav>
       </div>
